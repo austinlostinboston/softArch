@@ -44,35 +44,29 @@ public class PlumberTemplate
         /****************************************************************************
         * Here we instantiate three filters.
         ****************************************************************************/
-        /*
 
-        SourceFilter Filter1 = new SourceFilter();  // This is a source filter - see SourceFilterTemplate.java
-        MiddleFilter Filter2 = new MiddleFilter();  // This is a standard filter - see FilterTemplate.java
-        SinkFilter Filter3 = new SinkFilter();      // This is a sink filter - see SinkFilterTemplate.java
+        SourceFilter Filter1 = new SourceFilterTemplate();  // This is a source filter - see SourceFilterTemplate.java
+        MiddleFilter Filter2 = new TempFilter();  // This is a standard filter - see FilterTemplate.java
+        SinkFilter Filter3 = new SinkFilterTemplate();      // This is a sink filter - see SinkFilterTemplate.java
 
-        */
         /****************************************************************************
         * Here we connect the filters starting with the sink filter (Filter 1) which
         * we connect to Filter2 the middle filter. Then we connect Filter2 to the
         * source filter (Filter3). You must connect filters starting with the sink
         * filter and working your way back to the source as shown here.
         ****************************************************************************/
-        /*
 
         Filter3.Connect(Filter2); // This esstially says, "connect Filter3's input port to Filter2's output port
         Filter2.Connect(Filter1); // This esstially says, "connect Filter2's intput port to Filter1's output port
 
-        */
         /****************************************************************************
         * Here we start the filters up.
         ****************************************************************************/
-        /*
 
         Filter1.start();
         Filter2.start();
         Filter3.start();
 
-        */
    } // main
 
 } // PlumberTemplate
