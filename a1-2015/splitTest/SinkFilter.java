@@ -144,6 +144,12 @@ public class SinkFilter extends FilterFramework
 
 				} // if
 
+				if ( id == 4 )
+				{
+					System.out.print("poop");
+
+				}
+
 				System.out.print( "\n" );
 
 			} // try

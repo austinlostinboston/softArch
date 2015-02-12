@@ -126,7 +126,8 @@ public class SinkFilter extends FilterFramework
 				{
 					TimeStamp.setTimeInMillis(measurement);
 
-				} // if
+				}
+				 // if
 
 				/****************************************************************************
 				// Here we pick up a measurement (ID = 3 in this case), but you can pick up
@@ -146,7 +147,11 @@ public class SinkFilter extends FilterFramework
 
 				System.out.print( "\n" );
 
+
+
 			} // try
+
+
 
 			/*******************************************************************************
 			*	The EndOfStreamExeception below is thrown when you reach end of the input
