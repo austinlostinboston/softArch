@@ -4,7 +4,7 @@
 * Project: Assignment 1
 * Copyright: Copyright (c) 2003 Carnegie Mellon University
 * Versions:
-*	1.0 November 2008 - Initial rewrite of original assignment 1 (ajl).
+*   1.0 November 2008 - Initial rewrite of original assignment 1 (ajl).
 *
 * Description:
 *
@@ -19,60 +19,60 @@
 * should use the SourceFilterTemplate.java or SinkFilterTemplate.java as a starting point for creating source or sink
 * filters.
 *
-* Parameters: 		None
+* Parameters:       None
 *
 * Internal Methods:
 *
-*	public void run() - this method must be overridden by this class.
+*   public void run() - this method must be overridden by this class.
 *
 ******************************************************************************************************************/
 
 public class FilterTemplate extends FilterFramework
 {
-	public void run()
+    public void run()
     {
-		byte databyte;
+        byte databyte;
 
-		while (true)
-		{
-
-/***************************************************************
-*	The program can insert code for the filter operations
-* 	here. Note that data must be received and sent one
-* 	byte at a time. This has been done to adhere to the
-* 	pipe and filter paradigm and provide a high degree of
-* 	portabilty between filters. However, you must reconstruct
-* 	data on your own. First we read a byte from the input
-* 	stream...
-***************************************************************/
-
-			try
-			{
-				databyte = ReadFilterInputPort();
+        while (true)
+        {
 
 /***************************************************************
-*	Here we could insert code to operate on the input stream...
-*  	Then we write a byte out to the output port.
+*   The program can insert code for the filter operations
+*   here. Note that data must be received and sent one
+*   byte at a time. This has been done to adhere to the
+*   pipe and filter paradigm and provide a high degree of
+*   portabilty between filters. However, you must reconstruct
+*   data on your own. First we read a byte from the input
+*   stream...
 ***************************************************************/
 
-           		WriteFilterOutputPort(databyte);
-
-			} // try
+            try
+            {
+                databyte = ReadFilterInputPort();
 
 /***************************************************************
-*	When we reach the end of the input stream, an exception is
-* 	thrown which is shown below. At this point, you should
-* 	finish up any processing, close your ports and exit.
+*   Here we could insert code to operate on the input stream...
+*   Then we write a byte out to the output port.
 ***************************************************************/
 
-			catch (EndOfStreamException e)
-			{
-				ClosePorts();
-				break;
+                WriteFilterOutputPort(databyte);
 
-			} // catch
+            } // try
 
-		} // while
+/***************************************************************
+*   When we reach the end of the input stream, an exception is
+*   thrown which is shown below. At this point, you should
+*   finish up any processing, close your ports and exit.
+***************************************************************/
+
+            catch (EndOfStreamException e)
+            {
+                ClosePorts();
+                break;
+
+            } // catch
+
+        } // while
 
    } // run
 
