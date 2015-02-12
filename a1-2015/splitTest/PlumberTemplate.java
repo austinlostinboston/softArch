@@ -45,9 +45,9 @@ public class PlumberTemplate
         * Here we instantiate three filters.
         ****************************************************************************/
 
-        SourceFilter Filter1 = new SourceFilterTemplate();  // This is a source filter - see SourceFilterTemplate.java
-        MiddleFilter Filter2 = new TempFilter();  // This is a standard filter - see FilterTemplate.java
-        SinkFilter Filter3 = new SinkFilterTemplate();      // This is a sink filter - see SinkFilterTemplate.java
+        SourceFilter Filter1 = new SourceFilter();  // This is a source filter - see SourceFilterTemplate.java
+        TempFilter Filter2 = new TempFilter();  // This is a standard filter - see FilterTemplate.java
+        SinkFilter Filter3 = new SinkFilter();      // This is a sink filter - see SinkFilterTemplate.java
 
         /****************************************************************************
         * Here we connect the filters starting with the sink filter (Filter 1) which
