@@ -53,12 +53,24 @@ public class SinkFilter extends FilterFramework
 		int id;							// This is the measurement id
 		int i;							// This is a loop counter
 
+		BufferedWriter outputWriter = null;
+		
+		String currentLine = "";
+		String altitude = null;
+		
 		/*************************************************************
 		*	First we announce to the world that we are alive...
 		**************************************************************/
 
 		System.out.print( "\n" + this.getName() + "::Sink Reading ");
 
+		try{
+			outputWriter = new BufferedWriter(new FileWriter("/OutputA.dat", true));
+		}
+		catch (Exception ex){
+			System.out.println(ex.toString());
+		}
+		
 		while (true)
 		{
 			try
@@ -127,9 +139,9 @@ public class SinkFilter extends FilterFramework
 				****************************************************************************/
 
 				if ( id == 0 )
-				{
-					TimeStamp.setTimeInMillis(measurement);
-
+				{	
+					TimeStamp.setTimeInMillis(measurement);			
+					currentLine += TimeStampFormat.format(TimeStamp.getTime());
 				} // if
 
 				/****************************************************************************
@@ -144,17 +156,27 @@ public class SinkFilter extends FilterFramework
 
 				if ( id == 2 )
 				{
-					System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
+					altitude = Double.toString(Double.longBitsToDouble(measurement));
+					//System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
 
 				}
 				
 				if ( id == 4 )
 				{
-					System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
+					currentLine += "\t" + Double.toString(Double.longBitsToDouble(measurement));
+					currentLine += "\t" + altitude;
+					//System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
 
 				} // if
 
-				System.out.print( "\n" );
+				if ( id == 5 )
+				{				
+					outputWriter.write(currentLine);
+					outputWriter.write("\n");
+					currentLine = "";
+				}
+
+				//System.out.print( "\n" );
 
 			} // try
 
@@ -171,9 +193,19 @@ public class SinkFilter extends FilterFramework
 				break;
 
 			} // catch
+			catch (Exception e)
+			{
+				System.out.print(e.toString());
+			}
 
 		} // while
-
+		
+		try{
+			outputWriter.close();
+		}
+		catch (Exception ex){
+			System.out.println(ex.toString());
+		}
    } // run
 
 } // SingFilter
