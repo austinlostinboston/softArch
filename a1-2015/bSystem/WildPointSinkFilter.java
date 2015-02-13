@@ -26,11 +26,10 @@
 import java.util.*;                     // This class is used to interpret time words
 import java.text.SimpleDateFormat;      // This class is used to format and write time in a string format.
 import java.io.*;
-import java.text.DecimalFormat;
 
-public class SinkFilter extends FilterFramework
+public class WildPointSinkFilter extends FilterFramework
 {
-    public SinkFilter() {
+    public WildPointSinkFilter() {
         super(1, 1);
     }
     
@@ -61,9 +60,6 @@ public class SinkFilter extends FilterFramework
         String altitude = null;
         String pressure = null;
         String temperature = null;
-
-        // Number Formats
-        DecimalFormat pressureFormat = new DecimalFormat("#.00000");
         
         /*************************************************************
         *   First we announce to the world that we are alive...
@@ -72,7 +68,7 @@ public class SinkFilter extends FilterFramework
         System.out.print( "\n" + this.getName() + "::Sink Reading ");
 
         try{
-            outputWriter = new BufferedWriter(new FileWriter("outputA.dat", true));
+            outputWriter = new BufferedWriter(new FileWriter("WildPoints.dat", true));
         }
         catch (Exception ex){
             System.out.println(ex.toString());
@@ -91,7 +87,7 @@ public class SinkFilter extends FilterFramework
 
                 for (i=0; i<IdLength; i++ )
                 {
-                    databyte = ReadFilterInputPort(0);  // This is where we read the byte from the stream...
+                    databyte = ReadFilterInputPort(1);  // This is where we read the byte from the stream...
 
                     id = id | (databyte & 0xFF);        // We append the byte on to ID...
 
@@ -121,7 +117,7 @@ public class SinkFilter extends FilterFramework
 
                 for (i=0; i<MeasurementLength; i++ )
                 {
-                    databyte = ReadFilterInputPort(0);
+                    databyte = ReadFilterInputPort(1);
                     measurement = measurement | (databyte & 0xFF);  // We append the byte on to measurement...
                     //System.out.println(measurement);
                     if (i != MeasurementLength-1)                   // If this is not the last byte, then slide the
@@ -160,23 +156,11 @@ public class SinkFilter extends FilterFramework
                 // we print the time stamp and the data associated with the ID we are interested
                 // in.
                 ****************************************************************************/
-
-                // Altitude data
-                if ( id == 2 )
-                {
-                    altitude = pressureFormat.format( Double.longBitsToDouble(measurement));
-                }
                 
                 // Pressure data
                  if ( id == 3 )
                 {
                     pressure = Double.toString(Double.longBitsToDouble(measurement));
-                }
-
-                // Temperature data
-                if ( id == 4 )
-                {
-                    temperature = Double.toString(Double.longBitsToDouble(measurement));
                 }
 
                 // Builds data line, prints to file and resets output writer

@@ -20,9 +20,9 @@ import java.util.ArrayList;
 *
 ******************************************************************************************************************/
 
-public class wildPointFilter extends FilterFramework
+public class WildPointFilter extends FilterFramework
 {
-    wildPointFilter() {
+    WildPointFilter() {
         super(1, 1);
     }
 
@@ -82,26 +82,31 @@ public class wildPointFilter extends FilterFramework
             /*************************************************************
             *   Here we read a byte and write a byte
             *************************************************************/
-
             try
             {
                 databyte = ReadFilterInputPort(0);
                 bytesread++;
                 
-                if (bytesread%72>=29 && bytesread%72<=36){
-                    //29-36
-                    data[bytesread%72-29]=databyte;
-                    
-                    if (bytesread%72==36){
-                        double temp=byte2Double(data);
-                        //System.out.println("height is: "+temp);
-                        temp=temp/3.28083989501;
-                        data=double2Byte(temp);
+                if (bytesread % 72 >= 37 && bytesread % 72 <= 48){
+                    //37-48
+                    data[bytesread % 72 - 37 ] = databyte;
+                    //double oldPressure = null;
+
+                    if (bytesread % 72 == 48){
                         
-                        for (int i=0;i<8;i++){
-                            WriteFilterOutputPort(data[i],0);
+                        double pressure=byte2Double(data);
+                        
+                        data=double2Byte(pressure);
+
+                        if (pressure < 0) {
+                            for (int i=0; i<8; i++){
+                                WriteFilterOutputPort(data[i],1);
+                            }
+                        } else {
+                            for (int i=0; i<8; i++){
+                                WriteFilterOutputPort(data[i],0);
+                            }
                         }
-                        
                     }
 
                 }else{

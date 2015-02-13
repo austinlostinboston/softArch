@@ -27,41 +27,32 @@ public class Plumber
 		****************************************************************************/
 
 		SourceFilter Filter1 = new SourceFilter();
-		TempFilter Filter3 = new TempFilter();
-		AltiFilter Filter4 = new AltiFilter();
-		CopyFilter Filter2 = new CopyFilter(3); //??
-		MergeFilter Filter5 = new MergeFilter(3);
-		SinkFilter Filter6 = new SinkFilter();
+		WildPointFilter Filter2 = new WildPointFilter();
+		SinkFilter Filter3 = new SinkFilter();
+		WildPointSinkFilter Filter4 = new WildPointSinkFilter();
 
 		/****************************************************************************
 		* Here we connect the filters starting with the sink filter (Filter 1) which
 		* we connect to Filter2 the middle filter. Then we connect Filter2 to the
 		* source filter (Filter3).
 		****************************************************************************/
-		Filter6.Connect(Filter5, 0, 0);
-		Filter5.Connect(Filter4, 2, 0);
-		Filter5.Connect(Filter3, 1, 0);
-		Filter5.Connect(Filter2, 0, 2);
-		Filter4.Connect(Filter2,0,1);
-		Filter3.Connect(Filter2,0,0); // This esstially says, "connect Filter3 input port to Filter2 output port
-		Filter2.Connect(Filter1,0,0); // This esstially says, "connect Filter2 intput port to Filter1 output port
+		/* The second and third arguments for the Connect command specify number of 
+		 * input and output ports, respectively. Number format explained below.
+		 * 0 - 1 port
+		 * 1 - 2 ports
+		 * 2 - 3 ports
+		*/ 
+		Filter2.Connect(Filter1, 0, 1);
+		Filter3.Connect(Filter2, 0, 0);
+		Filter4.Connect(Filter2, 0, 0);
 
 		/****************************************************************************
 		* Here we start the filters up. All-in-all,... its really kind of boring.
 		****************************************************************************/
-
-		Filter1.setName("source thread");
 		Filter1.start();
-		Filter2.setName("copy thread");
 		Filter2.start();
-		Filter3.setName("temp thread");
 		Filter3.start();
-		Filter4.setName("alti thread");
 		Filter4.start();
-		Filter5.setName("merge thread");
-		Filter5.start();
-		Filter6.setName("sink thread");
-		Filter6.start();
    } // main
 
 } // Plumber
