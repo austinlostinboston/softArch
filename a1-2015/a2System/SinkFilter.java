@@ -25,6 +25,8 @@
 ******************************************************************************************************************/
 import java.util.*;						// This class is used to interpret time words
 import java.text.SimpleDateFormat;		// This class is used to format and write time in a string format.
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public class SinkFilter extends FilterFramework
 {
