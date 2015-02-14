@@ -138,6 +138,12 @@ public class SinkFilter extends FilterFramework
 				// in.
 				****************************************************************************/
 
+				if ( id == 2 )
+				{
+					System.out.print( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
+
+				}
+
 				if ( id == 3 )
 				{
 					System.out.print( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
@@ -146,7 +152,7 @@ public class SinkFilter extends FilterFramework
 
 				if ( id == 4 )
 				{
-					System.out.print("poop");
+					System.out.print( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
 
 				}
 
