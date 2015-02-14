@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 /******************************************************************************************************************
 * File:MiddleFilter.java
 * Course: 17655
@@ -18,89 +21,13 @@
 *
 ******************************************************************************************************************/
 
-import java.util.ArrayList;
-
-public class MiddleFilter extends FilterFramework
+public class AltiFilter extends FilterFramework
 {
-	MiddleFilter() {
+	AltiFilter() {
 		super(1, 1);
 	}
 
-	public void run()
-    {
-		int bytesread = 0;					// Number of bytes read from the input file.
-		int byteswritten = 0;				// Number of bytes written to the stream.
-		byte databyte = 0;					// The byte of data read from the file
-
-		// Next we write a message to the terminal to let the world know we are alive...
-
-		System.out.print( "\n" + this.getName() + "::Middle Reading ");
-
-		//ArrayList<Byte> data=new ArrayList<Byte>();
-		byte[] data=new byte[8];
-		while (true)
-		{
-			/*************************************************************
-			*	Here we read a byte and write a byte
-			*************************************************************/
-
-			try
-			{
-				databyte = ReadFilterInputPort(0);
-				bytesread++;
-				
-				if (bytesread%72>=29 && bytesread%72<=36){
-					//29-36
-					data[bytesread%72-29]=databyte;
-					
-					if (bytesread%72==36){
-						double altitude=byte2Double(data);
-						altitude=altitude/3.28083989501;					
-						data=double2Byte(altitude);
-						
-						for (int i=0;i<8;i++){
-							WriteFilterOutputPort(data[i],0);
-						}
-						
-					}
-
-				}
-				else if (bytesread%72>=53 && bytesread%72<=60){
-					//53-60
-					data[bytesread%72-53]=databyte;
-					
-					if (bytesread%72==60){
-						double temp=byte2Double(data); 
-						temp=(temp-32)*5/9;
-						data=double2Byte(temp);
-						//System.out.println("temp is: "+temp);
-						for (int i=0;i<8;i++){
-							WriteFilterOutputPort(data[i],0);
-						}
-						
-					}
-				}
-				else{
-				
-					WriteFilterOutputPort(databyte,0);
-				}
-				byteswritten++;
-
-			} // try
-
-			catch (EndOfStreamException e)
-			{
-				ClosePorts();
-				System.out.print( "\n" + this.getName() + "::Middle Exiting; bytes read: " + bytesread + " bytes written: " + byteswritten );
-				break;
-
-			} // catch
-
-		} // while
-
-   } // run
-
-   public double byte2Double(byte[] b) { 
+	public double byte2Double(byte[] b) { 
 	    long l; 
 	    l = b[7]; 
 	    l &= 0xff; 
@@ -137,4 +64,65 @@ public class MiddleFilter extends FilterFramework
 	    
 	} 
 	
+	public void run()
+    {
+
+
+		int bytesread = 0;					// Number of bytes read from the input file.
+		int byteswritten = 0;				// Number of bytes written to the stream.
+		byte databyte = 0;					// The byte of data read from the file
+
+		// Next we write a message to the terminal to let the world know we are alive...
+
+		System.out.print( "\n" + this.getName() + "::Middle Reading ");
+
+		//ArrayList<Byte> data=new ArrayList<Byte>();
+		byte[] data=new byte[8];
+		while (true)
+		{
+			/*************************************************************
+			*	Here we read a byte and write a byte
+			*************************************************************/
+
+			try
+			{
+				databyte = ReadFilterInputPort(0);
+				bytesread++;
+				
+				if (bytesread%72>=29 && bytesread%72<=36){
+					//29-36
+					data[bytesread%72-29]=databyte;
+					
+					if (bytesread%72==36){
+						double temp=byte2Double(data);
+						//System.out.println("height is: "+temp);
+						temp=temp/3.28083989501;
+						data=double2Byte(temp);
+						
+						for (int i=0;i<8;i++){
+							WriteFilterOutputPort(data[i],0);
+						}
+						
+					}
+
+				}else{
+				
+					WriteFilterOutputPort(databyte,0);
+				}
+				byteswritten++;
+
+			} // try
+
+			catch (EndOfStreamException e)
+			{
+				ClosePorts();
+				System.out.print( "\n" + this.getName() + "::Middle Exiting; bytes read: " + bytesread + " bytes written: " + byteswritten );
+				break;
+
+			} // catch
+
+		} // while
+
+   } // run
+
 } // MiddleFilter
