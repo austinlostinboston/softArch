@@ -100,7 +100,7 @@ public class WildPointFilter extends FilterFramework
                 if (bytesread % 72 == 48){
                 	pressure=byte2Double(Arrays.copyOfRange(fullData, 40, 48));
                     
-                    if (pressure < 0) {
+                    if (pressure < 0 || (lastValidPress>=0 && Math.abs(pressure-lastValidPress)>10)) {
                     	System.out.println(pressure);
                     	allowToPass=false;
                     } else {
