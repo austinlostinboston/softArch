@@ -36,15 +36,17 @@ public class PlumberB1
 			4 - Temperature
 			5 - Attitude
 		*/
+			// Defines the output order for a file
 		ArrayList<Integer> timeTempAltPress = new ArrayList<Integer>();
-		hs.add(0);
-		hs.add(4);
-		hs.add(2);
-		hs.add(3);
+		timeTempAltPress.add(0); // makes time the 1st column
+		timeTempAltPress.add(4); // makes temp the 2nd column
+		timeTempAltPress.add(2); // makes altitue the 3rd column
+		timeTempAltPress.add(3); // makes pressure the 4th column
 
+		// Defines the order of the WildPoints.dat file
 		ArrayList<Integer> timePress = new ArrayList<Integer>();
-		hs1.add(0);
-		hs1.add(3);
+		timePress.add(0); // makes time the the 1st column
+		timePress.add(3); // makes pressure the 2nd column
 
 
 		SourceFilter Filter1 = new SourceFilter("../DataSets/FlightData.dat");
