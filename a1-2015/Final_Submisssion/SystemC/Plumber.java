@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /******************************************************************************************************************
@@ -27,14 +28,15 @@ public class Plumber
 		/****************************************************************************
 		* Here we instantiate three filters.
 		****************************************************************************/
-	   	HashSet<Integer> hs=new HashSet<Integer>();
+	   	ArrayList<Integer> hs=new ArrayList<Integer>();
 		hs.add(0);
 		hs.add(1);
 		hs.add(2);
 		hs.add(3);
 		hs.add(4);
 		hs.add(5);
-		HashSet<Integer> hs1=new HashSet<Integer>();
+		ArrayList<Integer> hs1=new ArrayList<Integer>();
+
 		hs1.add(0);hs1.add(3);
 		
 		
