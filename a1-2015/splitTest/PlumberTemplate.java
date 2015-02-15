@@ -48,17 +48,22 @@ public class PlumberTemplate
         SourceFilter Filter1 = new SourceFilter();  // This is a source filter - see SourceFilterTemplate.java
         TempFilter Filter2 = new TempFilter();  // This is a standard filter - see FilterTemplate.java
         AltiFilter Filter3 = new AltiFilter();
-        SinkFilter Filter4 = new SinkFilter();      // This is a sink filter - see SinkFilterTemplate.java
-
+        SinkFilter1 Filter4 = new SinkFilter1();      // This is a sink filter - see SinkFilterTemplate.java
+        SinkFilter2 Filter5 = new SinkFilter2();
         /****************************************************************************
         * Here we connect the filters starting with the sink filter (Filter 1) which
         * we connect to Filter2 the middle filter. Then we connect Filter2 to the
         * source filter (Filter3). You must connect filters starting with the sink
         * filter and working your way back to the source as shown here.
         ****************************************************************************/
-
+        // Filter2.Connect(Filter1) means:    2 <--- 1
+        //                / 2 \
+        //         4 <--<{     }<-- 1
+        //                \ 3 / 
+        //
         Filter4.Connect(Filter3); // This esstially says, "connect Filter3's input port to Filter2's output port
-        Filter3.Connect(Filter2); // This esstially says, "connect Filter2's intput port to Filter1's output port
+        Filter5.Connect(Filter2);
+        Filter3.Connect(Filter1); // This esstially says, "connect Filter2's intput port to Filter1's output port
         Filter2.Connect(Filter1);
 
         /****************************************************************************

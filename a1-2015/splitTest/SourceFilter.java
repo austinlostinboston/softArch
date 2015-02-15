@@ -50,7 +50,7 @@ public class SourceFilter extends FilterFramework
                 bytesread++;
                 WriteFilterOutputPort(databyte);
                 byteswritten++;
-
+                System.out.println("Thread 0 reading...");
             } // while
 
         } //try

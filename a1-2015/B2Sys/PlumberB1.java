@@ -26,7 +26,7 @@ public class PlumberB1
 		/****************************************************************************
 		* Here we instantiate three filters.
 		****************************************************************************/
-		// Build a hashset that allows you to customize what pieces of information you
+		// Build a listArray that allows you to customize what pieces of information you
 		// Include in your output.
 		/*
 			0 - TimeDate
@@ -36,13 +36,13 @@ public class PlumberB1
 			4 - Temperature
 			5 - Attitude
 		*/
-		ArrayList<Integer> hs=new ArrayList<Integer>();
+		ArrayList<Integer> timeTempAltPress = new ArrayList<Integer>();
 		hs.add(0);
 		hs.add(4);
 		hs.add(2);
 		hs.add(3);
 
-		ArrayList<Integer> hs1=new ArrayList<Integer>();
+		ArrayList<Integer> timePress = new ArrayList<Integer>();
 		hs1.add(0);
 		hs1.add(3);
 
@@ -52,8 +52,8 @@ public class PlumberB1
 		WildPointFilter Filter2 = new WildPointFilter();
 		TempFilter Filter3 = new TempFilter();
 		AltiFilter Filter4 = new AltiFilter();
-		SinkFilter Filter5 = new SinkFilter("OutputB.dat",hs);
-		SinkFilter Filter6 = new SinkFilter("WildPoints.dat",hs1);
+		SinkFilter Filter5 = new SinkFilter("OutputB.dat",timeTempAltPress);
+		SinkFilter Filter6 = new SinkFilter("WildPoints.dat",timePress);
 
 		/****************************************************************************
 		* Here we connect the filters starting with the sink filter (Filter 1) which

@@ -92,7 +92,7 @@ public class AltiFilter extends FilterFramework
 						double temp=byte2Double(data); 
 						temp=temp/3.28083989501;
 						data=double2Byte(temp);
-						
+						System.out.println("Wokring on Alitude");
 						for (int i=0;i<8;i++){
 							WriteFilterOutputPort(data[i]);
 						}

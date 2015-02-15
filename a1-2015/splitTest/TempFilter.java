@@ -92,7 +92,7 @@ public class TempFilter extends FilterFramework
 						double temp=byte2Double(data); 
 						temp=(temp-32)*5/9;
 						data=double2Byte(temp);
-						
+						System.out.println("Working on Temperature");
 						for (int i=0;i<8;i++){
 							WriteFilterOutputPort(data[i]);
 						}

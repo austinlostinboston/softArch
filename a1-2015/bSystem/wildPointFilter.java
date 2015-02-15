@@ -70,7 +70,8 @@ public class WildPointFilter extends FilterFramework
 
         int bytesread = 0;                  // Number of bytes read from the input file.
         int byteswritten = 0;               // Number of bytes written to the stream.
-        byte databyte = 0;                  // The byte of data read from the file
+        byte databyte = 0;
+        int byteId = 0;                  // The byte of data read from the file
 
         // Next we write a message to the terminal to let the world know we are alive...
 
@@ -97,6 +98,17 @@ public class WildPointFilter extends FilterFramework
             {
                 databyte = ReadFilterInputPort(0);
                 bytesread++;
+                byteId = bytesread - 1;
+                // Build data frame - 72 byte long data chunk
+                frame[byteId % (72 -1)] = databyte;
+
+                if (bytesread % 72 == 0) {
+                    
+                }
+
+
+
+
                 frame[(bytesread - 1) % 72] = databyte;
 
                 if (bytesread % 72 >= 41 && bytesread % 72 <= 48){
