@@ -19,7 +19,7 @@
 * Internal Methods:	None
 *
 ******************************************************************************************************************/
-public class PlumberA2
+public class Plumber
 {
    public static void main( String argv[]) throws Exception
    {
