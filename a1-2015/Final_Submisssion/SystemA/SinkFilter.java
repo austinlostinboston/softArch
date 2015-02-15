@@ -30,8 +30,12 @@ import java.io.FileWriter;
 
 public class SinkFilter extends FilterFramework
 {
-	public SinkFilter() {
+	String path;
+	ArrayList<Integer> ids;
+	public SinkFilter(String p,ArrayList<Integer> ids) {
 		super(1, 1);
+		path=p;
+		this.ids=ids;
 	}
 	
 	public void run()
@@ -43,7 +47,7 @@ public class SinkFilter extends FilterFramework
 		*************************************************************************************/
 
 		Calendar TimeStamp = Calendar.getInstance();
-		SimpleDateFormat TimeStampFormat = new SimpleDateFormat("yyyy MM dd::hh:mm:ss:SSS");
+		SimpleDateFormat TimeStampFormat = new SimpleDateFormat("yyyy:dd::hh:mm:ss");
 
 		int MeasurementLength = 8;		// This is the length of all measurements (including time) in bytes
 		int IdLength = 4;				// This is the length of IDs in the byte stream
@@ -59,6 +63,7 @@ public class SinkFilter extends FilterFramework
 		
 		String currentLine = "";
 		String altitude = null;
+		String[] outputs = new String[6];
 		
 		/*************************************************************
 		*	First we announce to the world that we are alive...
@@ -67,7 +72,7 @@ public class SinkFilter extends FilterFramework
 		System.out.print( "\n" + this.getName() + "::Sink Reading ");
 
 		try{
-			outputWriter = new BufferedWriter(new FileWriter("/OutputA.dat", true));
+			outputWriter = new BufferedWriter(new FileWriter(path, true));
 		}
 		catch (Exception ex){
 			System.out.println(ex.toString());
@@ -139,40 +144,21 @@ public class SinkFilter extends FilterFramework
 				// dealing with time arithmetically or for string display purposes. This is
 				// illustrated below.
 				****************************************************************************/
-
-				if ( id == 0 )
-				{	
-					TimeStamp.setTimeInMillis(measurement);			
-					currentLine += TimeStampFormat.format(TimeStamp.getTime());
-				} // if
-
-				/****************************************************************************
-				// Here we pick up a measurement (ID = 3 in this case), but you can pick up
-				// any measurement you want to. All measurements in the stream are
-				// decommutated by this class. Note that all data measurements are double types
-				// This illustrates how to convert the bits read from the stream into a double
-				// type. Its pretty simple using Double.longBitsToDouble(long value). So here
-				// we print the time stamp and the data associated with the ID we are interested
-				// in.
-				****************************************************************************/
-
-				if ( id == 2 )
-				{
-					altitude = Double.toString(Double.longBitsToDouble(measurement));
-					//System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
-
+				if (ids.contains(id)){
+					if ( id == 0 ){	
+						TimeStamp.setTimeInMillis(measurement);			
+						outputs[id] = TimeStampFormat.format(TimeStamp.getTime());
+					} // if		
+					else{
+						outputs[id] = String.format("%.5f",(Double.longBitsToDouble(measurement)));
+					}
 				}
-				
-				if ( id == 4 )
-				{
-					currentLine += "\t" + Double.toString(Double.longBitsToDouble(measurement));
-					currentLine += "\t" + altitude;
-					//System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
-
-				} // if
 
 				if ( id == 5 )
-				{				
+				{
+					for (int outputID : ids) {
+						currentLine += outputs[outputID] + "\t";
+					}					
 					outputWriter.write(currentLine);
 					outputWriter.write("\n");
 					currentLine = "";

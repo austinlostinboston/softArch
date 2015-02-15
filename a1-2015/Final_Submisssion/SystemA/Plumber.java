@@ -1,4 +1,4 @@
-
+import java.util.*;
 /******************************************************************************************************************
 * File:Plumber.java
 * Course: 17655
@@ -23,16 +23,22 @@ public class Plumber
 {
    public static void main( String argv[]) throws Exception
    {
+	   	// Defines the output order for a file
+		ArrayList<Integer> timeTempAlt = new ArrayList<Integer>();
+		timeTempAlt.add(0); // makes time the 1st column
+		timeTempAlt.add(4); // makes temp the 2nd column
+		timeTempAlt.add(2); // makes altitue the 3rd column
+
 		/****************************************************************************
 		* Here we instantiate three filters.
 		****************************************************************************/
-
+		
 		SourceFilter Filter1 = new SourceFilter();
 		TempFilter Filter3 = new TempFilter();
 		AltiFilter Filter4 = new AltiFilter();
 		CopyFilter Filter2 = new CopyFilter(3);
 		MergeFilter Filter5 = new MergeFilter(3);
-		SinkFilter Filter6 = new SinkFilter();
+		SinkFilter Filter6 = new SinkFilter("OutputA.dat",timeTempAlt);
 
 		/****************************************************************************
 		* Here we connect the filters starting with the sink filter (Filter 1) which
