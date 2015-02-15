@@ -204,6 +204,7 @@ public class SinkFilter extends FilterFramework
 		
 		try{
 			outputWriter.close();
+			System.out.println("\n" + System.currentTimeMillis());
 		}
 		catch (Exception ex){
 			System.out.println(ex.toString());
