@@ -23,7 +23,8 @@ import java.util.ArrayList;
 public class WildPointFilter extends FilterFramework
 {
     WildPointFilter() {
-        super(1, 1);
+        // super(total inputPorts, total OutputPorts)
+        super(1, 2);
     }
 
     public double byte2Double(byte[] b) { 
@@ -76,45 +77,67 @@ public class WildPointFilter extends FilterFramework
         System.out.print( "\n" + this.getName() + "::Middle Reading ");
 
         //ArrayList<Byte> data=new ArrayList<Byte>();
-        byte[] data=new byte[8];
+        byte[] data = new byte[8];
+        byte[] frame = new byte[72];
+
+        double oldPressure = -1.0;
+        double pressure = -1.0;
+        double pressDiff = -1.0;
+        boolean validPt = true;
+        int wildcounter = 0;
+
         while (true)
         {
             /*************************************************************
             *   Here we read a byte and write a byte
             *************************************************************/
+            
+            
             try
             {
                 databyte = ReadFilterInputPort(0);
                 bytesread++;
-                
-                if (bytesread % 72 >= 37 && bytesread % 72 <= 48){
+                frame[(bytesread - 1) % 72] = databyte;
+
+                if (bytesread % 72 >= 41 && bytesread % 72 <= 48){
                     //37-48
-                    data[bytesread % 72 - 37 ] = databyte;
-                    //double oldPressure = null;
+                    data[bytesread % 72 - 41 ] = databyte;
 
                     if (bytesread % 72 == 48){
                         
-                        double pressure=byte2Double(data);
-                        
+                        pressure=byte2Double(data);
+
+
+                        System.out.println(pressure);
                         data=double2Byte(pressure);
+                        
+                        pressDiff = Math.abs(pressure - oldPressure);
 
                         if (pressure < 0) {
-                            for (int i=0; i<8; i++){
-                                WriteFilterOutputPort(data[i],1);
+
+                            for (int i = 0; i < 8; i++){
+                                WriteFilterOutputPort(data[i],1);                             
                             }
+
+                            System.out.println("Wild: " + Double.toString(pressure));
+                            wildcounter++;
                         } else {
-                            for (int i=0; i<8; i++){
+                            for (int i = 0; i < 8; i++){
                                 WriteFilterOutputPort(data[i],0);
+                                //WriteFilterOutputPort(data[i],0);
                             }
+                            System.out.println("Normal: " + Double.toString(pressure));
                         }
+                        oldPressure = pressure;
                     }
 
                 }else{
                 
                     WriteFilterOutputPort(databyte,0);
+                    WriteFilterOutputPort(databyte,1);
                 }
                 byteswritten++;
-
+                System.out.println(wildcounter);
             } // try
 
             catch (EndOfStreamException e)
@@ -128,5 +151,9 @@ public class WildPointFilter extends FilterFramework
         } // while
 
    } // run
+
+   // private void averagePress(double lastValidPress, double currentValidPress) {
+   //      double avgPress = (lastValidPress + currentValidPress) 
+   // }
 
 } // MiddleFilter
