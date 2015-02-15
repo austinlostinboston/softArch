@@ -21,14 +21,16 @@ import java.io.*; // note we must add this here since we use BufferedReader clas
 
 public class SourceFilter extends FilterFramework
 {
-	public SourceFilter() {
+	String path;
+	public SourceFilter(String p) {
 		super(1, 1);
+		path=p;
 	}
 	
 	public void run()
     {
 
-		String fileName = "FlightData.dat";	// Input data file.
+		String fileName = path;	// Input data file.
 		int bytesread = 0;					// Number of bytes read from the input file.
 		int byteswritten = 0;				// Number of bytes written to the stream.
 		DataInputStream in = null;			// File stream reference.

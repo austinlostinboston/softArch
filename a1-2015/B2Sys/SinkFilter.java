@@ -1,3 +1,4 @@
+
 /******************************************************************************************************************
 * File:SinkFilter.java
 * Course: 17655
@@ -30,8 +31,12 @@ import java.io.FileWriter;
 
 public class SinkFilter extends FilterFramework
 {
-	public SinkFilter() {
+	String path;
+	ArrayList<Integer> ids;
+	public SinkFilter(String p,ArrayList<Integer> ids) {
 		super(1, 1);
+		path=p;
+		this.ids=ids;
 	}
 	
 	public void run()
@@ -43,7 +48,7 @@ public class SinkFilter extends FilterFramework
 		*************************************************************************************/
 
 		Calendar TimeStamp = Calendar.getInstance();
-		SimpleDateFormat TimeStampFormat = new SimpleDateFormat("yyyy MM dd::hh:mm:ss:SSS");
+		SimpleDateFormat TimeStampFormat = new SimpleDateFormat("yyyy:MM:dd::hh:mm:ss:SSS");
 
 		int MeasurementLength = 8;		// This is the length of all measurements (including time) in bytes
 		int IdLength = 4;				// This is the length of IDs in the byte stream
@@ -59,6 +64,7 @@ public class SinkFilter extends FilterFramework
 		
 		String currentLine = "";
 		String altitude = null;
+		String[] outputs = new String[6];
 		
 		/*************************************************************
 		*	First we announce to the world that we are alive...
@@ -67,7 +73,7 @@ public class SinkFilter extends FilterFramework
 		System.out.print( "\n" + this.getName() + "::Sink Reading ");
 
 		try{
-			outputWriter = new BufferedWriter(new FileWriter("OutputB.dat", false));
+			outputWriter = new BufferedWriter(new FileWriter(path, false));
 		}
 		catch (Exception ex){
 			System.out.println(ex.toString());
@@ -129,6 +135,7 @@ public class SinkFilter extends FilterFramework
 
 				} // if
 
+				
 				/****************************************************************************
 				// Here we look for an ID of 0 which indicates this is a time measurement.
 				// Every frame begins with an ID of 0, followed by a time stamp which correlates
@@ -140,11 +147,26 @@ public class SinkFilter extends FilterFramework
 				// illustrated below.
 				****************************************************************************/
 
-				if ( id == 0 )
+				if (ids.contains(id)){
+					if ( id == 0 )
+					{	
+						TimeStamp.setTimeInMillis(measurement);			
+						outputs[id] = TimeStampFormat.format(TimeStamp.getTime());
+					}else{ // if
+						outputs[id] = String.format("%.5f",(Double.longBitsToDouble(measurement)));
+					}
+				}
+				
+				if ( id == 5 )
 				{	
-					TimeStamp.setTimeInMillis(measurement);			
-					currentLine += TimeStampFormat.format(TimeStamp.getTime());
-				} // if
+					for (int outputID : ids) {
+						currentLine += outputs[outputID] + "\t";
+					}			
+					outputWriter.write(currentLine);
+					outputWriter.write("\n");
+					currentLine = "";
+				}
+				
 
 				/****************************************************************************
 				// Here we pick up a measurement (ID = 3 in this case), but you can pick up
@@ -156,28 +178,7 @@ public class SinkFilter extends FilterFramework
 				// in.
 				****************************************************************************/
 
-				if ( id == 2 )
-				{
-					altitude = Double.toString(Double.longBitsToDouble(measurement));
-					//System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
-
-				}
 				
-				if ( id == 4 )
-				{
-					currentLine += "\t" + Double.toString(Double.longBitsToDouble(measurement));
-					currentLine += "\t" + altitude;
-					//System.out.println( TimeStampFormat.format(TimeStamp.getTime()) + " ID = " + id + " " + Double.longBitsToDouble(measurement) );
-
-				} // if
-
-				if ( id == 5 )
-				{				
-					outputWriter.write(currentLine);
-					outputWriter.write("\n");
-					currentLine = "";
-				}
-
 				//System.out.print( "\n" );
 
 			} // try

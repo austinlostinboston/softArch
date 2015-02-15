@@ -1,3 +1,4 @@
+import java.util.*;
 /******************************************************************************************************************
 * File:Plumber.java
 * Course: 17655
@@ -25,14 +26,34 @@ public class PlumberB1
 		/****************************************************************************
 		* Here we instantiate three filters.
 		****************************************************************************/
+		// Build a hashset that allows you to customize what pieces of information you
+		// Include in your output.
+		/*
+			0 - TimeDate
+			1 - Velocity
+			2 - Altitude
+			3 - Pressure
+			4 - Temperature
+			5 - Attitude
+		*/
+		ArrayList<Integer> hs=new ArrayList<Integer>();
+		hs.add(0);
+		hs.add(4);
+		hs.add(2);
+		hs.add(3);
 
-		SourceFilter Filter1 = new SourceFilter();
+		ArrayList<Integer> hs1=new ArrayList<Integer>();
+		hs1.add(0);
+		hs1.add(3);
+
+
+		SourceFilter Filter1 = new SourceFilter("../DataSets/FlightData.dat");
 		
 		WildPointFilter Filter2 = new WildPointFilter();
 		TempFilter Filter3 = new TempFilter();
 		AltiFilter Filter4 = new AltiFilter();
-		SinkFilter Filter5 = new SinkFilter();
-		WildPointSinkFilter Filter6 = new WildPointSinkFilter();
+		SinkFilter Filter5 = new SinkFilter("OutputB.dat",hs);
+		SinkFilter Filter6 = new SinkFilter("WildPoints.dat",hs1);
 
 		/****************************************************************************
 		* Here we connect the filters starting with the sink filter (Filter 1) which

@@ -1,4 +1,4 @@
-
+import java.util.*;
 /******************************************************************************************************************
 * File:Plumber.java
 * Course: 17655
@@ -26,13 +26,25 @@ public class PlumberA2
 		/****************************************************************************
 		* Here we instantiate three filters.
 		****************************************************************************/
+		ArrayList<Integer> hs=new ArrayList<Integer>();
+		hs.add(0);
+		hs.add(1);
+		hs.add(2);
+		hs.add(3);
+		hs.add(4);
+		hs.add(5);
 
-		SourceFilter Filter1 = new SourceFilter();
+		ArrayList<Integer> hs1=new ArrayList<Integer>();
+		hs1.add(0);
+		hs1.add(3);
+
+
+		SourceFilter Filter1 = new SourceFilter("../DataSets/FlightData.dat");
 		TempFilter Filter3 = new TempFilter();
 		AltiFilter Filter4 = new AltiFilter();
 		CopyFilter Filter2 = new CopyFilter(3);
 		MergeFilter Filter5 = new MergeFilter(3);
-		SinkFilter Filter6 = new SinkFilter();
+		SinkFilter Filter6 = new SinkFilter("OutputA.dat",hs);
 
 		/****************************************************************************
 		* Here we connect the filters starting with the sink filter (Filter 1) which

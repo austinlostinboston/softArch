@@ -136,9 +136,28 @@ public class FilterFramework extends Thread
 	* Returns: byte of data read from the input port of the filter.
 	*
 	* Exceptions: IOExecption, EndOfStreamException (rethrown)
+	 * @throws EndOfStreamException 
+	 * @throws IOException 
 	*
 	****************************************************************************/
 
+	boolean IsPortAvailable(int InputPortNum) throws EndOfStreamException{
+		boolean ans=false;
+		try {
+			ans= InputReadPort[InputPortNum].available()!=0;
+			if (EndOfInputStream()){
+				throw new EndOfStreamException("End of input stream reached");
+			}
+		} catch (EndOfStreamException e) {
+			// TODO Auto-generated catch block
+			throw e;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	
 	byte ReadFilterInputPort(int InputPortNum) throws EndOfStreamException
 	{
 		byte datum = 0;
@@ -206,6 +225,72 @@ public class FilterFramework extends Thread
 
 	} // ReadFilterPort
 
+	byte ReadSingleFilterInputPort(int InputPortNum) throws EndOfStreamException
+	{
+		byte datum = 0;
+
+		/***********************************************************************
+		* Since delays are possible on upstream filters, we first wait until
+		* there is data available on the input port. We check,... if no data is
+		* available on the input port we wait for a quarter of a second and check
+		* again. Note there is no timeout enforced here at all and if upstream
+		* filters are deadlocked, then this can result in infinite waits in this
+		* loop. It is necessary to check to see if we are at the end of stream
+		* in the wait loop because it is possible that the upstream filter completes
+		* while we are waiting. If this happens and we do not check for the end of
+		* stream, then we could wait forever on an upstream pipe that is long gone.
+		* Unfortunately Java pipes do not throw exceptions when the input pipe is
+		* broken.
+		***********************************************************************/
+
+		try
+		{
+			while (InputReadPort[InputPortNum].available()==0 )
+			{
+				if (EndOfInputStreamSinglePort(InputPortNum))
+				{
+					throw new EndOfStreamException("End of input stream reached");
+
+				} //if
+
+				sleep(250);
+
+			} // while
+
+		} // try
+
+		catch( EndOfStreamException Error )
+		{
+			throw Error;
+
+		} // catch
+
+		catch( Exception Error )
+		{
+			System.out.println( "\n" + this.getName() + " Error in read port wait loop::" + Error );
+
+		} // catch
+
+		/***********************************************************************
+		* If at least one byte of data is available on the input
+		* pipe we can read it. We read and write one byte to and from ports.
+		***********************************************************************/
+
+		try
+		{
+			datum = (byte)InputReadPort[InputPortNum].read();
+			return datum;
+
+		} // try
+
+		catch( Exception Error )
+		{
+			System.out.println( "\n" + this.getName() + " Pipe read error::" + Error );
+			return datum;
+
+		} // catch
+
+	} // ReadFilterPort
 	/***************************************************************************
 	* CONCRETE METHOD:: WriteFilterOutputPort
 	* Purpose: This method writes data to the output port one byte at a time.
@@ -267,6 +352,15 @@ public class FilterFramework extends Thread
 		}
 		return true;
 	} // EndOfInputStream
+	
+	boolean EndOfInputStreamSinglePort(int InputPortNum)
+	{
+		if (InputFilters.get(InputPortNum).isAlive())
+		{
+			return false;
+		}
+		return true;
+	} // EndOfInputStream
 
 	/***************************************************************************
 	* CONCRETE METHOD:: ClosePorts
@@ -289,7 +383,7 @@ public class FilterFramework extends Thread
 			for (int i=0;i<InputReadPort.length;i++)
 				InputReadPort[i].close();
 			for (int i=0;i<OutputWritePort.length;i++)
-			OutputWritePort[i].close();
+				OutputWritePort[i].close();
 
 		}
 		catch( Exception Error )
