@@ -182,7 +182,7 @@ public class SinkFilter extends FilterFramework
                 // Builds data line, prints to file and resets output writer
                 if ( id == 5 )
                 {
-                    currentLine += "\t" + pressure;
+                    currentLine += "\t" + temperature + "\t" + altitude + "\t" + pressure;
                     outputWriter.write(currentLine);
                     outputWriter.write("\n");
                     currentLine = "";

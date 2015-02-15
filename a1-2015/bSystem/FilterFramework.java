@@ -68,16 +68,22 @@ public class FilterFramework extends Thread
 	****************************************************************************/
 
 	FilterFramework (int InputPortNumbers, int OutputPortNumbers){
+
 		this.InputPortNumbers=InputPortNumbers;
 		this.OutputPortNumbers=OutputPortNumbers;
+
 		InputReadPort = new PipedInputStream[InputPortNumbers];
-		for (int i=0;i<InputPortNumbers;i++){
+
+		for (int i = 0; i < InputPortNumbers; i++){
 			InputReadPort[i]=new PipedInputStream();
 		}
+
 		OutputWritePort = new PipedOutputStream[OutputPortNumbers];
-		for (int i=0;i<OutputPortNumbers;i++){
+
+		for (int i = 0; i < OutputPortNumbers; i++){
 			OutputWritePort[i]=new PipedOutputStream();
 		}
+		
 		InputFilters = new ArrayList<FilterFramework>();
 	}
 	

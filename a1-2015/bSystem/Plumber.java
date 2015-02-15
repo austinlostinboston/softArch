@@ -42,9 +42,9 @@ public class Plumber
 		 * 1 - 2 ports
 		 * 2 - 3 ports
 		*/ 
-		Filter2.Connect(Filter1, 0, 1);
+		Filter2.Connect(Filter1, 0, 0);
 		Filter3.Connect(Filter2, 0, 0);
-		Filter4.Connect(Filter2, 0, 0);
+		Filter4.Connect(Filter2, 0, 1);
 
 		/****************************************************************************
 		* Here we start the filters up. All-in-all,... its really kind of boring.

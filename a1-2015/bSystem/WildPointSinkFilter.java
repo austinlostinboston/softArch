@@ -87,7 +87,7 @@ public class WildPointSinkFilter extends FilterFramework
 
                 for (i=0; i<IdLength; i++ )
                 {
-                    databyte = ReadFilterInputPort(1);  // This is where we read the byte from the stream...
+                    databyte = ReadFilterInputPort(0);  // This is where we read the byte from the stream...
 
                     id = id | (databyte & 0xFF);        // We append the byte on to ID...
 
@@ -117,7 +117,7 @@ public class WildPointSinkFilter extends FilterFramework
 
                 for (i=0; i<MeasurementLength; i++ )
                 {
-                    databyte = ReadFilterInputPort(1);
+                    databyte = ReadFilterInputPort(0);
                     measurement = measurement | (databyte & 0xFF);  // We append the byte on to measurement...
                     //System.out.println(measurement);
                     if (i != MeasurementLength-1)                   // If this is not the last byte, then slide the
