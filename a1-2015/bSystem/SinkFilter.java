@@ -63,7 +63,7 @@ public class SinkFilter extends FilterFramework
         String temperature = null;
 
         // Number Formats
-        DecimalFormat pressureFormat = new DecimalFormat("#.00000");
+        //DecimalFormat pressureFormat = new DecimalFormat("0.000##");
         
         /*************************************************************
         *   First we announce to the world that we are alive...
@@ -164,19 +164,19 @@ public class SinkFilter extends FilterFramework
                 // Altitude data
                 if ( id == 2 )
                 {
-                    altitude = pressureFormat.format( Double.longBitsToDouble(measurement));
+                    altitude = String.format("%.3f",Double.longBitsToDouble(measurement));
                 }
                 
                 // Pressure data
                  if ( id == 3 )
                 {
-                    pressure = Double.toString(Double.longBitsToDouble(measurement));
+                    pressure = String.format("%.3f", Double.longBitsToDouble(measurement));
                 }
 
                 // Temperature data
                 if ( id == 4 )
                 {
-                    temperature = Double.toString(Double.longBitsToDouble(measurement));
+                    temperature = String.format("%.3f", Double.longBitsToDouble(measurement));
                 }
 
                 // Builds data line, prints to file and resets output writer
