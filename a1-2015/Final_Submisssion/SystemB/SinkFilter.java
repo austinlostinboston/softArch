@@ -1,3 +1,4 @@
+
 /******************************************************************************************************************
 * File:SinkFilter.java
 * Course: 17655
@@ -47,7 +48,7 @@ public class SinkFilter extends FilterFramework
 		*************************************************************************************/
 
 		Calendar TimeStamp = Calendar.getInstance();
-		SimpleDateFormat TimeStampFormat = new SimpleDateFormat("yyyy:dd::hh:mm:ss");
+		SimpleDateFormat TimeStampFormat = new SimpleDateFormat("yyyy:dd:hh:mm:ss");
 
 		int MeasurementLength = 8;		// This is the length of all measurements (including time) in bytes
 		int IdLength = 4;				// This is the length of IDs in the byte stream
@@ -72,7 +73,7 @@ public class SinkFilter extends FilterFramework
 		System.out.print( "\n" + this.getName() + "::Sink Reading ");
 
 		try{
-			outputWriter = new BufferedWriter(new FileWriter(path, true));
+			outputWriter = new BufferedWriter(new FileWriter(path, false));
 		}
 		catch (Exception ex){
 			System.out.println(ex.toString());
@@ -134,6 +135,7 @@ public class SinkFilter extends FilterFramework
 
 				} // if
 
+				
 				/****************************************************************************
 				// Here we look for an ID of 0 which indicates this is a time measurement.
 				// Every frame begins with an ID of 0, followed by a time stamp which correlates
@@ -144,26 +146,39 @@ public class SinkFilter extends FilterFramework
 				// dealing with time arithmetically or for string display purposes. This is
 				// illustrated below.
 				****************************************************************************/
+
 				if (ids.contains(id)){
-					if ( id == 0 ){	
+					if ( id == 0 )
+					{	
 						TimeStamp.setTimeInMillis(measurement);			
 						outputs[id] = TimeStampFormat.format(TimeStamp.getTime());
-					} // if		
-					else{
+					}else{ // if
 						outputs[id] = String.format("%.5f",(Double.longBitsToDouble(measurement)));
 					}
 				}
-
+				
 				if ( id == 5 )
-				{
+				{	
 					for (int outputID : ids) {
 						currentLine += outputs[outputID] + "\t";
-					}					
+					}			
 					outputWriter.write(currentLine);
 					outputWriter.write("\n");
 					currentLine = "";
 				}
+				
 
+				/****************************************************************************
+				// Here we pick up a measurement (ID = 3 in this case), but you can pick up
+				// any measurement you want to. All measurements in the stream are
+				// decommutated by this class. Note that all data measurements are double types
+				// This illustrates how to convert the bits read from the stream into a double
+				// type. Its pretty simple using Double.longBitsToDouble(long value). So here
+				// we print the time stamp and the data associated with the ID we are interested
+				// in.
+				****************************************************************************/
+
+				
 				//System.out.print( "\n" );
 
 			} // try
@@ -190,7 +205,6 @@ public class SinkFilter extends FilterFramework
 		
 		try{
 			outputWriter.close();
-			System.out.println("\n" + System.currentTimeMillis());
 		}
 		catch (Exception ex){
 			System.out.println(ex.toString());
