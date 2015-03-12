@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import java.util.List;
 
  /******************************************************************************
  * File:NewJFrame.java
@@ -349,6 +350,7 @@ public class NewJFrame extends javax.swing.JFrame {
         // button is disabled until an order is selected... just in case the
         // check is here.
 
+        /*
         if ( !orderBlank )
         {
             try
@@ -384,21 +386,24 @@ public class NewJFrame extends javax.swing.JFrame {
             } // end try-catch
 
         } // blank order check 
-
+        */
+        
         if ( !connectError && !orderBlank )
         {
             try
             {
+                /*
                 s = DBConn.createStatement();
                 SQLStatement = "SELECT * FROM orders WHERE order_id = " + Integer.parseInt(orderID);
                 res = s.executeQuery( SQLStatement );
+                */
                 
                 // Get the information from the database. Display the
                 // first and last name, address, phone number, address, and
                 // order date. Same the ordertable name - this is the name of
                 // the table that is created when an order is submitted that
-                // contains the list of order items.
-
+                // contains the list of order items.             
+                /*
                 while (res.next()) {
                     
                   orderTable = res.getString(9);         // name of table with list of items
@@ -409,12 +414,35 @@ public class NewJFrame extends javax.swing.JFrame {
                   jTextArea2.setText(res.getString(5));  // address
 
                 } // for each element in the return SQL query
+                */
+                
+                
+                 /* *************************
+                // Add the method for getting orders details
+                List<List<String>> resultString = shippingBusiness.getOrders(orderID);
 
+                if(resultString != null){
+                    //Output the the results
+                    for(int i=0; i< resultString.size(); i++){
+                        List<String> currentOrderList = resultString.get(i);
+                       
+                        orderTable = currentOrderList.get(9);         // name of table with list of items
+                        jTextField2.setText(currentOrderList.get(3)); // first name
+                        jTextField3.setText(currentOrderList.get(4)); // last name
+                        jTextField4.setText(currentOrderList.get(6)); // phone
+                        jTextField5.setText(currentOrderList.get(2)); // order date
+                        jTextArea2.setText(currentOrderList.get(5));  // address                        
+                    }       
+                }
+                ************************** */
+                
+
+                /*
                 // get the order items from the related order table
                 SQLStatement = "SELECT * FROM " + orderTable;
-                res = s.executeQuery( SQLStatement );
-
-
+                res = s.executeQuery( SQLStatement );                
+                
+                
                 // list the items on the form that comprise the order
                 jTextArea3.setText("");
 
@@ -425,6 +453,29 @@ public class NewJFrame extends javax.swing.JFrame {
                     jTextArea3.append(msgString + "\n");
 
                 } // while
+                
+                */
+                
+                
+                /* *************************
+                // Add the method for getting orders items
+                List<List<String>> itemsResultString = shippingBusiness.getOrdersItems(orderTable);
+
+                if(itemsResultString != null){
+                    //Output the the results
+                    for(int i=0; i< itemsResultString.size(); i++){
+                        List<String> currentItemList = itemsResultString.get(i);
+                       
+                        msgString = currentItemList.get(1) + ":  PRODUCT ID: " + 
+                                currentItemList.get(2) + "  DESCRIPTION: "+ 
+                                currentItemList.get(3) + "  PRICE $" + 
+                                currentItemList.get(4);
+                        jTextArea3.append(msgString + "\n");                                             
+                    }       
+                }
+                ************************** */
+                
+                
 
                 // This global variable is used to update the record as shipped
                 updateOrderID = Integer.parseInt(orderID);
@@ -458,6 +509,7 @@ public class NewJFrame extends javax.swing.JFrame {
         Statement s = null;                 // SQL statement pointer
         String SQLStatement = null;         // SQL statement string
 
+        /*
         // Connect to the order database
         try
         {
@@ -489,11 +541,15 @@ public class NewJFrame extends javax.swing.JFrame {
             connectError = true;
 
         } // end try-catch
-
+        */
+        
+        
+        
         // If we are connected, then we update the shipped status
 
         if ( !connectError )
         {
+            /*
             try
             {
                 // first we create the query
@@ -536,6 +592,42 @@ public class NewJFrame extends javax.swing.JFrame {
                 jTextArea1.setText("");
 
             } // end try-catch
+            */
+            
+            
+            
+             /* *************************
+            // Add the method for updating the shipped status
+            rows = shippingBusiness.updateShipStatus(updateOrderID);
+
+            // if the query worked, then we display the data in TextArea 4 - BTW, its highly
+            // unlikely that the row won't exist and if it does the database tables are
+            // really screwed up... this should not fail if you get here, but the check (in the
+            // form of the else clause) is in place anyway
+
+            if (rows > 0)
+            {
+               jTextArea4.setText("\nOrder #" + updateOrderID + " status has been changed to shipped.");
+
+            } else {
+
+               jTextArea4.setText("\nOrder #" + updateOrderID + " record not found.");
+
+            } // execute check
+
+            // Clean up the form
+            jButton1.setEnabled(false);
+            jButton3.setEnabled(false);
+            jTextArea1.setText("");
+            jTextArea2.setText("");
+            jTextArea3.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jTextField5.setText("");
+
+             ************************** */
+            
 
         } // if connect check
 
@@ -582,6 +674,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField4.setText("");
         jTextField5.setText("");
 
+        /*
         // Connect to the order database
         try
         {
@@ -613,12 +706,14 @@ public class NewJFrame extends javax.swing.JFrame {
             connectError = true;
 
         } // end try-catch
+        */
 
         // If we are connected, then we get the list of trees from the
         // inventory database
 
-        if ( !connectError )
-        {
+        //if ( !connectError )
+        //{
+            /*
             try
             {
                 // Create a query to get all the orders and execute the query
@@ -660,8 +755,37 @@ public class NewJFrame extends javax.swing.JFrame {
                 jTextArea4.append(errString);
 
             } // end try-catch
+            */
             
-        } // if connect check
+            /* *************************
+            // Add the method for getting all orders
+            List<List<String>> resultString = shippingBusiness.getAllOrders();
+
+            if(resultString != null){
+                //Output the the results
+                for(int i=0; i< resultString.size(); i++){
+                    List<String> currentItemList = resultString.get(i);
+
+                    shippedStatus = Integer.parseInt(currentItemList.get(8));
+
+                    if ( shippedStatus == 0 )
+                    {
+                        msgString = "ORDER # " + currentItemList.get(1) + " : " + 
+                                currentItemList.get(2) + " : "+ 
+                                currentItemList.get(3) + " : " + 
+                                currentItemList.get(4);
+                        jTextArea1.append(msgString+"\n");
+
+                    } // shipped status check                                         
+                }       
+            }
+            else{
+                errString =  "\nProblem getting tree inventory:: " + e;
+                jTextArea4.append(errString);  
+            }
+            ************************** */
+            
+        //} // if connect check
 
     } // getPendingOrders
 
@@ -689,6 +813,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField4.setText("");
         jTextField5.setText("");
 
+        /*
         // Connect to the order database
         try
         {
@@ -720,12 +845,14 @@ public class NewJFrame extends javax.swing.JFrame {
             connectError = true;
 
         } // end try-catch
+        */
 
         // If we are connected, then we get the list of trees from the
         // inventory database
 
-        if ( !connectError )
-        {
+        //if ( !connectError )
+        //{
+            /*
             try
             {
                 // Create a query to get all the rows from the orders database
@@ -769,8 +896,37 @@ public class NewJFrame extends javax.swing.JFrame {
                 jTextArea4.append(errString);
 
             } // end try-catch
+            */
+            
+             /* *************************
+            // Add the method for getting all orders
+            List<List<String>> resultString = shippingBusiness.getAllOrders();
 
-        } // connect check
+            if(resultString != null){
+                //Output the the results
+                for(int i=0; i< resultString.size(); i++){
+                    List<String> currentItemList = resultString.get(i);
+
+                    shippedStatus = Integer.parseInt(currentItemList.get(8));
+
+                    if ( shippedStatus == 1 )
+                    {
+                        msgString = "SHIPPED ORDER # " + currentItemList.get(1) + " : " + 
+                                currentItemList.get(2) + " : "+ 
+                                currentItemList.get(3) + " : " + 
+                                currentItemList.get(4);
+                        jTextArea1.append(msgString+"\n");
+
+                    } // shipped status check                                         
+                }       
+            }
+            else{
+                errString =  "\nProblem getting tree inventory:: " + e;
+                jTextArea4.append(errString);  
+            }
+            ************************** */
+            
+        //} // connect check
 
     } // getPendingOrders
 
