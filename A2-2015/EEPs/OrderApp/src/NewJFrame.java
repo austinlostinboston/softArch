@@ -1,6 +1,7 @@
 
 import java.sql.*;
 import java.util.Calendar;
+import java.util.List;
 
 /******************************************************************************
 * File:NewJFrame.java
@@ -314,6 +315,7 @@ public class NewJFrame extends javax.swing.JFrame {
         // displayed in jTextArea1. From here the user can select an inventory
         // item by triple clicking the item.
 
+        /*
         // Database parameters
         Boolean connectError = false;       // Error flag
         Connection DBConn = null;           // MySQL connection handle
@@ -386,6 +388,19 @@ public class NewJFrame extends javax.swing.JFrame {
 
             } // end try-catch
         } // if connect check
+        */
+        
+        /* *************************
+        // Add the method for lisiting the tree inventory
+        List<String> resultString = orderBusiness.listInventory("trees");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i)+"\n");
+            }       
+        }
+        ************************** */
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -512,38 +527,9 @@ public class NewJFrame extends javax.swing.JFrame {
                 && (jTextField5.getText().length()>0)
                 && (jTextArea4.getText().length()>0))
         {
-            try
-            {
-                msgString = ">> Establishing Driver...";
-                jTextArea3.setText("\n"+msgString);
-
-                //load JDBC driver class for MySQL
-                Class.forName( "com.mysql.jdbc.Driver" );
-
-                msgString = ">> Setting up URL...";
-                jTextArea3.append("\n"+msgString);
-
-                //define the data source
-                String SQLServerIP = jTextField1.getText();
-                String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/orderinfo";
-
-                msgString = ">> Establishing connection with: " + sourceURL + "...";
-                jTextArea3.append("\n"+msgString);
-
-                //create a connection to the db - note the default account is "remote"
-                //and the password is "remote_pass" - you will have to set this
-                //account up in your database
-
-                DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-            } catch (Exception e) {
-
-                errString =  "\nError connecting to orderinfo database\n" + e;
-                jTextArea3.append(errString);
-                connectError = true;
-
-            } // end try-catch
-
+            msgString = ">> Establishing DB Connection...";
+            jTextArea3.setText("\n"+msgString);
+          
         } else {
 
             errString =  "\nMissing customer information!!!\n";
@@ -551,7 +537,7 @@ public class NewJFrame extends javax.swing.JFrame {
             connectError = true;
 
         }// customer data check
-
+         
         //If there is not a connection error, then we form the SQL statement
         //to submit the order to the orders table and then execute it.
 
@@ -579,65 +565,46 @@ public class NewJFrame extends javax.swing.JFrame {
             beginIndex = 0;
             beginIndex = sTotalCost.indexOf("$",beginIndex)+1;
             sTotalCost = sTotalCost.substring(beginIndex, sTotalCost.length());
-            fCost = Float.parseFloat(sTotalCost);
-                
-            try
-            {
-                s = DBConn.createStatement();
+            fCost = Float.parseFloat(sTotalCost);              
 
-                SQLstatement = ( "CREATE TABLE " + orderTableName +
-                            "(item_id int unsigned not null auto_increment primary key, " +
-                            "product_id varchar(20), description varchar(80), " +
-                            "item_price float(7,2) );");
-
-                executeUpdateVal = s.executeUpdate(SQLstatement);
-
-            } catch (Exception e) {
-
+            /* *************************
+            // Add the method for creating the table
+            String createResultString = orderBusiness.createTable(orderTableName);
+            if(createResultString == null){
                 errString =  "\nProblem creating order table " + orderTableName +":: " + e;
                 jTextArea3.append(errString);
                 executeError = true;
-
-            } // try
-
+            }
+            
+            //************************** */
+            
             if ( !executeError )
             {
-                try
-                {
-                    SQLstatement = ( "INSERT INTO orders (order_date, " + "first_name, " +
-                        "last_name, address, phone, total_cost, shipped, " +
-                        "ordertable) VALUES ( '" + dateTimeStamp + "', " +
-                        "'" + firstName + "', " + "'" + lastName + "', " +
-                        "'" + customerAddress + "', " + "'" + phoneNumber + "', " +
-                        fCost + ", " + false + ", '" + orderTableName +"' );");
-
-                    executeUpdateVal = s.executeUpdate(SQLstatement);
-                    
-                } catch (Exception e1) {
-
+                /* *************************
+                // Add the method for inserting the order
+                String resultString = orderBusiness.insertOrder(dateTimeStamp, 
+                        firstName, lastName, customerAddress, phoneNumber, 
+                            fCost, false, orderTableName);
+                if(resultString == null){            
                     errString =  "\nProblem with inserting into table orders:: " + e1;
                     jTextArea3.append(errString);
                     executeError = true;
-
-                    try
-                    {
-                        SQLstatement = ( "DROP TABLE " + orderTableName + ";" );
-                        executeUpdateVal = s.executeUpdate(SQLstatement);
-
-                    } catch (Exception e2) {
-
+                
+                    String dropResultString = orderBusiness.dropTable(orderTableName);
+                    if(dropResultString == null){ 
                         errString =  "\nProblem deleting unused order table:: " +
-                                orderTableName + ":: " + e2;
+                                orderTableName;
                         jTextArea3.append(errString);
-
-                    } // try
-
-                } // try
+                    }
+                    
+                
+                }
+                //************************** */                          
 
             } //execute error check
 
         } 
-
+                
         // Now, if there is no connect or SQL execution errors at this point, 
         // then we have an order added to the orderinfo::orders table, and a 
         // new ordersXXXX table created. Here we insert the list of items in
@@ -677,18 +644,16 @@ public class NewJFrame extends javax.swing.JFrame {
                     sPerUnitCost = orderItem.substring(beginIndex,orderItem.length());
                     perUnitCost = Float.parseFloat(sPerUnitCost);
 
-                    SQLstatement = ( "INSERT INTO " + orderTableName +
-                        " (product_id, description, item_price) " +
-                        "VALUES ( '" + productID + "', " + "'" +
-                        description + "', " + perUnitCost + " );");
-                    try
-                    {
-                        executeUpdateVal = s.executeUpdate(SQLstatement);
+                    
+                    /* *************************
+                    // Add the method for inserting the items in the table
+                    String itemResultString = 
+                            orderBusiness.insertItems(orderTableName, productID, 
+                                    description, perUnitCost);
+                    if(itemResultString != null){
                         msgString =  "\nORDER SUBMITTED FOR: " + firstName + " " + lastName;
                         jTextArea3.setText(msgString);
-
-                        // Clean up the display
-
+                        
                         jTextArea1.setText("");
                         jTextArea2.setText("");
                         jTextArea4.setText("");
@@ -696,15 +661,14 @@ public class NewJFrame extends javax.swing.JFrame {
                         jTextField4.setText("");
                         jTextField5.setText("");
                         jTextField6.setText("$0");
-                            
-                    } catch (Exception e) {
-
-                        errString =  "\nProblem with inserting into table " + orderTableName +
-                            ":: " + e;
+                    }
+                    else{
+                        errString =  "\nProblem with inserting into table " + orderTableName;
                         jTextArea3.append(errString);
+                    }
 
-                    } // try
-
+                    //************************** */
+   
                 } // line length check
 
             } //for each line of text in order table
@@ -723,76 +687,18 @@ public class NewJFrame extends javax.swing.JFrame {
         // displayed in jTextArea1. From here the user can select an inventory
         // item by triple clicking the item.
 
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
-        String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
-
-        // Connect to the inventory database
-        try
-        {
-            msgString = ">> Establishing Driver...";
-            jTextArea1.setText("\n"+msgString);
-
-            //load JDBC driver class for MySQL
-            Class.forName( "com.mysql.jdbc.Driver" );
-
-            msgString = ">> Setting up URL...";
-            jTextArea1.append("\n"+msgString);
-
-            //define the data source
-            String SQLServerIP = jTextField1.getText();
-            String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
-
-            msgString = ">> Establishing connection with: " + sourceURL + "...";
-            jTextArea1.append("\n"+msgString);
-
-            //create a connection to the db - note the default account is "remote"
-            //and the password is "remote_pass" - you will have to set this
-            //account up in your database
-
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to database:: " + e;
-            jTextArea1.append(errString);
-            connectError = true;
-
-        } // end try-catch
-
-        // If we are connected, then we get the list of seeds from the
-        // inventory database
-
-        if ( !connectError )
-        {
-            try
-            {
-                s = DBConn.createStatement();
-                res = s.executeQuery( "Select * from seeds" );
-
-                //Display the data in the textarea
-                
-                jTextArea1.setText("");
-
-                while (res.next())
-                {
-                    msgString = res.getString(1) + " : " + res.getString(2) +
-                            " : $"+ res.getString(4) + " : " + res.getString(3)
-                            + " units in stock";
-                    jTextArea1.append(msgString+"\n");
-
-                } // while
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem getting seed inventory:: " + e;
-                jTextArea1.append(errString);
-
-            } // end try-catch
-        } // if connect check
+        /* *************************
+        // Add the method for lisiting the seed inventory
+        List<String> resultString = orderBusiness.listInventory("seed");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i)+"\n");
+            }       
+        }
+        ************************** */
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -801,76 +707,18 @@ public class NewJFrame extends javax.swing.JFrame {
         // displayed in jTextArea1. From here the user can select an inventory
         // item by triple clicking the item.
 
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
-        String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
-
-        // Connect to the inventory database
-        try
-        {
-            msgString = ">> Establishing Driver...";
-            jTextArea1.setText("\n"+msgString);
-
-            //load JDBC driver class for MySQL
-            Class.forName( "com.mysql.jdbc.Driver" );
-
-            msgString = ">> Setting up URL...";
-            jTextArea1.append("\n"+msgString);
-
-            //define the data source
-            String SQLServerIP = jTextField1.getText();
-            String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
-
-            msgString = ">> Establishing connection with: " + sourceURL + "...";
-            jTextArea1.append("\n"+msgString);
-
-            //create a connection to the db - note the default account is "remote"
-            //and the password is "remote_pass" - you will have to set this
-            //account up in your database
-
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to database:: " + e;
-            jTextArea1.append(errString);
-            connectError = true;
-
-        } // end try-catch
-
-        // If we are connected, then we get the list of shrubs from the
-        // inventory database
-
-        if ( !connectError )
-        {
-            try
-            {
-                s = DBConn.createStatement();
-                res = s.executeQuery( "Select * from shrubs" );
-
-                //Display the data in the textarea
-
-                jTextArea1.setText("");
-
-                while (res.next())
-                {
-                    msgString = res.getString(1) + " : " + res.getString(2) +
-                            " : $"+ res.getString(4) + " : " + res.getString(3)
-                            + " units in stock";
-                    jTextArea1.append(msgString+"\n");
-
-                } // while
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem getting shrubs inventory:: " + e;
-                jTextArea1.append(errString);
-
-            } // end try-catch
-        } // if connect check
+        /* *************************
+        // Add the method for lisiting the shrubs inventory
+        List<String> resultString = orderBusiness.listInventory("shrubs");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i)+"\n");
+            }       
+        }
+        ************************** */
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
