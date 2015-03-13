@@ -12,7 +12,6 @@ public class OrderActions {
 	String description; // Tree, seed, or shrub description
 	int executeUpdateVal; // Return value from execute indicating effected rows
 	Boolean fieldError = false; // Error flag
-	String msgString = null; // String for displaying non-error messages
 	ResultSet res = null; // SQL query result set pointer
 	String tableSelected = null; // String used to determine which data table to
 									// use
@@ -25,6 +24,8 @@ public class OrderActions {
 		String errString = null; // String for displaying errors
 
 		try {
+			String msgString = null; // String for displaying non-error messages
+
 			msgString = ">> Establishing Driver...";
 			System.out.println("\n" + msgString);
 
