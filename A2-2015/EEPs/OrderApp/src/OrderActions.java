@@ -51,7 +51,7 @@ public class OrderActions {
 			reader.close();
 			is.close();
 
-			String SQLServerIP = line;
+			String SQLServerIP = line.replace('\n', ' ').trim();
 			String sourceURL = "jdbc:mysql://" + SQLServerIP
 					+ ":3306/inventory";
 
