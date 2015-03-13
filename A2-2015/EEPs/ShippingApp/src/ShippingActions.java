@@ -204,7 +204,7 @@ public class ShippingActions {
 			System.out.println(output);
 		} // end try-catch
 		
-		return msgString;
+		return output;
 	}
 
 
