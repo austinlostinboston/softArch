@@ -1,7 +1,5 @@
-import java.sql.*;
-import java.util.*;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
+package userauth;
+
 import java.awt.Color;
 
 /*
@@ -17,7 +15,6 @@ import java.awt.Color;
 public class Login extends javax.swing.JFrame {
     private static String username = null;
     private static char[] password = null;
-    private static char[] returnPass = null;
 
     /** Creates new form Login */
     public Login() {
@@ -110,104 +107,28 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // Intializes login instance in business layer
+        AuthBusinessLayer user = new AuthBusinessLayer();
+
+        // handles user input into logon screen
         username = jTextField1.getText();
         password = jPasswordField1.getPassword();
         Color darkGreen = new Color(0,153,0);
-        DateFormat dt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
-        System.out.println(username + " " + password);
+        // checks credentials
+        boolean loggedOn = user.login(username, password);
 
-
-        
-        // jButton1 is responsible for querying the inventory database and
-        // getting the tree inventory. Once retieved, the tree inventory is
-        // displayed in jTextArea1. From here the user can select an inventory
-        // item by triple clicking the item.
-
-        // Database parameters
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
-        String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
-
-        // Connect to the username database and retrieve username's password
-        try
-        {
-            //define the data source
-            String sourceURL = "jdbc:mysql://localhost:3306/login";
-
-            System.out.println("Establishing connection with: " + sourceURL);
-
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to database:: " + e;
-            System.out.println(errString);
-            connectError = true;
-
+        if (loggedOn) {
+            System.out.println("Logging in...");
+            jLabel4.setForeground(darkGreen);
+            jLabel4.setText("Logging in...");
+        } else {
+            System.out.println("Wrong credentials");
+            jLabel4.setForeground(Color.red);
+            jLabel4.setText("Entered wrong username or password");
         }
 
-        if (!connectError) {
-            System.out.println("Successfully connected to database");
-
-            try
-            {
-                s = DBConn.createStatement();
-
-                res = s.executeQuery( "SELECT password FROM auth WHERE username = \"" + username + "\";");
-
-                while (res.next()) {
-                    String tempPass = res.getString(1);
-                    returnPass = tempPass.toCharArray();
-                }
-
-                if (Arrays.equals(password,returnPass)) {
-                    System.out.println("Logging in...");
-                    jLabel4.setForeground(darkGreen);
-                    jLabel4.setText("Logging in...");
-
-//                    String DateloginDateTime = LocalDateTime.now();
-//                    // create login_timestamp
-//                    Calendar rightNow = Calendar.getInstance();
-//
-//                    int LoginHour = dt.format(rightNow.get(rightNow.HOUR_OF_DAY));
-//                    int LoginMinute = rightNow.get(rightNow.MINUTE);
-//                    int LoginSecond = rightNow.get(rightNow.SECOND);
-//                    int LoginDay = rightNow.get(rightNow.DAY_OF_WEEK);
-//                    int LoginMonth = rightNow.get(rightNow.MONTH);
-//                    int LoginYear = rightNow.get(rightNow.YEAR);
-//
-//                    String loginDateTime = LoginMonth + "/" + LoginDay + "/" + LoginYear + " "
-//                    + LoginHour + ":" + LoginMinute  + ":" + LoginSecond;
-                    java.util.Date date = new java.util.Date();
-                    String loginDateTime = dt.format(date);
-
-                    try {
-                    String addLoginRecord = "INSERT into record VALUES (\"" + username + "\",\"" + loginDateTime + "\",\"null\")";
-                    int executeUpdateVal = s.executeUpdate(addLoginRecord);
-                    } catch (Exception e) {
-                        errString =  "\nProblem getting tree inventory:: " + e;
-                        System.out.println(errString);
-                    }
-                    System.out.println("login/out records added to databases.");
-                } else {
-                    System.out.println("Wrong credentials");
-                    jLabel4.setForeground(Color.red);
-                    jLabel4.setText("Entered wrong username or password");
-                }
-
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem getting tree inventory:: " + e;
-                System.out.println(errString);
-
-            } // end try-catch
-        }
+        System.out.println(username + " " + password);    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
