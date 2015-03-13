@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -121,7 +122,7 @@ public class InventoryActions {
 
             while (res.next())
             {
-                msgString = tableSelected+">>" + res.getString(1) + "::" + res.getString(2) +
+                msgString = type+">>" + res.getString(1) + "::" + res.getString(2) +
                         " :: "+ res.getString(3) + "::" + res.getString(4);
                 lst.add("\n"+msgString);
             } // while
@@ -143,7 +144,7 @@ public class InventoryActions {
 		try {
 			s = DBConn.createStatement();
 
-			SQLstatement = ( "DELETE FROM seeds WHERE product_code = '" + productID + "';");
+			SQLstatement = ( "DELETE FROM " + type + " WHERE product_code = '" + productID + "';");
 			
 			// execute the delete query
             
@@ -204,5 +205,17 @@ public class InventoryActions {
 		} // try
 		
 		return lst;
+	}
+	
+	public static void main(String[] args) 
+	{
+		InventoryActions ia = new InventoryActions();
+		ia.addInventory("trees", "an apple tree","000001", "3", "1200");
+		ia.addInventory("trees", "an apple tree","000002", "3", "1200");
+		ia.listInventory("trees");
+		ia.deleteInventory("trees", "000002");
+		ia.decrementInventory("trees", "000001");
+		ia.deleteInventory("trees", "000001");
+		return;
 	}
 }

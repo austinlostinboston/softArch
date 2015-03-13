@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 
-
 public class OrderActions {
 	Boolean connectError = false; // Error flag
 	Connection DBConn = null; // MySQL connection handle
@@ -75,92 +74,99 @@ public class OrderActions {
 		Boolean executeError = false; // Error flag
 		String SQLstatement = null; // String for building SQL queries
 		String output = null;
-		
-		try
-        {
-            s = DBConn.createStatement();
 
-            SQLstatement = ( "CREATE TABLE " + orderTableName +
-                        "(item_id int unsigned not null auto_increment primary key, " +
-                        "product_id varchar(20), description varchar(80), " +
-                        "item_price float(7,2) );");
+		try {
+			s = DBConn.createStatement();
 
-            executeUpdateVal = s.executeUpdate(SQLstatement);
+			SQLstatement = ("CREATE TABLE "
+					+ orderTableName
+					+ "(item_id int unsigned not null auto_increment primary key, "
+					+ "product_id varchar(20), description varchar(80), " + "item_price float(7,2) );");
 
-        } catch (Exception e) {
+			executeUpdateVal = s.executeUpdate(SQLstatement);
 
-        	output +=  "\nProblem creating order table " + orderTableName +":: " + e;
-        	System.out.println(output);
-            executeError = true;
-        } // try
-		
+		} catch (Exception e) {
+
+			output += "\nProblem creating order table " + orderTableName
+					+ ":: " + e;
+			System.out.println(output);
+			executeError = true;
+		} // try
+
 		return output;
 	}
-	
-	public String insertOrder(String dateTimeStamp, String firstName, String lastName, String customerAddress, String phoneNumber, String fCost, String strfalse, String orderTableName)
- {
+
+	public String insertOrder(String dateTimeStamp, String firstName,
+			String lastName, String customerAddress, String phoneNumber,
+			String fCost, String strfalse, String orderTableName) {
 		Boolean executeError = false; // Error flag
 		String SQLstatement = null; // String for building SQL queries
 		String output = null;
-		
-        try
-        {
-            SQLstatement = ( "INSERT INTO orders (order_date, " + "first_name, " +
-                "last_name, address, phone, total_cost, shipped, " +
-                "ordertable) VALUES ( '" + dateTimeStamp + "', " +
-                "'" + firstName + "', " + "'" + lastName + "', " +
-                "'" + customerAddress + "', " + "'" + phoneNumber + "', " +
-                fCost + ", " + false + ", '" + orderTableName +"' );");
 
-            executeUpdateVal = s.executeUpdate(SQLstatement);
-            
-        } catch (Exception e1) {
+		try {
+			SQLstatement = ("INSERT INTO orders (order_date, " + "first_name, "
+					+ "last_name, address, phone, total_cost, shipped, "
+					+ "ordertable) VALUES ( '" + dateTimeStamp + "', " + "'"
+					+ firstName + "', " + "'" + lastName + "', " + "'"
+					+ customerAddress + "', " + "'" + phoneNumber + "', "
+					+ fCost + ", " + false + ", '" + orderTableName + "' );");
 
-        	output +=  "\nProblem with inserting into table orders:: " + e1;
-        	System.out.println(output);
-            executeError = true;
+			executeUpdateVal = s.executeUpdate(SQLstatement);
 
-            try
-            {
-                SQLstatement = ( "DROP TABLE " + orderTableName + ";" );
-                executeUpdateVal = s.executeUpdate(SQLstatement);
+		} catch (Exception e1) {
 
-            } catch (Exception e2) {
+			output += "\nProblem with inserting into table orders:: " + e1;
+			System.out.println(output);
+			executeError = true;
 
-            	output +=  "\nProblem deleting unused order table:: " +
-                        orderTableName + ":: " + e2;
-            	System.out.println(output);
+			try {
+				SQLstatement = ("DROP TABLE " + orderTableName + ";");
+				executeUpdateVal = s.executeUpdate(SQLstatement);
 
-            } // try
+			} catch (Exception e2) {
 
-        } // try
-		
+				output += "\nProblem deleting unused order table:: "
+						+ orderTableName + ":: " + e2;
+				System.out.println(output);
+
+			} // try
+
+		} // try
+
 		return output;
 	}
-	
-	public String insertItems(String orderTableName, String productID, String description, String perUnitCost) {
+
+	public String insertItems(String orderTableName, String productID,
+			String description, String perUnitCost) {
 		Boolean executeError = false; // Error flag
 		String SQLstatement = null; // String for building SQL queries
 		String output = null;
-		
-        SQLstatement = ( "INSERT INTO " + orderTableName +
-                " (product_id, description, item_price) " +
-                "VALUES ( '" + productID + "', " + "'" +
-                description + "', " + perUnitCost + " );");
-            try
-            {
-                executeUpdateVal = s.executeUpdate(SQLstatement);
-                    
-            } catch (Exception e) {
 
-            	output += "\nProblem with inserting into table " + orderTableName +
-                    ":: " + e;
-            	System.out.println(output);
+		SQLstatement = ("INSERT INTO " + orderTableName
+				+ " (product_id, description, item_price) " + "VALUES ( '"
+				+ productID + "', " + "'" + description + "', " + perUnitCost + " );");
+		try {
+			executeUpdateVal = s.executeUpdate(SQLstatement);
 
-            } // try
-		
+		} catch (Exception e) {
+
+			output += "\nProblem with inserting into table " + orderTableName
+					+ ":: " + e;
+			System.out.println(output);
+
+		} // try
+
 		return output;
 	}
-	
+
+	public static void main(String[] args) {
+		OrderActions oa = new OrderActions();
+		oa.createTable("order0001");
+		oa.createTable("order0002");
+		oa.insertItems("order0002", "000001", "an apple tree", "1200");
+		oa.insertOrder("2015-01-01 23:00:00", "Doe", "John", "pit,pa",
+				"4123432324", "2900", "false", "order0001");
+		return;
+	}
 
 }
