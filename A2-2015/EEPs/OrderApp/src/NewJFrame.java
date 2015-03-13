@@ -23,6 +23,8 @@ import java.util.List;
 public class NewJFrame extends javax.swing.JFrame {
 
     String versionID = "v2.10.10";
+    OrderActions orderActions = new OrderActions();
+    InventoryActions inventoryActions = new InventoryActions();
 
     /** Creates new form NewJFrame */
     public NewJFrame() {
@@ -70,7 +72,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,7 +178,33 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel13.setText("SELECT ENTIRE INVENTORY LINE TO ADD ITEM TO ORDER (TRIPLE CLICK)");
 
-        jLabel14.setText("jLabel14");
+        jButton6.setText("CultureBoxes");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Genomics");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Processing");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton9.setText("ReferenceMaterials");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,61 +218,63 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField5))
+                        .addGap(126, 126, 126)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jScrollPane1)
+                                    .addComponent(jScrollPane2)
+                                    .addComponent(jScrollPane3)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel4)
                                             .addGroup(layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton5))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(9, 9, 9)
+                                                .addComponent(jLabel5))
+                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jButton1)
-                                                .addGap(161, 161, 161)
-                                                .addComponent(jButton2)))
-                                        .addGap(166, 166, 166)
+                                                .addGap(44, 44, 44)
+                                                .addComponent(jButton2)
+                                                .addGap(39, 39, 39)
+                                                .addComponent(jButton3)
+                                                .addGap(44, 44, 44)
+                                                .addComponent(jButton6)
+                                                .addGap(38, 38, 38)
+                                                .addComponent(jButton7)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton3)
+                                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                                                .addComponent(jLabel11))))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jLabel2)
-                                        .addGap(0, 551, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(9, 9, 9)
-                                        .addComponent(jLabel5)))
+                                                .addComponent(jButton8)
+                                                .addGap(28, 28, 28)))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jTextField6))
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel13)
                                     .addComponent(jLabel10))
-                                .addGap(0, 307, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(93, 93, 93))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(300, 300, 300)
-                .addComponent(jButton5)
-                .addContainerGap(704, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,10 +289,16 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addComponent(jLabel3))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2)
-                        .addComponent(jButton3)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton1)
+                            .addComponent(jButton3)
+                            .addComponent(jButton6)
+                            .addComponent(jButton7)
+                            .addComponent(jButton8)
+                            .addComponent(jButton9))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel13)
                 .addGap(3, 3, 3)
@@ -289,20 +328,21 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel14)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel2)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton5)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         pack();
@@ -314,93 +354,15 @@ public class NewJFrame extends javax.swing.JFrame {
         // getting the tree inventory. Once retieved, the tree inventory is
         // displayed in jTextArea1. From here the user can select an inventory
         // item by triple clicking the item.
-
-        /*
-        // Database parameters
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
-        String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
-
-        // Connect to the inventory database
-        try
-        {
-            msgString = ">> Establishing Driver...";
-            jTextArea1.setText("\n"+msgString);
-
-            //Load J Connector for MySQL - explicit loads are not needed for 
-            //connectors that are version 4 and better
-            //Class.forName( "com.mysql.jdbc.Driver" );
-
-            msgString = ">> Setting up URL...";
-            jTextArea1.append("\n"+msgString);
-
-            //define the data source
-            String SQLServerIP = jTextField1.getText();
-            String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
-
-            msgString = ">> Establishing connection with: " + sourceURL + "...";
-            jTextArea1.append("\n"+msgString);
-
-            //create a connection to the db - note the default account is "remote"
-            //and the password is "remote_pass" - you will have to set this
-            //account up in your database
-
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to database:: " + e;
-            jTextArea1.append(errString);
-            connectError = true;
-
-        } // end try-catch
-
-        // If we are connected, then we get the list of trees from the
-        // inventory database
-        
-        if ( !connectError )
-        {
-            try
-            {
-                s = DBConn.createStatement();
-                res = s.executeQuery( "Select * from trees" );
-
-                //Display the data in the textarea
-                
-                jTextArea1.setText("");
-
-                while (res.next())
-                {
-                    msgString = res.getString(1) + " : " + res.getString(2) +
-                            " : $"+ res.getString(4) + " : " + res.getString(3)
-                            + " units in stock";
-                    jTextArea1.append(msgString+"\n");
-
-                } // while
-                
-            } catch (Exception e) {
-
-                errString =  "\nProblem getting tree inventory:: " + e;
-                jTextArea1.append(errString);
-
-            } // end try-catch
-        } // if connect check
-        */
-        
-        /* *************************
-        // Add the method for lisiting the tree inventory
-        List<String> resultString = orderBusiness.listInventory("trees");
+   
+        List<String> resultString = inventoryActions.listInventory("trees");
         
         if(resultString != null){
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
-                jTextArea1.append(resultString.get(i)+"\n");
+                jTextArea1.append(resultString.get(i));
             }       
         }
-        ************************** */
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -567,11 +529,11 @@ public class NewJFrame extends javax.swing.JFrame {
             sTotalCost = sTotalCost.substring(beginIndex, sTotalCost.length());
             fCost = Float.parseFloat(sTotalCost);              
 
-            /* *************************
+            //* *************************
             // Add the method for creating the table
-            String createResultString = orderBusiness.createTable(orderTableName);
+            String createResultString = orderActions.createTable(orderTableName);
             if(createResultString == null){
-                errString =  "\nProblem creating order table " + orderTableName +":: " + e;
+                errString =  "\nProblem creating order table " + orderTableName +":: ";
                 jTextArea3.append(errString);
                 executeError = true;
             }
@@ -580,23 +542,24 @@ public class NewJFrame extends javax.swing.JFrame {
             
             if ( !executeError )
             {
-                /* *************************
+                //* *************************
                 // Add the method for inserting the order
-                String resultString = orderBusiness.insertOrder(dateTimeStamp, 
+                String resultString = orderActions.insertOrder(dateTimeStamp, 
                         firstName, lastName, customerAddress, phoneNumber, 
-                            fCost, false, orderTableName);
+                            String.valueOf(fCost), "false", orderTableName);
                 if(resultString == null){            
-                    errString =  "\nProblem with inserting into table orders:: " + e1;
+                    errString =  "\nProblem with inserting into table orders:: ";
                     jTextArea3.append(errString);
                     executeError = true;
                 
+                    /*
                     String dropResultString = orderBusiness.dropTable(orderTableName);
                     if(dropResultString == null){ 
                         errString =  "\nProblem deleting unused order table:: " +
                                 orderTableName;
                         jTextArea3.append(errString);
                     }
-                    
+                    */
                 
                 }
                 //************************** */                          
@@ -645,11 +608,11 @@ public class NewJFrame extends javax.swing.JFrame {
                     perUnitCost = Float.parseFloat(sPerUnitCost);
 
                     
-                    /* *************************
+                    //* *************************
                     // Add the method for inserting the items in the table
                     String itemResultString = 
-                            orderBusiness.insertItems(orderTableName, productID, 
-                                    description, perUnitCost);
+                            orderActions.insertItems(orderTableName, productID, 
+                                    description, String.valueOf(perUnitCost));
                     if(itemResultString != null){
                         msgString =  "\nORDER SUBMITTED FOR: " + firstName + " " + lastName;
                         jTextArea3.setText(msgString);
@@ -687,17 +650,17 @@ public class NewJFrame extends javax.swing.JFrame {
         // displayed in jTextArea1. From here the user can select an inventory
         // item by triple clicking the item.
 
-        /* *************************
+        //* *************************
         // Add the method for lisiting the seed inventory
-        List<String> resultString = orderBusiness.listInventory("seed");
+        List<String> resultString = inventoryActions.listInventory("seeds");
         
         if(resultString != null){
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
-                jTextArea1.append(resultString.get(i)+"\n");
+                jTextArea1.append(resultString.get(i));
             }       
         }
-        ************************** */
+        /************************** */
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -707,23 +670,91 @@ public class NewJFrame extends javax.swing.JFrame {
         // displayed in jTextArea1. From here the user can select an inventory
         // item by triple clicking the item.
 
-        /* *************************
-        // Add the method for lisiting the shrubs inventory
-        List<String> resultString = orderBusiness.listInventory("shrubs");
+        //* *************************
+        //Method for lisiting the shrubs inventory
+        List<String> resultString = inventoryActions.listInventory("shrubs");
         
         if(resultString != null){
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
-                jTextArea1.append(resultString.get(i)+"\n");
+                jTextArea1.append(resultString.get(i));
             }       
         }
-        ************************** */
+        /************************** */
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // jButton6 is responsible for querying the inventory database and
+        // getting the culture boxes inventory. Once retieved, the culture boxes 
+        //inventory is displayed in jTextArea1. From here the user can select 
+        //an inventory item by triple clicking the item.
+
+        //Method for listing the cultureboxes inventory
+        List<String> resultString = inventoryActions.listInventory("cultureboxes");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i));
+            }       
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // jButton7 is responsible for querying the inventory database and
+        // getting the genomics inventory. Once retieved, the genomics 
+        //inventory is displayed in jTextArea1. From here the user can select 
+        //an inventory item by triple clicking the item.
+
+        //Method for listing the genomics inventory
+        List<String> resultString = inventoryActions.listInventory("genomics");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i));
+            }       
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // jButton8 is responsible for querying the inventory database and
+        // getting the processing inventory. Once retieved, the processing 
+        //inventory is displayed in jTextArea1. From here the user can select 
+        //an inventory item by triple clicking the item.
+
+        //Method for listing the processing inventory
+        List<String> resultString = inventoryActions.listInventory("processing");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i));
+            }       
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // jButton9 is responsible for querying the inventory database and
+        // getting the reference material inventory. Once retieved, the reference material 
+        //inventory is displayed in jTextArea1. From here the user can select 
+        //an inventory item by triple clicking the item.
+
+        //Method for listing the reference material inventory
+        List<String> resultString = inventoryActions.listInventory("referencematerials");
+        
+        if(resultString != null){
+            //Output the the results
+            for(int i=0; i< resultString.size(); i++){
+                jTextArea1.append(resultString.get(i));
+            }       
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -742,12 +773,15 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
