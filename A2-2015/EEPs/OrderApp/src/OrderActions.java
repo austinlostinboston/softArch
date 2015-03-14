@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 public class OrderActions {
 	Boolean connectError = false; // Error flag
 	Connection DBConn = null; // MySQL connection handle
+
 	String description; // Tree, seed, or shrub description
 	int executeUpdateVal; // Return value from execute indicating effected rows
 	Boolean fieldError = false; // Error flag
@@ -160,6 +161,27 @@ public class OrderActions {
 		return output;
 	}
 
+	public String dropTable(String orderTableName) 
+	{
+		String SQLstatement = null; // String for building SQL queries
+		String output = null;
+		String errString = null; // String for displaying errors
+
+	    try
+	    {
+	        SQLstatement = ( "DROP TABLE " + orderTableName + ";" );
+	        executeUpdateVal = s.executeUpdate(SQLstatement);
+	
+	    } catch (Exception e2) {
+	
+	        errString =  "\nProblem deleting unused order table:: " +
+	                orderTableName + ":: " + e2;
+	        output += (errString);
+	
+	    } // try
+	    return output;
+	}
+    
 	public static void main(String[] args) {
 		OrderActions oa = new OrderActions();
 		oa.createTable("order0001");
@@ -167,6 +189,9 @@ public class OrderActions {
 		oa.insertItems("order0002", "000001", "an apple tree", "1200");
 		oa.insertOrder("2015-01-01 23:00:00", "Doe", "John", "pit,pa",
 				"4123432324", "2900", "false", "order0001");
+		oa.dropTable("order0001");
+		oa.dropTable("order0002");
+
 		return;
 	}
 
