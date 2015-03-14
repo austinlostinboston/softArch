@@ -1,5 +1,11 @@
 package BackEnd;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.sql.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -10,11 +16,41 @@ import java.text.DateFormat;
  * @author austinankney
  */
 public class UserAuthActions {
+
     private static String errString = null;            // String for displaying errors
     private static String msgString = null;            // String for displaying non-error messages
     private static String loginDateTime = null;
+    private static String sourceURL = null;
 
-    public static boolean login (String username, char[] password) {
+    public UserAuthActions() {
+        try {
+            //define the data source
+            URL ipPath = getClass().getResource("DatabaseIP");
+            File ipFile = new File(ipPath.getPath());
+            InputStream is = new FileInputStream(ipFile);
+            String line;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    is, "utf-8"));
+
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Cannot find the database ip file!");
+                reader.close();
+                is.close();
+                System.exit(-1);
+            }
+            reader.close();
+            is.close();
+
+            String SQLServerIP = line.replace('\n', ' ').trim();
+            sourceURL = "jdbc:mysql://" + SQLServerIP
+                    + ":3306/login";
+        } catch (Exception e) {
+            System.out.println("Error in getting db connection " + e);
+        }
+    }
+
+    public static boolean login(String username, char[] password) {
         // Connect to database
         Connection connect = connectDB("login");
 
@@ -29,14 +65,14 @@ public class UserAuthActions {
         return loggedOn;
     }
 
-    public static void logout (String username) {
+    public static void logout(String username) {
         // Connect to database
         Connection connect = connectDB("login");
 
         recordLogout(username, connect);
     }
 
-    public static void recordLogout (String username, Connection DBConn) {
+    public static void recordLogout(String username, Connection DBConn) {
         Statement s = null;                 // SQL statement pointer
 
         DateFormat dt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -45,16 +81,16 @@ public class UserAuthActions {
 
         try {
             s = DBConn.createStatement();
-            String addLogoutRecord = "UPDATE record SET logout_time= \"" + logoutDateTime +"\" WHERE login_time= \"" + loginDateTime + "\";";
+            String addLogoutRecord = "UPDATE record SET logout_time= \"" + logoutDateTime + "\" WHERE login_time= \"" + loginDateTime + "\";";
             int executeUpdateVal = s.executeUpdate(addLogoutRecord);
         } catch (Exception e) {
-            errString =  "\nProblem adding logout record: " + e;
+            errString = "\nProblem adding logout record: " + e;
             System.out.println(errString);
         }
 
     }
 
-    public static void recordLogin (String username, Connection DBConn) {
+    public static void recordLogin(String username, Connection DBConn) {
         Statement s = null;                 // SQL statement pointer
 
         DateFormat dt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -66,56 +102,51 @@ public class UserAuthActions {
             String addLoginRecord = "INSERT into record VALUES (\"" + username + "\",\"" + loginDateTime + "\",\"null\")";
             int executeUpdateVal = s.executeUpdate(addLoginRecord);
         } catch (Exception e) {
-            errString =  "\nProblem adding login record" + e;
+            errString = "\nProblem adding login record" + e;
             System.out.println(errString);
         }
         System.out.println("login records added to databases for username:" + username + ".");
     }
 
-    public static Connection connectDB (String database) {
+    public static Connection connectDB(String database) {
 
         // Database parameters
         Boolean connectError = false;       // Error flag
         Connection DBConn = null;           // MySQL connection handle
 
+        try {
 
-
-        try
-        {
-            //define the data source
-            String sourceURL = "jdbc:mysql://localhost:3306/login";
             System.out.println("Establishing connection with: " + sourceURL);
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
+            DBConn = DriverManager.getConnection(sourceURL, "remote", "remote_pass");
             System.out.println("Successfully connected to database");
 
             return DBConn;
 
         } catch (Exception e) {
 
-            errString =  "\nProblem connecting to database:: " + e;
+            errString = "\nProblem connecting to database:: " + e;
             System.out.println(errString);
             return DBConn;
         }
     }
 
-    private static boolean authenticate (String username, char[] password, Connection DBConn) {
+    private static boolean authenticate(String username, char[] password, Connection DBConn) {
         Statement s = null;                 // SQL statement pointer
         ResultSet res = null;               // SQL query result set pointer
 
         char[] returnPass = null;
 
-        try
-        {
+        try {
             s = DBConn.createStatement();
 
-            res = s.executeQuery( "SELECT password FROM auth WHERE username = \"" + username + "\";");
+            res = s.executeQuery("SELECT password FROM auth WHERE username = \"" + username + "\";");
 
             while (res.next()) {
                 String tempPass = res.getString(1);
                 returnPass = tempPass.toCharArray();
             }
 
-            if (Arrays.equals(password,returnPass)) {
+            if (Arrays.equals(password, returnPass)) {
                 System.out.println("Logging in...");
                 return true;
             } else {
@@ -123,7 +154,7 @@ public class UserAuthActions {
                 return false;
             }
         } catch (Exception e) {
-            errString =  "\nProblem getting tree inventory:: " + e;
+            errString = "\nProblem getting tree inventory:: " + e;
             System.out.println(errString);
             return false;
         }
