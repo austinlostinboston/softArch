@@ -379,30 +379,7 @@ public class Shipping extends javax.swing.JFrame {
                         jTextArea2.setText(currentOrderList.get(5));  // address                        
                     }       
                 }
-                /************************** */
                 
-
-                /*
-                // get the order items from the related order table
-                SQLStatement = "SELECT * FROM " + orderTable;
-                res = s.executeQuery( SQLStatement );                
-                
-                
-                // list the items on the form that comprise the order
-                jTextArea3.setText("");
-
-                while (res.next())
-                {
-                    msgString = res.getString(1) + ":  PRODUCT ID: " + res.getString(2) +
-                         "  DESCRIPTION: "+ res.getString(3) + "  PRICE $" + res.getString(4);
-                    jTextArea3.append(msgString + "\n");
-
-                } // while
-                
-                */
-                
-                
-                //* *************************
                 // Add the method for getting orders items
                 List<String> itemsResultString = shippingActions.getOrdersItems(orderTable);
 
@@ -412,10 +389,7 @@ public class Shipping extends javax.swing.JFrame {
                         jTextArea3.append(itemsResultString.get(i));                                             
                     }       
                 }
-                /************************** */
-                
-                
-
+               
                 // This global variable is used to update the record as shipped
                 updateOrderID = Integer.parseInt(orderID);
 
@@ -519,14 +493,10 @@ public class Shipping extends javax.swing.JFrame {
                 jTextArea1.append(currentItemList.get(i));
             }
             
-            jButton3.setEnabled(true);
-            msgString =  "\nPENDING ORDERS RETRIEVED...";
-            jTextArea4.setText(msgString);
+            jButton3.setEnabled(true);           
         }
-        else{
-            errString =  "\nProblem getting tree inventory:: ";
-            jTextArea4.append(errString);  
-        }
+        msgString =  "\nPENDING ORDERS RETRIEVED...";
+        jTextArea4.setText(msgString);
     } // getPendingOrders
 
     private void getShippedOrders() {
@@ -556,15 +526,10 @@ public class Shipping extends javax.swing.JFrame {
             }
             
             jButton1.setEnabled(false);
-            jButton3.setEnabled(false);
-
-            msgString =  "\nSHIPPED ORDERS RETRIEVED...";
-            jTextArea4.setText(msgString);
+            jButton3.setEnabled(false);    
         }
-        else{
-            errString =  "\nProblem getting tree inventory:: ";
-            jTextArea4.append(errString);  
-        }
+        msgString =  "\nSHIPPED ORDERS RETRIEVED...";
+        jTextArea4.setText(msgString);
     } // getShippedOrders
 
 
