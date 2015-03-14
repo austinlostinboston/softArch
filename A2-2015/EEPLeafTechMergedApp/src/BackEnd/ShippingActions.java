@@ -196,7 +196,7 @@ public class ShippingActions {
 					msgString = "ORDER # " + res.getString(1) + " : "
 							+ res.getString(2) + " : " + res.getString(3)
 							+ " : " + res.getString(4);
-					output += (msgString + "\n");
+					output = (msgString + "\n");
 
 				} // shipped status check
 

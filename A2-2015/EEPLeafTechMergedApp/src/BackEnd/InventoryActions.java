@@ -160,9 +160,9 @@ public class InventoryActions {
 			// let the user know all went well
 
 			while (res.next()) {
-				msgString = type + ">>" + res.getString(1) + "::"
-						+ res.getString(2) + " :: " + res.getString(3) + "::"
-						+ res.getString(4);
+				msgString = res.getString(1) + " : " + res.getString(2) +
+                                            " : $"+ res.getString(4) + " : " + res.getString(3)
+                                            + " units in stock";
 				lst.add("\n" + msgString);
 			} // while
 

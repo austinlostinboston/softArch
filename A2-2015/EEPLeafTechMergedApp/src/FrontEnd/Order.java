@@ -231,31 +231,31 @@ public class Order extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                                .addComponent(jTextField5)
                                 .addGap(198, 198, 198))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                                    .addComponent(jTextField4)
                                     .addComponent(jLabel12)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane4))
                                 .addGap(198, 198, 198))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                                    .addComponent(jTextField3)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel3))
                                 .addGap(222, 222, 222)))
                         .addGap(126, 126, 126))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane2)
+                                .addComponent(jScrollPane3)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel4)
@@ -277,25 +277,28 @@ public class Order extends javax.swing.JFrame {
                                             .addComponent(jButton6)
                                             .addGap(38, 38, 38)
                                             .addComponent(jButton7)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel11))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(50, 50, 50)
                                             .addComponent(jButton8)
-                                            .addGap(28, 28, 28)))))
+                                            .addGap(42, 42, 42)
+                                            .addComponent(jButton9)
+                                            .addGap(0, 0, Short.MAX_VALUE)))))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextField6))
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel13)
                                 .addComponent(jLabel10))
-                            .addGap(0, 509, Short.MAX_VALUE)))
+                            .addGap(0, 0, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(jLabel1)))
@@ -318,16 +321,14 @@ public class Order extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3)
-                            .addComponent(jButton6)
-                            .addComponent(jButton7)
-                            .addComponent(jButton8)
-                            .addComponent(jButton9))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(jButton1)
+                        .addComponent(jButton3)
+                        .addComponent(jButton6)
+                        .addComponent(jButton7)
+                        .addComponent(jButton8)
+                        .addComponent(jButton9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel13)
                 .addGap(3, 3, 3)
@@ -388,6 +389,7 @@ public class Order extends javax.swing.JFrame {
         
         if(resultString != null){
             //Output the the results
+            jTextArea1.setText("");
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
             }       
@@ -684,6 +686,7 @@ public class Order extends javax.swing.JFrame {
         List<String> resultString = inventoryActions.listInventory("seeds");
         
         if(resultString != null){
+            jTextArea1.setText("");
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
@@ -704,6 +707,7 @@ public class Order extends javax.swing.JFrame {
         List<String> resultString = inventoryActions.listInventory("shrubs");
         
         if(resultString != null){
+            jTextArea1.setText("");
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
@@ -727,6 +731,7 @@ public class Order extends javax.swing.JFrame {
         List<String> resultString = inventoryActions.listInventory("cultureboxes");
         
         if(resultString != null){
+            jTextArea1.setText("");
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
@@ -744,6 +749,7 @@ public class Order extends javax.swing.JFrame {
         List<String> resultString = inventoryActions.listInventory("genomics");
         
         if(resultString != null){
+            jTextArea1.setText("");
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
@@ -761,6 +767,7 @@ public class Order extends javax.swing.JFrame {
         List<String> resultString = inventoryActions.listInventory("processing");
         
         if(resultString != null){
+            jTextArea1.setText("");
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
@@ -778,6 +785,7 @@ public class Order extends javax.swing.JFrame {
         List<String> resultString = inventoryActions.listInventory("referencematerials");
         
         if(resultString != null){
+            jTextArea1.setText("");
             //Output the the results
             for(int i=0; i< resultString.size(); i++){
                 jTextArea1.append(resultString.get(i));
