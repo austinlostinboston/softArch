@@ -1,16 +1,12 @@
 package BackEnd;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.File;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import FrontEnd.MetaData;
 
 public class ShippingActions {
 	Boolean connectError = false; // Error flag
@@ -29,47 +25,30 @@ public class ShippingActions {
 		String errString = null; // String for displaying errors
 
 		try {
-			String msgString = null; // String for displaying non-error messages
-			msgString = ">> Establishing Driver...";
-			System.out.println("\n" + msgString);
+                    String msgString = null; // String for displaying non-error messages
 
-			// load JDBC driver class for MySQL
-			Class.forName("com.mysql.jdbc.Driver");
+                    msgString = ">> Establishing Driver...";
+                    System.out.println("\n" + msgString);
 
-			msgString = ">> Setting up URL...";
-			System.out.println("\n" + msgString);
+                    // load JDBC driver class for MySQL
+                    Class.forName("com.mysql.jdbc.Driver");
 
-			// define the data source, read from file in the same folder
-			URL ipPath = getClass().getResource("DatabaseIP");
-                        File ipFile = new File(ipPath.getPath());
-                        InputStream is = new FileInputStream(ipFile);
-			String line;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "utf-8"));
+                    msgString = ">> Setting up URL...";
+                    System.out.println("\n" + msgString);
 
-			line = reader.readLine();
-			if (line == null) {
-				System.out.println("Cannot find the database ip file!");
-				reader.close();
-				is.close();
-				System.exit(-1);
-			}
-			reader.close();
-			is.close();
+                    // define the data source, read from file in the same folder
 
-			String SQLServerIP = line.replace('\n', ' ').trim();
-			//String sourceURL = "jdbc:mysql://" + SQLServerIP
-			//		+ ":3306/inventory";
-                        
-                        String sourceURL = "jdbc:mysql://" + SQLServerIP
-					+ ":3306/orderinfo";
 
-			msgString = ">> Establishing connection with: " + sourceURL + "...";
-			System.out.println("\n" + msgString);
+                    String SQLServerIP = MetaData.shippingIP;
+                    String sourceURL = "jdbc:mysql://" + SQLServerIP
+                                    + ":3306/orderinfo";
 
-			// create a connection to the db
-			DBConn = DriverManager.getConnection(sourceURL, "remote",
-					"remote_pass");
+                    msgString = ">> Establishing connection with: " + sourceURL + "...";
+                    System.out.println("\n" + msgString);
+
+                    // create a connection to the db
+                    DBConn = DriverManager.getConnection(sourceURL, "remote","remote_pass");
+
 
 		} catch (Exception e) {
 

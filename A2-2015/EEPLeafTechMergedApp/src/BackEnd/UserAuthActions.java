@@ -23,31 +23,8 @@ public class UserAuthActions {
     private static String sourceURL = null;
 
     public UserAuthActions() {
-        try {
-            //define the data source
-            URL ipPath = getClass().getResource("DatabaseIP");
-            File ipFile = new File(ipPath.getPath());
-            InputStream is = new FileInputStream(ipFile);
-            String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "utf-8"));
-
-            line = reader.readLine();
-            if (line == null) {
-                System.out.println("Cannot find the database ip file!");
-                reader.close();
-                is.close();
-                System.exit(-1);
-            }
-            reader.close();
-            is.close();
-
-            String SQLServerIP = line.replace('\n', ' ').trim();
-            sourceURL = "jdbc:mysql://" + SQLServerIP
-                    + ":3306/login";
-        } catch (Exception e) {
-            System.out.println("Error in getting db connection " + e);
-        }
+        String SQLServerIP = "localhost";
+        sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/login";
     }
 
     public static boolean login(String username, char[] password) {

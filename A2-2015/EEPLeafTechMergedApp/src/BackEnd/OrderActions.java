@@ -1,14 +1,10 @@
 package BackEnd;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.File;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+
+import FrontEnd.MetaData;
 
 public class OrderActions {
 	Boolean connectError = false; // Error flag
@@ -27,6 +23,7 @@ public class OrderActions {
 
 	public OrderActions() {
 		String errString = null; // String for displaying errors
+                //Order orderSession = new Order();
 
 		try {
                     String msgString = null; // String for displaying non-error messages
@@ -41,24 +38,9 @@ public class OrderActions {
                     System.out.println("\n" + msgString);
 
                     // define the data source, read from file in the same folder
-                    URL ipPath = getClass().getResource("DatabaseIP");
-                    File ipFile = new File(ipPath.getPath());
-                    InputStream is = new FileInputStream(ipFile);
-                    String line;
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                    is, "utf-8"));
+                   
 
-                    line = reader.readLine();
-                    if (line == null) {
-                            System.out.println("Cannot find the database ip file!");
-                            reader.close();
-                            is.close();
-                            System.exit(-1);
-                    }
-                    reader.close();
-                    is.close();
-
-                    String SQLServerIP = line.replace('\n', ' ').trim();
+                    String SQLServerIP = MetaData.orderIP;
                     String sourceURL = "jdbc:mysql://" + SQLServerIP
                                     + ":3306/orderinfo";
 
