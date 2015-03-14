@@ -39,12 +39,11 @@ public class InventoryActions {
                     msgString = ">> Setting up URL...";
                     System.out.println("\n" + msgString);
 
-                    // define the data source, read from file in the same folder
-
-
+                    // Grab the IP for the inventory
                     String SQLServerIP = MetaData.inventoryIP;
-                    String sourceURL = "jdbc:mysql://" + SQLServerIP
-                                    + ":3306/orderinfo";
+
+                    // Establish connection to EEP's inventory db
+                    String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/inventory";
 
                     msgString = ">> Establishing connection with: " + sourceURL + "...";
                     System.out.println("\n" + msgString);
@@ -52,13 +51,21 @@ public class InventoryActions {
                     // create a connection to the db
                     DBConn = DriverManager.getConnection(sourceURL, "remote","remote_pass");
 
+                    // Establish connection to LeafTech's inventory db
+                    String sourceURL2 = "jdbc:mysql://" + SQLServerIP + ":3306/leaftech";
 
-		} catch (Exception e) {
+                    msgString = ">> Establishing connection with: " + sourceURL2 + "...";
+                    System.out.println("\n" + msgString);
 
-			errString = "\nProblem connecting to database:: " + e;
-			System.out.println(errString);
-			connectError = true;
-			System.exit(-1);
+                    // create a connection to the db
+                    DBConn2 = DriverManager.getConnection(sourceURL2, "remote", "remote_pass");
+
+                } catch (Exception e) {
+
+                    errString = "\nProblem connecting to database:: " + e;
+                    System.out.println(errString);
+                    connectError = true;
+                    System.exit(-1);
 		} // end try-catch
 	}
 
