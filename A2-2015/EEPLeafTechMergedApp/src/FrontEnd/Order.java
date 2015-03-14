@@ -583,14 +583,13 @@ public class Order extends javax.swing.JFrame {
                     jTextArea3.append(errString);
                     executeError = true;
                 
-                    /*
-                    String dropResultString = orderBusiness.dropTable(orderTableName);
+                    
+                    String dropResultString = orderActions.dropTable(orderTableName);
                     if(dropResultString == null){ 
                         errString =  "\nProblem deleting unused order table:: " +
                                 orderTableName;
                         jTextArea3.append(errString);
                     }
-                    */
                 
                 }
                 //************************** */                          

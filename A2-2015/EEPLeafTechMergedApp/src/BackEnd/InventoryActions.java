@@ -91,7 +91,7 @@ public class InventoryActions {
 	}
 
 	public String addInventory(String type, String description,
-			String productID, String quantity, String perUnitCost) {
+			String productID, Integer quantity, Float perUnitCost) {
 		Boolean executeError = false; // Error flag
 		String errString = null; // String for displaying errors
 		String SQLstatement = null; // String for building SQL queries
@@ -163,7 +163,38 @@ public class InventoryActions {
 				msgString = res.getString(1) + " : " + res.getString(2) +
                                             " : $"+ res.getString(4) + " : " + res.getString(3)
                                             + " units in stock";
-				lst.add("\n" + msgString);
+				lst.add(msgString+"\n");
+			} // while
+
+		} catch (Exception e) {
+			lst.add("\nProblem list inventory:: " + e);
+			System.out.println(lst.toString());
+		} // try
+
+		return lst;
+	}
+        
+        public List<String> listInventory1(String type) {
+		String errString = null; // String for displaying errors
+		String msgString = null; // String for displaying non-error messages
+		List<String> lst = new ArrayList<String>();
+		java.sql.Statement s = null; // SQL statement pointer
+
+		try {
+			if (type == "trees" || type == "seeds" || type == "shrubs") {
+				s = DBConn.createStatement();
+			} else {
+				s = DBConn2.createStatement();
+			}
+
+			res = s.executeQuery("Select * from " + type);
+
+			// let the user know all went well
+
+			while (res.next()) {
+				msgString = type +">>" + res.getString(1) + "::" + res.getString(2) +
+                                                " :: "+ res.getString(3) + "::" + res.getString(4);
+				lst.add(msgString+"\n");
 			} // while
 
 		} catch (Exception e) {
@@ -248,6 +279,8 @@ public class InventoryActions {
 			System.out
 					.println("\n\n" + productID + " inventory decremented...");
 
+                        lst.add("\n\n" + productID + " inventory decremented...");
+                        
 			while (res.next()) {
 				msgString = type + ">> " + res.getString(1) + " :: "
 						+ res.getString(2) + " :: " + res.getString(3) + " :: "
@@ -260,30 +293,9 @@ public class InventoryActions {
 
 		} catch (Exception e) {
 			lst.add("\nProblem with delete:: " + e);
-			System.out.println(lst.toString());
 			executeError = true;
 		} // try
 
 		return lst;
-	}
-
-	public static void main(String[] args) {
-		InventoryActions ia = new InventoryActions();
-
-		ia.addInventory("cultureboxes", "a box to culture plants", "000001", "4", "200");
-		ia.addInventory("cultureboxes", "a box to culture plants", "000002", "4", "200");
-		ia.listInventory("cultureboxes");
-		ia.deleteInventory("cultureboxes", "000002");
-		ia.decrementInventory("cultureboxes", "000001");
-		ia.deleteInventory("cultureboxes", "200001");
-
-		ia.addInventory("trees", "an apple tree", "000001", "3", "1200");
-		ia.addInventory("trees", "an apple tree", "000002", "3", "1200");
-		ia.listInventory("trees");
-		ia.deleteInventory("trees", "000002");
-		ia.decrementInventory("trees", "000001");
-		ia.deleteInventory("trees", "000001");
-
-		return;
-	}
+	}	
 }
