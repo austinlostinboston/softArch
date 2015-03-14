@@ -13,6 +13,7 @@ import java.text.DateFormat;
 public class AuthBusinessLayer {
     private static String errString = null;            // String for displaying errors
     private static String msgString = null;            // String for displaying non-error messages
+    private static String loginDateTime = null;
 
     public static boolean login (String username, char[] password) {
         // Connect to database
@@ -28,13 +29,38 @@ public class AuthBusinessLayer {
         
         return loggedOn;
     }
+    
+    public static void logout (String username) {
+        // Connect to database
+        Connection connect = connectDB("login");
+        
+        recordLogout(username, connect);
+    }
+
+    public static void recordLogout (String username, Connection DBConn) {
+        Statement s = null;                 // SQL statement pointer
+
+        DateFormat dt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        java.util.Date date = new java.util.Date();
+        String logoutDateTime = dt.format(date);
+
+        try {
+            s = DBConn.createStatement();
+            String addLogoutRecord = "UPDATE record SET logout_time= \"" + logoutDateTime +"\" WHERE login_time= \"" + loginDateTime + "\";";
+            int executeUpdateVal = s.executeUpdate(addLogoutRecord);
+        } catch (Exception e) {
+            errString =  "\nProblem adding logout record: " + e;
+            System.out.println(errString);
+        }
+
+    }
 
     public static void recordLogin (String username, Connection DBConn) {
         Statement s = null;                 // SQL statement pointer
         
         DateFormat dt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         java.util.Date date = new java.util.Date();
-        String loginDateTime = dt.format(date);
+        loginDateTime = dt.format(date);
 
         try {
             s = DBConn.createStatement();

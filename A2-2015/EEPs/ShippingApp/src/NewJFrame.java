@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 
  /******************************************************************************
@@ -22,6 +23,7 @@ import java.util.List;
 public class NewJFrame extends javax.swing.JFrame {
     Integer updateOrderID;
     String versionID = "v2.10.10";
+    ShippingActions shippingActions = new ShippingActions();
     
     /** Creates new form NewJFrame */
     public NewJFrame() {
@@ -310,7 +312,6 @@ public class NewJFrame extends javax.swing.JFrame {
         // in jTextArea3.
 
         Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle    
         String errString = null;            // String for displaying errors
         int beginIndex;                     // Parsing index
         int endIndex;                       // Parsing index
@@ -318,11 +319,7 @@ public class NewJFrame extends javax.swing.JFrame {
         String orderSelection = null;       // Order selected from TextArea1
         String orderTable = null;           // The name of the table containing the order items
         String orderID = null;              // Product ID pnemonic
-        String productDescription = null;   // Product description
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
         Boolean orderBlank = false;         // False: order string is not blank
-        String SQLStatement;                // SQL query
 
         // this is the selected line of text
         orderSelection =  jTextArea1.getSelectedText();
@@ -344,97 +341,28 @@ public class NewJFrame extends javax.swing.JFrame {
             orderBlank = true;
 
         } // Blank string check
-
-        // If an order was selected, then connect to the orderinfo database. In
-        // all normal situations this would be impossible to do since the select
-        // button is disabled until an order is selected... just in case the
-        // check is here.
-
-        /*
-        if ( !orderBlank )
-        {
-            try
-            {
-                msgString = ">> Establishing Driver...";
-                jTextArea4.setText("\n"+msgString);
-
-                //Load J Connector for MySQL - explicit loads are not needed for 
-                //connectors that are version 4 and better
-                //Class.forName( "com.mysql.jdbc.Driver" );
-
-                msgString = ">> Setting up URL...";
-                jTextArea4.append("\n"+msgString);
-
-                //define the data source
-                String SQLServerIP = jTextField1.getText();
-                String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/orderinfo";
-
-                msgString = ">> Establishing connection with: " + sourceURL + "...";
-                jTextArea4.append("\n"+msgString);
-
-                //create a connection to the db - note the default account is "remote"
-                //and the password is "remote_pass" - you will have to set this
-                //account up in your database
-                DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem connecting to orderinfo database:: " + e;
-                jTextArea4.append(errString);
-                connectError = true;
-
-            } // end try-catch
-
-        } // blank order check 
-        */
         
         if ( !connectError && !orderBlank )
         {
             try
-            {
-                /*
-                s = DBConn.createStatement();
-                SQLStatement = "SELECT * FROM orders WHERE order_id = " + Integer.parseInt(orderID);
-                res = s.executeQuery( SQLStatement );
-                */
-                
-                // Get the information from the database. Display the
-                // first and last name, address, phone number, address, and
-                // order date. Same the ordertable name - this is the name of
-                // the table that is created when an order is submitted that
-                // contains the list of order items.             
-                /*
-                while (res.next()) {
-                    
-                  orderTable = res.getString(9);         // name of table with list of items
-                  jTextField2.setText(res.getString(3)); // first name
-                  jTextField3.setText(res.getString(4)); // last name
-                  jTextField4.setText(res.getString(6)); // phone
-                  jTextField5.setText(res.getString(2)); // order date
-                  jTextArea2.setText(res.getString(5));  // address
-
-                } // for each element in the return SQL query
-                */
-                
-                
-                 /* *************************
-                // Add the method for getting orders details
-                List<List<String>> resultString = shippingBusiness.getOrders(orderID);
+            {            
+                // Getting orders details
+                List<List<String>> resultString = shippingActions.getOrders(orderID);
 
                 if(resultString != null){
                     //Output the the results
                     for(int i=0; i< resultString.size(); i++){
                         List<String> currentOrderList = resultString.get(i);
                        
-                        orderTable = currentOrderList.get(9);         // name of table with list of items
-                        jTextField2.setText(currentOrderList.get(3)); // first name
-                        jTextField3.setText(currentOrderList.get(4)); // last name
-                        jTextField4.setText(currentOrderList.get(6)); // phone
-                        jTextField5.setText(currentOrderList.get(2)); // order date
+                        orderTable = currentOrderList.get(0);         // name of table with list of items
+                        jTextField2.setText(currentOrderList.get(1)); // first name
+                        jTextField3.setText(currentOrderList.get(2)); // last name
+                        jTextField4.setText(currentOrderList.get(3)); // phone
+                        jTextField5.setText(currentOrderList.get(4)); // order date
                         jTextArea2.setText(currentOrderList.get(5));  // address                        
                     }       
                 }
-                ************************** */
+                /************************** */
                 
 
                 /*
@@ -457,23 +385,17 @@ public class NewJFrame extends javax.swing.JFrame {
                 */
                 
                 
-                /* *************************
+                //* *************************
                 // Add the method for getting orders items
-                List<List<String>> itemsResultString = shippingBusiness.getOrdersItems(orderTable);
+                List<String> itemsResultString = shippingActions.getOrdersItems(orderTable);
 
                 if(itemsResultString != null){
                     //Output the the results
                     for(int i=0; i< itemsResultString.size(); i++){
-                        List<String> currentItemList = itemsResultString.get(i);
-                       
-                        msgString = currentItemList.get(1) + ":  PRODUCT ID: " + 
-                                currentItemList.get(2) + "  DESCRIPTION: "+ 
-                                currentItemList.get(3) + "  PRICE $" + 
-                                currentItemList.get(4);
-                        jTextArea3.append(msgString + "\n");                                             
+                        jTextArea3.append(itemsResultString.get(i));                                             
                     }       
                 }
-                ************************** */
+                /************************** */
                 
                 
 
@@ -500,137 +422,36 @@ public class NewJFrame extends javax.swing.JFrame {
         // This method is responsible changing the status of the order
         // to shipped.
 
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
-        String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
         int rows;                           // Rows updated
-        Statement s = null;                 // SQL statement pointer
-        String SQLStatement = null;         // SQL statement string
 
-        /*
-        // Connect to the order database
-        try
+        //For updating the shipped status
+        rows = shippingActions.updateShipStatus(String.valueOf(updateOrderID));
+
+        // if the query worked, then we display the data in TextArea 4 - BTW, its highly
+        // unlikely that the row won't exist and if it does the database tables are
+        // really screwed up... this should not fail if you get here, but the check (in the
+        // form of the else clause) is in place anyway
+
+        if (rows > 0)
         {
-            msgString = ">> Establishing Driver...";
-            jTextArea4.setText("\n"+msgString);
+           jTextArea4.setText("\nOrder #" + updateOrderID + " status has been changed to shipped.");
 
-            //load JDBC driver class for MySQL
-            Class.forName( "com.mysql.jdbc.Driver" );
+        } else {
 
-            msgString = ">> Setting up URL...";
-            jTextArea4.append("\n"+msgString);
+           jTextArea4.setText("\nOrder #" + updateOrderID + " record not found.");
 
-            //define the data source
-            String SQLServerIP = jTextField1.getText();
-            String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/orderinfo";
+        } // execute check
 
-            msgString = ">> Establishing connection with: " + sourceURL + "...";
-            jTextArea4.append("\n"+msgString);
-
-            //create a connection to the db - note the default account is "remote"
-            //and the password is "remote_pass" - you will have to set this
-            //account up in your database
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to orderinfo database:: " + e;
-            jTextArea4.append(errString);
-            connectError = true;
-
-        } // end try-catch
-        */
-        
-        
-        
-        // If we are connected, then we update the shipped status
-
-        if ( !connectError )
-        {
-            /*
-            try
-            {
-                // first we create the query
-                s = DBConn.createStatement();
-                SQLStatement = "UPDATE orders SET shipped=" + true + " WHERE order_id=" + updateOrderID;
-
-                // execute the statement
-                rows = s.executeUpdate( SQLStatement );
-
-                // if the query worked, then we display the data in TextArea 4 - BTW, its highly
-                // unlikely that the row won't exist and if it does the database tables are
-                // really screwed up... this should not fail if you get here, but the check (in the
-                // form of the else clause) is in place anyway
-
-                if (rows > 0)
-                {
-                   jTextArea4.setText("\nOrder #" + updateOrderID + " status has been changed to shipped.");
-
-                } else {
-
-                   jTextArea4.setText("\nOrder #" + updateOrderID + " record not found.");
-
-                } // execute check
-
-                // Clean up the form
-                jButton1.setEnabled(false);
-                jButton3.setEnabled(false);
-                jTextArea1.setText("");
-                jTextArea2.setText("");
-                jTextArea3.setText("");
-                jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem updating status:: " + e;
-                jTextArea4.append(errString);
-                jTextArea1.setText("");
-
-            } // end try-catch
-            */
-            
-            
-            
-             /* *************************
-            // Add the method for updating the shipped status
-            rows = shippingBusiness.updateShipStatus(updateOrderID);
-
-            // if the query worked, then we display the data in TextArea 4 - BTW, its highly
-            // unlikely that the row won't exist and if it does the database tables are
-            // really screwed up... this should not fail if you get here, but the check (in the
-            // form of the else clause) is in place anyway
-
-            if (rows > 0)
-            {
-               jTextArea4.setText("\nOrder #" + updateOrderID + " status has been changed to shipped.");
-
-            } else {
-
-               jTextArea4.setText("\nOrder #" + updateOrderID + " record not found.");
-
-            } // execute check
-
-            // Clean up the form
-            jButton1.setEnabled(false);
-            jButton3.setEnabled(false);
-            jTextArea1.setText("");
-            jTextArea2.setText("");
-            jTextArea3.setText("");
-            jTextField2.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-
-             ************************** */
-            
-
-        } // if connect check
-
+        // Clean up the form
+        jButton1.setEnabled(false);
+        jButton3.setEnabled(false);
+        jTextArea1.setText("");
+        jTextArea2.setText("");
+        jTextArea3.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -656,16 +477,10 @@ public class NewJFrame extends javax.swing.JFrame {
         // been shipped as of yet. The list of pending orders is written to
         // jTextArea1.
 
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
         String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
-        int shippedStatus;                  // if 0, order not shipped, if 1 order shipped
+        String msgString = "";
 
         // Clean up the form before we start
-
         jTextArea1.setText("");
         jTextArea2.setText("");
         jTextArea3.setText("");
@@ -674,119 +489,22 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField4.setText("");
         jTextField5.setText("");
 
-        /*
-        // Connect to the order database
-        try
-        {
-            msgString = ">> Establishing Driver...";
-            jTextArea4.setText("\n"+msgString);
-
-            //load JDBC driver class for MySQL
-            Class.forName( "com.mysql.jdbc.Driver" );
-
-            msgString = ">> Setting up URL...";
-            jTextArea4.append("\n"+msgString);
-
-            //define the data source
-            String SQLServerIP = jTextField1.getText();
-            String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/orderinfo";
-
-            msgString = ">> Establishing connection with: " + sourceURL + "...";
-            jTextArea4.append("\n"+msgString);
-
-            //create a connection to the db - note the default account is "remote"
-            //and the password is "remote_pass" - you will have to set this
-            //account up in your database
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to orderinfo database:: " + e;
-            jTextArea4.append(errString);
-            connectError = true;
-
-        } // end try-catch
-        */
-
-        // If we are connected, then we get the list of trees from the
-        // inventory database
-
-        //if ( !connectError )
-        //{
-            /*
-            try
-            {
-                // Create a query to get all the orders and execute the query
-                s = DBConn.createStatement();
-                res = s.executeQuery( "Select * from orders" );
-
-                //Display the data in the textarea
-                jTextArea1.setText("");
-
-                // For each row returned, we check the shipped status. If it is
-                // equal to 0 it means it has not been shipped as of yet, so we
-                // display it in TextArea 1. Note that we use an integer because
-                // MySQL stores booleans and a TinyInt(1), which we interpret
-                // here on the application side as an integer. It works, it just
-                // isn't very elegant.
-                while (res.next())
-                {
-                    shippedStatus = Integer.parseInt(res.getString(8));
-
-                    if ( shippedStatus == 0 )
-                    {
-                        msgString = "ORDER # " + res.getString(1) + " : " + res.getString(2) +
-                              " : "+ res.getString(3) + " : " + res.getString(4);
-                        jTextArea1.append(msgString+"\n");
-
-                    } // shipped status check
-
-                } // while
-
-                // notify the user all went well and enable the select order
-                // button
-                jButton3.setEnabled(true);
-                msgString =  "\nPENDING ORDERS RETRIEVED...";
-                jTextArea4.setText(msgString);
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem getting tree inventory:: " + e;
-                jTextArea4.append(errString);
-
-            } // end try-catch
-            */
-            
-            /* *************************
-            // Add the method for getting all orders
-            List<List<String>> resultString = shippingBusiness.getAllOrders();
-
-            if(resultString != null){
-                //Output the the results
-                for(int i=0; i< resultString.size(); i++){
-                    List<String> currentItemList = resultString.get(i);
-
-                    shippedStatus = Integer.parseInt(currentItemList.get(8));
-
-                    if ( shippedStatus == 0 )
-                    {
-                        msgString = "ORDER # " + currentItemList.get(1) + " : " + 
-                                currentItemList.get(2) + " : "+ 
-                                currentItemList.get(3) + " : " + 
-                                currentItemList.get(4);
-                        jTextArea1.append(msgString+"\n");
-
-                    } // shipped status check                                         
-                }       
+        //Get the result from database
+        String resultString = shippingActions.getAllOrders(0);
+        if(resultString != null){
+            List<String> currentItemList = Arrays.asList(resultString.split("\n"));
+            for(int i=0; i< currentItemList.size(); i++){
+                jTextArea1.append(currentItemList.get(i));
             }
-            else{
-                errString =  "\nProblem getting tree inventory:: " + e;
-                jTextArea4.append(errString);  
-            }
-            ************************** */
             
-        //} // if connect check
-
+            jButton3.setEnabled(true);
+            msgString =  "\nPENDING ORDERS RETRIEVED...";
+            jTextArea4.setText(msgString);
+        }
+        else{
+            errString =  "\nProblem getting tree inventory:: ";
+            jTextArea4.append(errString);  
+        }
     } // getPendingOrders
 
     private void getShippedOrders() {
@@ -795,16 +513,10 @@ public class NewJFrame extends javax.swing.JFrame {
         // getting the list of orders that have been shipped. The list of shipped
         // orders is written to jTextArea1.
 
-        Boolean connectError = false;       // Error flag
-        Connection DBConn = null;           // MySQL connection handle
         String errString = null;            // String for displaying errors
-        String msgString = null;            // String for displaying non-error messages
-        ResultSet res = null;               // SQL query result set pointer
-        Statement s = null;                 // SQL statement pointer
-        int shippedStatus;                  // if 0, order not shipped, if 1 order shipped
+        String msgString = "";
 
         // Clean up the form before we start
-
         jTextArea1.setText("");
         jTextArea2.setText("");
         jTextArea3.setText("");
@@ -813,122 +525,25 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField4.setText("");
         jTextField5.setText("");
 
-        /*
-        // Connect to the order database
-        try
-        {
-            msgString = ">> Establishing Driver...";
-            jTextArea4.setText("\n"+msgString);
-
-            //load JDBC driver class for MySQL
-            Class.forName( "com.mysql.jdbc.Driver" );
-
-            msgString = ">> Setting up URL...";
-            jTextArea4.append("\n"+msgString);
-
-            //define the data source
-            String SQLServerIP = jTextField1.getText();
-            String sourceURL = "jdbc:mysql://" + SQLServerIP + ":3306/orderinfo";
-
-            msgString = ">> Establishing connection with: " + sourceURL + "...";
-            jTextArea4.append("\n"+msgString);
-
-            //create a connection to the db - note the default account is "remote"
-            //and the password is "remote_pass" - you will have to set this
-            //account up in your database
-            DBConn = DriverManager.getConnection(sourceURL,"remote","remote_pass");
-
-        } catch (Exception e) {
-
-            errString =  "\nProblem connecting to orderinfo database:: " + e;
-            jTextArea4.append(errString);
-            connectError = true;
-
-        } // end try-catch
-        */
-
-        // If we are connected, then we get the list of trees from the
-        // inventory database
-
-        //if ( !connectError )
-        //{
-            /*
-            try
-            {
-                // Create a query to get all the rows from the orders database
-                // and execute the query.
-                s = DBConn.createStatement();
-                res = s.executeQuery( "Select * from orders" );
-
-                //Display the data in the textarea
-                jTextArea1.setText("");
-
-                // For each row returned, we check the shipped status. If it is
-                // equal to 0 it means it has not been shipped as of yet, so we
-                // display it in TextArea 1. Note that we use an integer because
-                // MySQL stores booleans and a TinyInt(1), which we interpret
-                // here on the application side as an integer. It works, it just
-                // isn't very elegant.
-
-                while (res.next())
-                {
-                    shippedStatus = Integer.parseInt(res.getString(8));
-
-                    if ( shippedStatus == 1 )
-                    {
-                        msgString = "SHIPPED ORDER # " + res.getString(1) + " : " + res.getString(2) +
-                              " : "+ res.getString(3) + " : " + res.getString(4);
-                        jTextArea1.append(msgString+"\n");
-
-                    } // shipped status check
-
-                } // while
-
-                jButton1.setEnabled(false);
-                jButton3.setEnabled(false);
-
-                msgString =  "\nSHIPPED ORDERS RETRIEVED...";
-                jTextArea4.setText(msgString);
-
-            } catch (Exception e) {
-
-                errString =  "\nProblem getting tree inventory:: " + e;
-                jTextArea4.append(errString);
-
-            } // end try-catch
-            */
-            
-             /* *************************
-            // Add the method for getting all orders
-            List<List<String>> resultString = shippingBusiness.getAllOrders();
-
-            if(resultString != null){
-                //Output the the results
-                for(int i=0; i< resultString.size(); i++){
-                    List<String> currentItemList = resultString.get(i);
-
-                    shippedStatus = Integer.parseInt(currentItemList.get(8));
-
-                    if ( shippedStatus == 1 )
-                    {
-                        msgString = "SHIPPED ORDER # " + currentItemList.get(1) + " : " + 
-                                currentItemList.get(2) + " : "+ 
-                                currentItemList.get(3) + " : " + 
-                                currentItemList.get(4);
-                        jTextArea1.append(msgString+"\n");
-
-                    } // shipped status check                                         
-                }       
+        //Get the result from database
+        String resultString = shippingActions.getAllOrders(1);
+        if(resultString != null){
+            List<String> currentItemList = Arrays.asList(resultString.split("\n"));
+            for(int i=0; i< currentItemList.size(); i++){
+                jTextArea1.append(currentItemList.get(i));
             }
-            else{
-                errString =  "\nProblem getting tree inventory:: " + e;
-                jTextArea4.append(errString);  
-            }
-            ************************** */
             
-        //} // connect check
+            jButton1.setEnabled(false);
+            jButton3.setEnabled(false);
 
-    } // getPendingOrders
+            msgString =  "\nSHIPPED ORDERS RETRIEVED...";
+            jTextArea4.setText(msgString);
+        }
+        else{
+            errString =  "\nProblem getting tree inventory:: ";
+            jTextArea4.append(errString);  
+        }
+    } // getShippedOrders
 
 
     /**

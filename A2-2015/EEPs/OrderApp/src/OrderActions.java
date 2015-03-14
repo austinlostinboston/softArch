@@ -54,7 +54,7 @@ public class OrderActions {
 
 			String SQLServerIP = line.replace('\n', ' ').trim();
 			String sourceURL = "jdbc:mysql://" + SQLServerIP
-					+ ":3306/inventory";
+					+ ":3306/orderinfo";
 
 			msgString = ">> Establishing connection with: " + sourceURL + "...";
 			System.out.println("\n" + msgString);
@@ -86,12 +86,13 @@ public class OrderActions {
 					+ "product_id varchar(20), description varchar(80), " + "item_price float(7,2) );");
 
 			executeUpdateVal = s.executeUpdate(SQLstatement);
+                        output = "executed";
 
 		} catch (Exception e) {
 
 			output += "\nProblem creating order table " + orderTableName
 					+ ":: " + e;
-			System.out.println(output);
+			//System.out.println(output);
 			executeError = true;
 		} // try
 
@@ -114,11 +115,11 @@ public class OrderActions {
 					+ fCost + ", " + false + ", '" + orderTableName + "' );");
 
 			executeUpdateVal = s.executeUpdate(SQLstatement);
-
+                        output = "executed";
 		} catch (Exception e1) {
 
 			output += "\nProblem with inserting into table orders:: " + e1;
-			System.out.println(output);
+			//System.out.println(output);
 			executeError = true;
 
 			try {
@@ -129,7 +130,7 @@ public class OrderActions {
 
 				output += "\nProblem deleting unused order table:: "
 						+ orderTableName + ":: " + e2;
-				System.out.println(output);
+				//System.out.println(output);
 
 			} // try
 
@@ -149,18 +150,19 @@ public class OrderActions {
 				+ productID + "', " + "'" + description + "', " + perUnitCost + " );");
 		try {
 			executeUpdateVal = s.executeUpdate(SQLstatement);
-
+                        output = "executed";
 		} catch (Exception e) {
 
 			output += "\nProblem with inserting into table " + orderTableName
 					+ ":: " + e;
-			System.out.println(output);
+			//System.out.println(output);
 
 		} // try
 
 		return output;
 	}
 
+<<<<<<< HEAD
 	public String dropTable(String orderTableName) 
 	{
 		String SQLstatement = null; // String for building SQL queries
@@ -182,6 +184,9 @@ public class OrderActions {
 	    return output;
 	}
     
+=======
+        /*
+>>>>>>> origin/master
 	public static void main(String[] args) {
 		OrderActions oa = new OrderActions();
 		oa.createTable("order0001");
@@ -194,5 +199,6 @@ public class OrderActions {
 
 		return;
 	}
+        */
 
 }

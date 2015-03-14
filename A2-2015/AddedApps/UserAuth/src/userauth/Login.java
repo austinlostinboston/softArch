@@ -13,7 +13,7 @@ import java.awt.Color;
  * @author austinankney
  */
 public class Login extends javax.swing.JFrame {
-    private static String username = null;
+    public static String username = null;
     private static char[] password = null;
 
     /** Creates new form Login */
@@ -111,7 +111,7 @@ public class Login extends javax.swing.JFrame {
         AuthBusinessLayer user = new AuthBusinessLayer();
 
         // handles user input into logon screen
-        username = jTextField1.getText();
+        this.username = jTextField1.getText();
         password = jPasswordField1.getPassword();
         Color darkGreen = new Color(0,153,0);
 
@@ -122,6 +122,10 @@ public class Login extends javax.swing.JFrame {
             System.out.println("Logging in...");
             jLabel4.setForeground(darkGreen);
             jLabel4.setText("Logging in...");
+
+            //this.sleep(2000);
+            new MainMenu().setVisible(true);
+            this.dispose();
         } else {
             System.out.println("Wrong credentials");
             jLabel4.setForeground(Color.red);

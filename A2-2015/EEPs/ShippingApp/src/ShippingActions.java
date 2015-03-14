@@ -52,8 +52,11 @@ public class ShippingActions {
 			is.close();
 
 			String SQLServerIP = line.replace('\n', ' ').trim();
-			String sourceURL = "jdbc:mysql://" + SQLServerIP
-					+ ":3306/inventory";
+			//String sourceURL = "jdbc:mysql://" + SQLServerIP
+			//		+ ":3306/inventory";
+                        
+                        String sourceURL = "jdbc:mysql://" + SQLServerIP
+					+ ":3306/orderinfo";
 
 			msgString = ">> Establishing connection with: " + sourceURL + "...";
 			System.out.println("\n" + msgString);
@@ -129,7 +132,7 @@ public class ShippingActions {
 			} // for each element in the return SQL query
 
 		} catch (Exception e) {
-			System.out.println("\nProblem list inventory:: " + e);
+			//System.out.println("\nProblem list inventory:: " + e);
 		} // try
 
 		return orderlst;
@@ -156,7 +159,7 @@ public class ShippingActions {
 
 			} // while
 		} catch (Exception e) {
-			System.out.println("\nProblem get OrdersItems:: " + e);
+			//System.out.println("\nProblem get OrdersItems:: " + e);
 		} // try
 		return lst;
 	}
@@ -164,7 +167,7 @@ public class ShippingActions {
 	/*
 	 * Return the orders which are not shipped(0) yet
 	 */
-	String getAllOrders() {
+	String getAllOrders(int status) {
 		ResultSet res = null; // SQL query result set pointer
 		String output = null;
 		String msgString = null; // String for displaying non-error messages
@@ -183,7 +186,7 @@ public class ShippingActions {
 			while (res.next()) {
 				int shippedStatus = Integer.parseInt(res.getString(8));
 
-				if (shippedStatus == 0) {
+				if (shippedStatus == status) {
 					msgString = "ORDER # " + res.getString(1) + " : "
 							+ res.getString(2) + " : " + res.getString(3)
 							+ " : " + res.getString(4);
@@ -193,21 +196,23 @@ public class ShippingActions {
 
 			} // while
 
+                        /*
 			// notify the user all went well and enable the select order
 			// button
 			msgString += "\nPENDING ORDERS RETRIEVED...";
 			output += (msgString);
+                        */
 
 		} catch (Exception e) {
 
 			output += "\nProblem getting tree inventory:: " + e;
-			System.out.println(output);
+			//System.out.println(output);
 		} // end try-catch
 		
 		return output;
 	}
 
-
+        /*
 	public static void main(String[] args) {
 		ShippingActions sa = new ShippingActions();
 		sa.getOrders("25");
@@ -217,4 +222,5 @@ public class ShippingActions {
 		sa.getAllOrders();
 		return;
 	}
+        */
 }
