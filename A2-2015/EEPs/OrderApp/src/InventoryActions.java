@@ -3,6 +3,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.File;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -38,7 +40,9 @@ public class InventoryActions {
 			System.out.println("\n" + msgString);
 
 			// define the data source, read from file in the same folder
-			InputStream is = new FileInputStream("C:\\Users\\Shaunak\\Documents\\GitHub\\softArch\\A2-2015\\EEPs\\OrderApp\\src\\DatabaseIP");
+			URL ipPath = getClass().getResource("DatabaseIP");
+                        File ipFile = new File(ipPath.getPath());
+                        InputStream is = new FileInputStream(ipFile);
 			String line;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					is, "utf-8"));
