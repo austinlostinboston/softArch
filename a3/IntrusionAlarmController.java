@@ -169,30 +169,21 @@ public class IntrusionAlarmController
 				{
 					Msg = eq.GetMessage();
 
-					if ( Msg.GetMessageId() == 200 )
+					if ( Msg.GetMessageId() == 101 )
 					{
-						if (Msg.GetMessage().equalsIgnoreCase("W1")) // humidifier on
-						{
-							mw.WriteMessage("Received window break on message" );
-							wAlarm=true;
-							ConfirmMessage( em, "W1" );
-						} // if
+						mw.WriteMessage("Alarm!!! Window break!!!" );
 
-						if (Msg.GetMessage().equalsIgnoreCase("D1")) // humidifier off
-						{
-							mw.WriteMessage("Received door break on message" );
-							dAlarm=true;
-							ConfirmMessage( em, "D1" );
-						} // if
+					} // if
+					
+					if ( Msg.GetMessageId() == 102 )
+					{
+						mw.WriteMessage("Alarm!!! Door break!!!" );
 
-						if (Msg.GetMessage().equalsIgnoreCase("M1")) // dehumidifier on
-						{
-							mw.WriteMessage("Received window break on message" );
-							mAlarm=true;
-							
-							ConfirmMessage( em, "M1" );
-
-						} // if
+					} // if
+					
+					if ( Msg.GetMessageId() == 103 )
+					{
+						mw.WriteMessage("Alarm!!! Motion detected!!!" );
 
 					} // if
 
@@ -230,15 +221,15 @@ public class IntrusionAlarmController
 
 				// Update the lamp status
 
-				if (wAlarm){
-					mw.WriteMessage("Alarm! Window Break! Alarm!" );
-				}
-				if (dAlarm){
-					mw.WriteMessage("Alarm! Door Break! Alarm!" );
-				}
-				if (mAlarm){
-					mw.WriteMessage("Alarm! Motion Detected! Alarm!" );
-				}
+//				if (wAlarm){
+//					mw.WriteMessage("Alarm! Window Break! Alarm!" );
+//				}
+//				if (dAlarm){
+//					mw.WriteMessage("Alarm! Door Break! Alarm!" );
+//				}
+//				if (mAlarm){
+//					mw.WriteMessage("Alarm! Motion Detected! Alarm!" );
+//				}
 				
 				
 				try
@@ -263,43 +254,6 @@ public class IntrusionAlarmController
 
 	} // main
 
-	/***************************************************************************
-	* CONCRETE METHOD:: ConfirmMessage
-	* Purpose: This method posts the specified message to the specified message
-	* manager. This method assumes an message ID of -4 which indicates a confirma-
-	* tion of a command.
-	*
-	* Arguments: MessageManagerInterface ei - this is the messagemanger interface
-	*			 where the message will be posted.
-	*
-	*			 string m - this is the received command.
-	*
-	* Returns: none
-	*
-	* Exceptions: None
-	*
-	***************************************************************************/
-
-	static private void ConfirmMessage(MessageManagerInterface ei, String m )
-	{
-		// Here we create the message.
-
-		Message msg = new Message( (int) -200, m );
-
-		// Here we send the message to the message manager.
-
-		try
-		{
-			ei.SendMessage( msg );
-
-		} // try
-
-		catch (Exception e)
-		{
-			System.out.println("Error Confirming Message:: " + e);
-
-		} // catch
-
-	} // PostMessage
+	
 
 } // HumidityControllers

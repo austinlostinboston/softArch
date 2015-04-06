@@ -162,15 +162,17 @@ public class SprinklerController
 						if (Msg.GetMessage().equalsIgnoreCase("S1"))
 						{
 							mw.WriteMessage("Received Sprinkler on message" );
+							mw.WriteMessage("Sprinkler is working" );
 							sAlarm=true;
-							ConfirmMessage( em, "S1" );
+							//ConfirmMessage( em, "S1" );
 						} // if
 
 						if (Msg.GetMessage().equalsIgnoreCase("S0"))
 						{
 							mw.WriteMessage("Received Sprinkler off message" );
+							mw.WriteMessage("Sprinkler is not working" );
 							sAlarm=false;
-							ConfirmMessage( em, "S0" );
+							//ConfirmMessage( em, "S0" );
 						} // if
 						
 					} // if
@@ -209,9 +211,6 @@ public class SprinklerController
 
 				// Update the lamp status
 
-				if (sAlarm){
-					mw.WriteMessage("Sprinkler On!!" );
-				}
 				
 				
 				try
@@ -236,43 +235,6 @@ public class SprinklerController
 
 	} // main
 
-	/***************************************************************************
-	* CONCRETE METHOD:: ConfirmMessage
-	* Purpose: This method posts the specified message to the specified message
-	* manager. This method assumes an message ID of -4 which indicates a confirma-
-	* tion of a command.
-	*
-	* Arguments: MessageManagerInterface ei - this is the messagemanger interface
-	*			 where the message will be posted.
-	*
-	*			 string m - this is the received command.
-	*
-	* Returns: none
-	*
-	* Exceptions: None
-	*
-	***************************************************************************/
 
-	static private void ConfirmMessage(MessageManagerInterface ei, String m )
-	{
-		// Here we create the message.
-
-		Message msg = new Message( (int) -220, m );
-
-		// Here we send the message to the message manager.
-
-		try
-		{
-			ei.SendMessage( msg );
-
-		} // try
-
-		catch (Exception e)
-		{
-			System.out.println("Error Confirming Message:: " + e);
-
-		} // catch
-
-	} // PostMessage
 
 } // SprinklerController

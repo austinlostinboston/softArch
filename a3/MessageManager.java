@@ -46,6 +46,7 @@ public class MessageManager extends UnicastRemoteObject implements RMIMessageMan
 
 			InetAddress LocalHostAddress = InetAddress.getLocalHost();
 			String MessageManagerIpAddress = LocalHostAddress.getHostAddress();
+
 			MessageManager em = new MessageManager();
 	      	Naming.bind("MessageManager", em);
 

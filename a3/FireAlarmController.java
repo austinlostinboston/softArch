@@ -157,21 +157,9 @@ public class FireAlarmController
 				{
 					Msg = eq.GetMessage();
 
-					if ( Msg.GetMessageId() == 210 )
+					if ( Msg.GetMessageId() == 111 )
 					{
-						if (Msg.GetMessage().equalsIgnoreCase("F1"))
-						{
-							mw.WriteMessage("Received Fire Alarm on message" );
-							fAlarm=true;
-							ConfirmMessage( em, "F1" );
-						} // if
-
-						if (Msg.GetMessage().equalsIgnoreCase("F0"))
-						{
-							mw.WriteMessage("Received Fire Alarm off message" );
-							fAlarm=false;
-							ConfirmMessage( em, "F0" );
-						} // if
+						mw.WriteMessage("Alarm!!! Fire!!! Fire!!!" );
 						
 					} // if
 
@@ -236,43 +224,6 @@ public class FireAlarmController
 
 	} // main
 
-	/***************************************************************************
-	* CONCRETE METHOD:: ConfirmMessage
-	* Purpose: This method posts the specified message to the specified message
-	* manager. This method assumes an message ID of -4 which indicates a confirma-
-	* tion of a command.
-	*
-	* Arguments: MessageManagerInterface ei - this is the messagemanger interface
-	*			 where the message will be posted.
-	*
-	*			 string m - this is the received command.
-	*
-	* Returns: none
-	*
-	* Exceptions: None
-	*
-	***************************************************************************/
-
-	static private void ConfirmMessage(MessageManagerInterface ei, String m )
-	{
-		// Here we create the message.
-
-		Message msg = new Message( (int) -210, m );
-
-		// Here we send the message to the message manager.
-
-		try
-		{
-			ei.SendMessage( msg );
-
-		} // try
-
-		catch (Exception e)
-		{
-			System.out.println("Error Confirming Message:: " + e);
-
-		} // catch
-
-	} // PostMessage
+	
 
 } // FireAlarmController

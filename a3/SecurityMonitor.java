@@ -24,9 +24,10 @@
 ******************************************************************************************************************/
 import InstrumentationPackage.*;
 import MessagePackage.*;
+
 import java.util.*;
 
-public class IntrusionMonitor extends Thread
+public class SecurityMonitor extends Thread
 {
 	private MessageManagerInterface em = null;	// Interface object to the message manager
 	private String MsgMgrIP = null;				// Message Manager IP address
@@ -38,15 +39,15 @@ public class IntrusionMonitor extends Thread
 	MessageWindow mw = null;					// This is the message window
 	Indicator ti;								// Temperature indicator
 	Indicator hi;								// Humidity indicator
-
-	//private boolean fireON=true;
+	SecurityConsole sc=null;
+			//private boolean fireON=true;
 	private boolean intrusionON=true;
 	
 	
-	public IntrusionMonitor()
+	public SecurityMonitor(SecurityConsole sc)
 	{
 		// message manager is on the local system
-
+		this.sc=sc;
 		try
 		{
 			// Here we create an message manager interface object. This assumes
@@ -65,10 +66,10 @@ public class IntrusionMonitor extends Thread
 
 	} //Constructor
 
-	public IntrusionMonitor( String MsgIpAddress )
+	public SecurityMonitor( String MsgIpAddress, SecurityConsole sc )
 	{
 		// message manager is not on the local system
-
+		this.sc=sc;
 		MsgMgrIP = MsgIpAddress;
 
 		try
@@ -87,6 +88,8 @@ public class IntrusionMonitor extends Thread
 		} // catch
 
 	} // Constructor
+
+	
 
 	public void run()
 	{
@@ -109,8 +112,8 @@ public class IntrusionMonitor extends Thread
 			// indicators are placed directly to the right, one on top of the other
 
 			mw = new MessageWindow("Security Monitoring Console", 0, 0);
-			ti = new Indicator ("TEMP UNK", mw.GetX()+ mw.Width(), 0);
-			hi = new Indicator ("HUMI UNK", mw.GetX()+ mw.Width(), (int)(mw.Height()/2), 2 );
+			//ti = new Indicator ("TEMP UNK", mw.GetX()+ mw.Width(), 0);
+			//hi = new Indicator ("HUMI UNK", mw.GetX()+ mw.Width(), (int)(mw.Height()/2), 2 );
 
 			mw.WriteMessage( "Registered with the message manager." );
 
@@ -164,62 +167,32 @@ public class IntrusionMonitor extends Thread
 
 					if ( Msg.GetMessageId() == 101 ) // window break reading
 					{
-						try
-						{
-							
-							if (intrusionON){
-								AlarmOn(201);
-							}
-
-						} // try
-
-						catch( Exception e )
-						{
-							mw.WriteMessage("Error getting window break event " + e);
-
-						} // catch
+						
+						mw.WriteMessage("Window break detected! ");
+						
 
 					} // if
 
 					if ( Msg.GetMessageId() == 102 ) // Humidity reading
 					{
-						try
-						{
-							if (intrusionON){
-								AlarmOn(202);
-							}
-
-						} // try
-
-						catch( Exception e )
-						{
-							mw.WriteMessage("Error getting door break event " + e);
-
-						} // catch
+						mw.WriteMessage("Door break detected! ");
 
 					} // if
 
 					if ( Msg.GetMessageId() == 103 ) // Humidity reading
 					{
-						try
-						{
-							if (intrusionON){
-								AlarmOn(203);
-							}
-							
-
-						} // try
-
-						catch( Exception e )
-						{
-							mw.WriteMessage("Error getting motion event " + e);
-
-						} // catch
+						mw.WriteMessage("Motion detected! ");
 
 					} // if
 					
 					
-					
+					if ( Msg.GetMessageId() == 111 ) // fire reading
+					{
+						
+						mw.WriteMessage("Fire detected! ");
+						sc.fireOption();
+						
+					}
 					
 					// If the message ID == 99 then this is a signal that the simulation
 					// is to end. At this point, the loop termination flag is set to
@@ -246,8 +219,8 @@ public class IntrusionMonitor extends Thread
 						// Get rid of the indicators. The message panel is left for the
 						// user to exit so they can see the last message posted.
 
-						hi.dispose();
-						ti.dispose();
+						//hi.dispose();
+						//ti.dispose();
 
 					} // if
 
@@ -285,52 +258,7 @@ public class IntrusionMonitor extends Thread
 
 	
 
-	private void AlarmOn(int signal) {
-		Message msg;
-
-		if ( signal==201 )
-		{
-			msg = new Message( 200, "W1" );
-
-		} else if (signal == 202){
-
-			msg = new Message( 200, "D1" );
-
-		} else if (signal == 203){
-
-			msg = new Message( 200, "M1" );
-
-		} else{
-			msg = new Message( 210, "F" );
-		}
-
-		// Here we send the message to the message manager.
-
-		try
-		{
-			em.SendMessage( msg );
-
-		} // try
-
-		catch (Exception e)
-		{
-			System.out.println("Error sending alarm message::  " + e);
-
-		} // catch
-		
-	}
-
-	/***************************************************************************
-	* CONCRETE METHOD:: IsRegistered
-	* Purpose: This method returns the registered status
-	*
-	* Arguments: none
-	*
-	* Returns: boolean true if registered, false if not registered
-	*
-	* Exceptions: None
-	*
-	***************************************************************************/
+	
 
 	public boolean IsRegistered()
 	{
@@ -368,102 +296,91 @@ public class IntrusionMonitor extends Thread
 	
 
 	public void setIntrusionAlarm(boolean b) {
+		if (!intrusionON && b){
+			mw.WriteMessage( "Start! Intrusion detection system !" );
+			armIntrusion();
+			
+		}
+		else if (intrusionON && !b){
+			mw.WriteMessage( "Stop! Intrusion detection system !" );
+			disarmIntrusion();
+		}
 		this.intrusionON=b;
 		
 	}
 
-	public void startWAlarms() {
-		Message msg=new Message(200, "W1");
+	
+	private void disarmIntrusion() {
+		Message msg=new Message( -70 );;
+
+		
 		try
 		{
 			em.SendMessage( msg );
+
 		} // try
+
 		catch (Exception e)
 		{
 			System.out.println("Error sending alarm message::  " + e);
+
 		} // catch
 		
 	}
 
-	public void startMAlarms() {
-		Message msg=new Message(200, "M1");
+	private void armIntrusion() {
+		Message msg=new Message( 70 );;
+
+		
 		try
 		{
 			em.SendMessage( msg );
+
 		} // try
+
 		catch (Exception e)
 		{
 			System.out.println("Error sending alarm message::  " + e);
+
 		} // catch
 		
 	}
 
-	public void startDAlarms() {
-		Message msg=new Message(200, "D1");
+	public void sprinklerOn() {
+		Message msg=new Message( 220, "S1" );;
+
+		
 		try
 		{
 			em.SendMessage( msg );
+
 		} // try
+
 		catch (Exception e)
 		{
 			System.out.println("Error sending alarm message::  " + e);
+
 		} // catch
 		
 	}
 
-	public void stopAllAlarms() {
-		
-		stopWAlarms();
-		stopMAlarms();
-		stopDAlarms();
-		
-	}
+	public void sprinklerOff() {
+		Message msg=new Message( 220, "S0" );;
 
-	public void stopDAlarms() {
-		Message msg=new Message(200, "D0");
+		
 		try
 		{
 			em.SendMessage( msg );
+
 		} // try
+
 		catch (Exception e)
 		{
 			System.out.println("Error sending alarm message::  " + e);
+
 		} // catch
 		
 	}
-
-	public void stopMAlarms() {
-		Message msg=new Message(200, "M0");
-		try
-		{
-			em.SendMessage( msg );
-		} // try
-		catch (Exception e)
-		{
-			System.out.println("Error sending alarm message::  " + e);
-		} // catch
-		
-	}
-
-	public void stopWAlarms() {
-		Message msg=new Message(200, "W0");
-		try
-		{
-			em.SendMessage( msg );
-		} // try
-		catch (Exception e)
-		{
-			System.out.println("Error sending alarm message::  " + e);
-		} // catch
-		
-	}
-
-	public void startAllAlarms() {
-		startDAlarms();
-		startWAlarms();
-		startMAlarms();
-		
-		
-	}
+	
 
 } // ECSMonitor

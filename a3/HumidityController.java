@@ -32,7 +32,7 @@ import InstrumentationPackage.*;
 import MessagePackage.*;
 import java.util.*;
 
-class HumidityController
+public class HumidityController
 {
 	public static void main(String args[])
 	{

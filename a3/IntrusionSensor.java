@@ -1,5 +1,5 @@
 /******************************************************************************************************************
-* File:FireDetectionSensor.java
+* File:TemperatureSensor.java
 * Course: 17655
 * Project: Assignment A3
 * Copyright: Copyright (c) 2009 Carnegie Mellon University
@@ -8,14 +8,17 @@
 *
 * Description:
 *
-* This class simulates a Fire DetectionSensor sensor.
+* This class simulates a temperature sensor. It polls the message manager for messages corresponding to changes in state
+* of the heater or chiller and reacts to them by trending the ambient temperature up or down. The current ambient
+* room temperature is posted to the message manager.
 *
 * Parameters: IP address of the message manager (on command line). If blank, it is assumed that the message manager is
 * on the local machine.
 *
 * Internal Methods:
-*	boolean FireDetection()
-*   void postFireDetection(MessageManagerInterface ei)
+*	float GetRandomNumber()
+*	boolean CoinToss()
+*   void PostTemperature(MessageManagerInterface ei, float temperature )
 *
 ******************************************************************************************************************/
 import InstrumentationPackage.*;
@@ -23,7 +26,7 @@ import MessagePackage.*;
 
 import java.util.*;
 
-public class FireDetectionSensor
+public class IntrusionSensor
 {
 	public static void main(String args[])
 	{
@@ -32,13 +35,9 @@ public class FireDetectionSensor
 		MessageQueue eq = null;			// Message Queue
 		int MsgId = 0;					// User specified message ID
 		MessageManagerInterface em = null;// Interface object to the message manager
-		
-		//boolean ChillerState = false;	// Chiller state: false == off, true == on
-		//float CurrentTemperature;		// Current simulated ambient room temperature
-		//float DriftValue;				// The amount of temperature gained or lost
 		int	Delay = 2500;				// The loop delay (2.5 seconds)
 		boolean Done = false;			// Loop termination flag
-
+		boolean systemON=true;			//flag intrusion system is on/off
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
 		/////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +55,7 @@ public class FireDetectionSensor
 
 				em = new MessageManagerInterface();
 			}
+
 			catch (Exception e)
 			{
 				System.out.println("Error instantiating message manager interface: " + e);
@@ -100,8 +100,7 @@ public class FireDetectionSensor
 								 	//of a percentage of the screen height
 			float WinPosY = 0.3f; 	//This is the Y position of the message window in terms
 								 	//of a percentage of the screen height
-			//TODO
-			MessageWindow mw = new MessageWindow("Fire Detection Sensor", WinPosX, WinPosY );
+			MessageWindow mw = new MessageWindow("Intrusion Sensor", WinPosX, WinPosY );
 
 			mw.WriteMessage("Registered with the message manager." );
 
@@ -118,7 +117,7 @@ public class FireDetectionSensor
 
 			} // catch
 	    	//TODO
-			mw.WriteMessage("\nInitializing Fire Detection Simulation::" );
+			mw.WriteMessage("\nInitializing Door Break Simulation::" );
 
 			//CurrentTemperature = (float)50.00;
 
@@ -163,8 +162,20 @@ public class FireDetectionSensor
 				{
 					Msg = eq.GetMessage();
 
-					
+					//receive message to close sensor
+					if ( Msg.GetMessageId() == -70 )
+					{
+						mw.WriteMessage("Stop sensor" );
+						systemON=false;
+					} // if
 
+					// start sensor
+					if ( Msg.GetMessageId() == 70 )
+					{
+						mw.WriteMessage("Start sensor" );
+						systemON=true;
+					} // if
+					
 					// If the message ID == 99 then this is a signal that the simulation
 					// is to end. At this point, the loop termination flag is set to
 					// true and this process unregisters from the message manager.
@@ -191,15 +202,29 @@ public class FireDetectionSensor
 
 				} // for
 
-
-				if (FireDetection()){
-					
-					mw.WriteMessage("   Fire Detected!" );
-					
-					
-					
-					PostFireDetection( em );
+				// Now we trend the temperature according to the status of the
+				// heater/chiller controller.
+				if (systemON){
+					if (DoorBroken()){
+						//TODO
+						mw.WriteMessage("   Door Break Detected!" );
+						//mw.WriteMessage("   Drift Value Set:: " + D);
+						PostDoorBreak( em );
+					}
+					if (Motion()){
+						//TODO
+						mw.WriteMessage("   Motion Detected!" );
+						//mw.WriteMessage("   Drift Value Set:: " + D);
+						PostMotion( em );
+					}
+					if (WindowBroken()){
+						//TODO
+						mw.WriteMessage("   Window Break Detected!" );
+						//mw.WriteMessage("   Drift Value Set:: " + D);
+						PostWindowBreak( em );
+					}
 				}
+				
 				
 				try
 				{
@@ -223,16 +248,16 @@ public class FireDetectionSensor
 
 	} // main
 
-	private static boolean FireDetection() {
+	private static boolean DoorBroken() {
 		//TODO
 		if (Math.random()<0.2){
 			return true;
 		}
 		return false;
 	}
-
-	private static void PostFireDetection(MessageManagerInterface em) {
-		Message msg = new Message( (int) 111);
+	
+	private static void PostDoorBreak(MessageManagerInterface em) {
+		Message msg = new Message( (int) 102);
 
 		// Here we send the message to the message manager.
 
@@ -245,10 +270,71 @@ public class FireDetectionSensor
 
 		catch (Exception e)
 		{
-			System.out.println( "Error Posting FireDetection:: " + e );
+			System.out.println( "Error Posting Door Break:: " + e );
+
+		} // catch
+		
+	}
+
+	private static boolean Motion() {
+		//TODO
+		if (Math.random()<0.2){
+			return true;
+		}
+		return false;
+	}
+	
+	
+	private static void PostMotion(MessageManagerInterface em) {
+		Message msg = new Message( (int) 103);
+
+		// Here we send the message to the message manager.
+
+		try
+		{
+			em.SendMessage( msg );
+			//System.out.println( "Sent Temp Message" );
+
+		} // try
+
+		catch (Exception e)
+		{
+			System.out.println( "Error Posting Motion:: " + e );
 
 		} // catch
 		
 	}
 	
-} // FireDetectionSensor
+	private static boolean WindowBroken() {
+		//TODO
+		if (Math.random()<0.2){
+			return true;
+		}
+		return false;
+	}
+	/*
+	 * window break 101
+	 */
+	//TODO
+	private static void PostWindowBreak(MessageManagerInterface em) {
+		Message msg = new Message( (int) 101);
+
+		// Here we send the message to the message manager.
+
+		try
+		{
+			em.SendMessage( msg );
+			//System.out.println( "Sent Temp Message" );
+
+		} // try
+
+		catch (Exception e)
+		{
+			System.out.println( "Error Posting Window Break:: " + e );
+
+		} // catch
+		
+	}
+
+	
+} // TemperatureSensor
