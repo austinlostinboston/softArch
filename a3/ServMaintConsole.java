@@ -66,20 +66,20 @@ public class ServMaintConsole
                 else
                     System.out.println( "Using local message manger \n" );
 
-                System.out.println( "Select Option: \n" );
-                System.out.println( "1: List Device Information ");
-                System.out.println( "2: Stop System ");
-                System.out.print( "\n>>>> " );
-                Option = UserInput.KeyboardReadString();
+                System.out.println( "To shut the system, press [CTRL] + [C] \n" );
+                // System.out.println( "1: List Device Information ");
+                // System.out.println( "2: Stop System ");
+                // System.out.print( "\n>>>> " );
+                // Option = UserInput.KeyboardReadString();
 
                 //////////// option 1 ////////////
-                if ( Option.equals( "1" ) ) {
+                // if ( Option.equals( "1" ) ) {
                     System.out.println( "To go back to the previous menu, press R at any time.\n" );
                     System.out.println( "Service Maintenance Console Device Manager");
                     System.out.println( "Below is a list of all devices connected to your ECS.\n");
-                    System.out.println( "  \tDevice\t\tDevice     \t\t\t\t\t\tLast          \t      ");
-                    System.out.println( "ID\tName  \t\tDescription\t\t\t\t\t\tResponse (sec)\tStatus");
-                    System.out.println( "-------------------------------------------------------------------------------------------------------");
+                    System.out.println( "     Device                     Device                                    Last                     ");
+                    System.out.println( "ID   Name                       Description                               Response (sec)     Status");
+                    System.out.println( "---------------------------------------------------------------------------------------------------");
 
                     int oldDeviceCount = 0;
 
@@ -97,7 +97,7 @@ public class ServMaintConsole
                         Vector<Integer> deviceIds = Devices.get(0);
                         Vector<String> deviceNames = Devices.get(1);
                         Vector<Date> deviceTimes = Devices.get(2);
-                        Vector<String> deviceDesc = Devices.get(3);
+                        Vector<String> deviceDescs = Devices.get(3);
 
                         // Number of connected devices
                         int deviceCount = deviceIds.size();
@@ -140,37 +140,53 @@ public class ServMaintConsole
                             // Clear that line
                             System.out.print(ANSI_CSI + "K");
 
+                            int nameLength = 25;
+                            int descLength = 48;
+
+                            int deviceID = deviceIds.get(i);
+
+                            String deviceName = deviceNames.get(i);
+                            for (int j =0; j < nameLength - deviceName.length(); j++) {
+                                deviceName += " ";
+                            }
+
+                            String deviceDesc = deviceDescs.get(i);
+                            //deviceDesc += "%" + (nameLength - deviceDesc.length()) + "s");
+
                             // Print new line
-                            System.out.println( idFmt.format(deviceIds.get(i)) + "\t" + deviceNames.get(i) + "\t"  
-                                + deviceDesc.get(i) + "\t" + timeFmt.format(diffSec) + "\t\t" + status);
+                            //System.out.println( idFmt.format(deviceID) + "\t" + deviceName + "\t"  
+                            //    + deviceDesc + "\t" + timeFmt.format(diffSec) + "\t\t" + status);
+
+                            System.out.printf("%-3.3s  %-25.25s  %-40.40s  %-18.18s %-20.20s\n",idFmt.format(deviceID),
+                                deviceName,deviceDesc,timeFmt.format(diffSec),status);
                         }
 
                         // Updates dashboard every second
                         try {
-                            Thread.sleep( 1000 );
+                            Thread.sleep( 1500 );
                         } catch( Exception e ) {
                             System.out.println( "Service Monitor Sleep error:: " + e );
                         } // catch
                     }
-                }
+                //}
 
 
-                //////////// option X ////////////
-                if ( Option.equalsIgnoreCase( "X" ) )
-                {
-                    // Here the user is done, so we set the Done flag and halt
-                    // the environmental control system. The monitor provides a method
-                    // to do this. Its important to have processes release their queues
-                    // with the message manager. If these queues are not released these
-                    // become dead queues and they collect messages and will eventually
-                    // cause problems for the message manager.
+                // //////////// option X ////////////
+                // if ( Option.equalsIgnoreCase( "X" ) )
+                // {
+                //     // Here the user is done, so we set the Done flag and halt
+                //     // the environmental control system. The monitor provides a method
+                //     // to do this. Its important to have processes release their queues
+                //     // with the message manager. If these queues are not released these
+                //     // become dead queues and they collect messages and will eventually
+                //     // cause problems for the message manager.
 
-                    Monitor.Halt();
-                    Done = true;
-                    System.out.println( "\nConsole Stopped... Exit monitor mindow to return to command prompt." );
-                    Monitor.Halt();
+                //     Monitor.Halt();
+                //     Done = true;
+                //     System.out.println( "\nConsole Stopped... Exit monitor mindow to return to command prompt." );
+                //     Monitor.Halt();
 
-                } // if
+                // } // if
 
             } // while
 

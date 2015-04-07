@@ -102,7 +102,7 @@ public class Inventory extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24));
         jLabel1.setText("EEPs Inventory Management Application");
 
         jLabel2.setText("Product ID");
@@ -112,6 +112,13 @@ public class Inventory extends javax.swing.JFrame {
         jLabel4.setText("Quantity");
 
         jTextField1.setText("localhost");
+        jTextField1.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jTextField1InputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
 
         jButton1.setText("Add Item");
         jButton1.setActionCommand("jButton1");
@@ -160,7 +167,7 @@ public class Inventory extends javax.swing.JFrame {
 
         jLabel8.setText("Decrements inventory count of item selected from the list");
 
-        jButton5.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jButton5.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         jButton5.setText("Back to Main Menu");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -216,7 +223,7 @@ public class Inventory extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 330, Short.MAX_VALUE))
+                                        .addGap(0, 56, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jTextField3)
@@ -236,29 +243,29 @@ public class Inventory extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                                                 .addGap(18, 18, 18)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addComponent(jLabel7)
-                                                        .addGap(0, 15, Short.MAX_VALUE))
-                                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 380, Short.MAX_VALUE)))
+                                                        .addGap(0, 168, Short.MAX_VALUE))
+                                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jRadioButton7)
                                                     .addComponent(jRadioButton6))
-                                                .addGap(0, 0, Short.MAX_VALUE))))))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1499, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1499, Short.MAX_VALUE)
+                                                .addGap(0, 578, Short.MAX_VALUE))))))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(17, 17, 17)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 1121, Short.MAX_VALUE))))
+                                .addGap(0, 853, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(416, 416, 416)
                         .addComponent(jLabel1))
@@ -887,6 +894,11 @@ public class Inventory extends javax.swing.JFrame {
         jRadioButton6.setSelected(false);
         jRadioButton7.setSelected(true);
     }//GEN-LAST:event_jRadioButton7ActionPerformed
+
+    private void jTextField1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTextField1InputMethodTextChanged
+        MetaData.inventoryIP = jTextField1.getText();
+        System.out.println("changed IP in Inventory");
+    }//GEN-LAST:event_jTextField1InputMethodTextChanged
 
     /**
     * @param args the command line arguments

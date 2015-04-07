@@ -51,6 +51,8 @@ public class InventoryActions {
                     // create a connection to the db
                     DBConn = DriverManager.getConnection(sourceURL, "remote","remote_pass");
 
+
+
                     // Establish connection to LeafTech's inventory db
                     String sourceURL2 = "jdbc:mysql://" + SQLServerIP + ":3306/leaftech";
 
