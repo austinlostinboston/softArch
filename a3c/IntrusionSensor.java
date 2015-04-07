@@ -40,8 +40,8 @@ public class IntrusionSensor
 		boolean systemON=true;			//flag intrusion system is on/off
 
 		int ComponentId = 04;				// An id used to identify this as a console to the service maintenance console
-		String ServeMaintName = "ECS";		// A name to display in the Service Maintenance Console
-		String ServeMaintDesc = "Used to monitor and control the temp. and humitiy."; // Description
+		String ServeMaintName = "Intrusion";		// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Detects when there is an intusion"; // Description
 
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
