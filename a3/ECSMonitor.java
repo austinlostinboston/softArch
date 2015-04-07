@@ -21,7 +21,7 @@
 *	static private void Humidifier(MessageManagerInterface ei, boolean ON )
 *	static private void Dehumidifier(MessageManagerInterface ei, boolean ON )
 *
-* 01,02 34,
+* 01,02,03   34,35
 ******************************************************************************************************************/
 import InstrumentationPackage.*;
 import MessagePackage.*;
@@ -113,13 +113,13 @@ class ECSMonitor extends Thread
 			ti = new Indicator ("TEMP UNK", mw.GetX()+ mw.Width(), 0);
 			hi = new Indicator ("HUMI UNK", mw.GetX()+ mw.Width(), (int)(mw.Height()/2), 2 );
 
-			// Attempts initial connection/registration to the system
-			em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
-
 			mw.WriteMessage( "Registered with the message manager." );
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -137,13 +137,13 @@ class ECSMonitor extends Thread
 
 			while ( !Done )
 			{
-				// Here we send a heartbeat to let the system know that it's working
-				em.SendHeartBeat(ComponentId);
-
 				// Here we get our message queue from the message manager
 
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
+
 					eq = em.GetMessageQueue();
 
 				} // try
