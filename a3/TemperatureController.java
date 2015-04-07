@@ -46,6 +46,10 @@ class TemperatureController
 		int	Delay = 2500;					// The loop delay (2.5 seconds)
 		boolean Done = false;				// Loop termination flag
 
+		int ComponentId = 38;					// An id used to identify this as a console to the service maintenance console
+		String ServeMaintName = "Temperature";	// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Turns on heater/chiller based on temp"; // Description
+
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
 		/////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +126,9 @@ class TemperatureController
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -142,6 +149,9 @@ class TemperatureController
 
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
+
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -224,6 +234,9 @@ class TemperatureController
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+
 							em.UnRegister();
 
 				    	} // try

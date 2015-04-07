@@ -21,7 +21,7 @@
 *	static private void Humidifier(MessageManagerInterface ei, boolean ON )
 *	static private void Dehumidifier(MessageManagerInterface ei, boolean ON )
 *
-* 01,02,03,04,05   34,35,36     67,68
+* 01,02,03,04,05,06,07   34,35,36,37,38     67,68
 ******************************************************************************************************************/
 import InstrumentationPackage.*;
 import MessagePackage.*;

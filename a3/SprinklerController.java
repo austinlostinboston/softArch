@@ -36,6 +36,10 @@ public class SprinklerController
 		boolean Done = false;				// Loop termination flag
 
 		boolean sAlarm=false;
+
+		int ComponentId = 37;				// An id used to identify this as a console to the service maintenance console
+		String ServeMaintName = "Sprinkler";		// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Sprays water when fire occurs"; // Description
 		
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -114,6 +118,9 @@ public class SprinklerController
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -133,6 +140,9 @@ public class SprinklerController
 			{
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
+
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -187,6 +197,9 @@ public class SprinklerController
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+
 							em.UnRegister();
 
 				    	} // try
