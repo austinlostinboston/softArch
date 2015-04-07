@@ -48,6 +48,10 @@ public class IntrusionAlarmController
 		boolean wAlarm=false;
 		boolean dAlarm=false;
 		boolean mAlarm=false;
+
+		int ComponentId = 36;				// An id used to identify this as a console to the service maintenance console
+		String ServeMaintName = "Intrusion Alarm";		// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Triggers security alarm"; // Description
 		
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -126,6 +130,9 @@ public class IntrusionAlarmController
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -145,6 +152,9 @@ public class IntrusionAlarmController
 			{
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
+
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -197,6 +207,9 @@ public class IntrusionAlarmController
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+							
 							em.UnRegister();
 
 				    	} // try

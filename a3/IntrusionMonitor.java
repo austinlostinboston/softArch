@@ -39,6 +39,10 @@ public class IntrusionMonitor extends Thread
 	Indicator ti;								// Temperature indicator
 	Indicator hi;								// Humidity indicator
 
+	private int ComponentId = 69;				// An id used to identify this as a console to the service maintenance console
+	private String ServeMaintName = "Intrusion";		// A name to display in the Service Maintenance Console
+	private String ServeMaintDesc = "Displays intrusion related info"; // Description
+
 	//private boolean fireON=true;
 	private boolean intrusionON=true;
 	
@@ -116,6 +120,9 @@ public class IntrusionMonitor extends Thread
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -137,6 +144,9 @@ public class IntrusionMonitor extends Thread
 
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
+
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -231,6 +241,9 @@ public class IntrusionMonitor extends Thread
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+							
 							em.UnRegister();
 
 				    	} // try
