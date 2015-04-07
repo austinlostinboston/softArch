@@ -46,6 +46,11 @@ public class SecurityConsole
 	String inputModel="N";
 	Thread thread1;
 	Thread thread2;
+
+	int ComponentId = 36;				// An id used to identify this as a console to the service maintenance console
+	String ServeMaintName = "Intrusion Alarm";		// A name to display in the Service Maintenance Console
+	String ServeMaintDesc = "Triggers security alarm"; // Description
+
 	public SecurityConsole(String[] args) {
 		// TODO Auto-generated constructor stub
 	

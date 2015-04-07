@@ -42,6 +42,10 @@ public class MotionSensor
 		int	Delay = 2500;				// The loop delay (2.5 seconds)
 		boolean Done = false;			// Loop termination flag
 
+		int ComponentId = 05;				// An id used to identify this as a console to the service maintenance console
+		String ServeMaintName = "Motion";		// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Detects movement at prohibited times"; // Description
+
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
 		/////////////////////////////////////////////////////////////////////////////////
@@ -111,6 +115,9 @@ public class MotionSensor
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -143,6 +150,9 @@ public class MotionSensor
 				
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
+
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -183,6 +193,9 @@ public class MotionSensor
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+							
 							em.UnRegister();
 
 				    	} // try
