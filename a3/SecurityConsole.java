@@ -111,63 +111,38 @@ public class SecurityConsole
 		
 	
 		if (intrusionON){
-			System.out.println( "Security system is working now: \n" );
+			System.out.println( "Security system is working now: " );
 			System.out.println( "Select an Option: \n" );
 			System.out.println( "1: Disarm the intrusion detection system" );
-			//System.out.println( "2a: Alarm all the intrusion detection system" );
-			//System.out.println( "2w: Alarm window break detection system" );
-			//System.out.println( "2d: Alarm door break detection system" );
-			//System.out.println( "2m: Alarm motion detection system" );
-			//System.out.println( "3a: Silence all the intrusion alarms" );
-			//System.out.println( "3w: DisAlarm window break detection system" );
-			//System.out.println( "3d: DisAlarm door break detection system" );
-			//System.out.println( "3m: DisAlarm motion detection system" );
 		}else{
-			System.out.println( "Security system is not working now: \n" );
+			System.out.println( "Security system is not working now:" );
 			System.out.println( "Select an Option: \n" );
-			//System.out.println( "1: Enable the intrusion detection system" );
 			System.out.println( "1: Enable the intrusion detection system" );
-			//System.out.println( "2a: Alarm all the intrusion detection system" );
-			//System.out.println( "2w: Alarm window break detection system" );
-			//System.out.println( "2d: Alarm door break detection system" );
-			//System.out.println( "2m: Alarm motion detection system" );
-			//System.out.println( "3a: DisAlarm all the intrusion detection system" );
-			//System.out.println( "3w: DisAlarm window break detection system" );
-			//System.out.println( "3d: DisAlarm door break detection system" );
-			//System.out.println( "3m: DisAlarm motion detection system" );
+
 		}
-		
-//		if (fireON){
-//			System.out.println( "Fire alarm is ringing! \n" );
-//			System.out.println( "Select an Option: \n" );
-//			System.out.println( "4: Stop the fire alarm" );
-//		}
 		if (sprinklerON){
-			System.out.println( "\nSprinkler is working!" );
+			System.out.println( "Sprinkler is working!" );
 			System.out.println( "5: Stop sprinkler" );
 		}
-		
-		
-		//System.out.println( "3: Alarm the fire detection system" );
-		//System.out.println( "4: Disalarm the fire detection system" );
-		System.out.println( "\n\nX: Stop System\n" );
+
+		System.out.println( "\nX: Stop System\n" );
 		System.out.print( "\n>>>> " );
 		
 		inputModel="N";
-		//new Thread(gp).start();
+
 	}
 	
 	public void fireOption(){
 		
 		if (inputModel.equals("F") || sprinklerON)return;
 		
-		System.out.println( "Attention! Fire detected! \n" );
-		System.out.println( "Attention! Fire detected! \n" );
+		System.out.println( "\nAttention! Fire detected!" );
+		System.out.println( "Attention! Fire detected!" );
 		System.out.println( "Attention! Fire detected! \n" );
 
-		System.out.println( "Do you want to turn on Sprinkler? \n" );
+		System.out.println( "Do you want to turn on Sprinkler?" );
 		System.out.println( "(If no selection in 10s, sprinkler will turn on!) \n" );
-		System.out.println( "Select an Option: \n" );
+		System.out.println( "Select an Option:" );
 		System.out.println( "1: Yes" );
 		System.out.println( "2: No" );
 		System.out.print( "\n>>>> " );
@@ -190,7 +165,7 @@ public class SecurityConsole
 			////////////option 1 ////////////
 			if ( option2.equals( "1" ) )
 			{
-				System.out.println( "Selection confirmed! Turn on sprinkler!" );
+				System.out.println( "\nSelection confirmed! Turn on sprinkler!" );
 				
 				sprinklerOn();
 				sprinklerON=true;
@@ -200,13 +175,13 @@ public class SecurityConsole
 	
 			else if ( option2.equals( "2" ) )
 			{
-				System.out.println( "Selection confirmed! Not turn on sprinkler!" );
+				System.out.println( "\nSelection confirmed! Not turn on sprinkler!" );
 				sprinklerON=false;
 				sprinklerOff();
 				normalOption();
 			} // if
 			else{
-				System.out.println( "Wrong input! Select again!" );
+				System.out.println( "\nWrong input! Select again!" );
 				fireOption();
 				
 			}
@@ -221,17 +196,15 @@ public class SecurityConsole
 			
 			if (intrusionON){
 				intrusionON=false;
-				//dON=false;
-				//wON=false;
-				//mON=false;
-				System.out.println( "Intrusion detection system stops" );
-				//iMonitor.stopAllAlarms();
+				
+				System.out.println( "\nIntrusion detection system stops" );
+		
 				iMonitor.setIntrusionAlarm(false);
 				normalOption();
 			}else{
 				
 				intrusionON=true;
-				System.out.println( "Intrusion detection system starts" );
+				System.out.println( "\nIntrusion detection system starts" );
 				iMonitor.setIntrusionAlarm(true);
 				normalOption();
 				
@@ -239,116 +212,14 @@ public class SecurityConsole
 			
 		}
 
-		//////////// option 2 ////////////
 
-//		else if ( option2.equals( "2a" ) )
-//		{
-//		
-//			if (!intrusionON){
-//				System.out.println( "Intrusion detection system is not working!" );
-//				System.out.println( "Please enable the intrusion detection system first!" );
-//				normalOption();
-//			}else{
-//				dON=true;
-//				wON=true;
-//				mON=true;
-//				iMonitor.startAllAlarms();
-//				System.out.println( "Manually start all the intrusion alarms!" );
-//				normalOption();
-//			}
-//
-//		} // if
-//
-//		else if ( option2.equals( "2w" ) )
-//		{
-//		
-//			if (!intrusionON){
-//				System.out.println( "Intrusion detection system is not working!" );
-//				System.out.println( "Please enable the intrusion detection system first!" );
-//				normalOption();
-//			}else{
-//				//dON=true;
-//				wON=true;
-//				//mON=true;
-//				iMonitor.startWAlarms();
-//				System.out.println( "Manually start window break alarm!" );
-//				normalOption();
-//			}
-//
-//		}
-//		else if ( option2.equals( "2m" ) )
-//		{
-//		
-//			if (!intrusionON){
-//				System.out.println( "Intrusion detection system is not working!" );
-//				System.out.println( "Please enable the intrusion detection system first!" );
-//				normalOption();
-//			}else{
-//				//dON=true;
-//				//wON=true;
-//				mON=true;
-//				iMonitor.startMAlarms();
-//				System.out.println( "Manually start motion alarm!" );
-//				normalOption();
-//			}
-//
-//		}
-//		else if ( option2.equals( "2d" ) )
-//		{
-//		
-//			if (!intrusionON){
-//				System.out.println( "Intrusion detection system is not working!" );
-//				System.out.println( "Please enable the intrusion detection system first!" );
-//				normalOption();
-//			}else{
-//				dON=true;
-//				//wON=true;
-//				//mON=true;
-//				iMonitor.startDAlarms();
-//				System.out.println( "Manually start door break alarm!" );
-//				normalOption();
-//			}
-//
-//		}
-//		//TODO
-//		else if ( option2.equals( "3a" ) )
-//		{
-//		
-//			if (!intrusionON){
-//				System.out.println( "Intrusion detection system is not working!" );
-//				System.out.println( "Please enable the intrusion detection system first!" );
-//				normalOption();
-//			}else{
-//				dON=true;
-//				wON=true;
-//				mON=true;
-//				iMonitor.stopAllAlarms();
-//				System.out.println( "Manually stop all the intrusion alarms!" );
-//				normalOption();
-//			}
-//
-//		} // if
-//		
-//		
-//		
-//		
-//		else if ( option2.equals( "4" ) )
-//		{
-//		
-//			
-//			fireON=false;
-//			System.out.println( "Fire alarm stops" );
-//			fMonitor.stopAlarm(false);
-//			normalOption();
-//
-//		} // if
 		
 		else if ( option2.equals( "5" ) )
 		{
 		
 			
 			sprinklerON=false;
-			System.out.println( "Sprinkler stops" );
+			System.out.println( "\nSprinkler stops" );
 			sprinklerOff();
 			normalOption();
 
@@ -358,24 +229,19 @@ public class SecurityConsole
 
 		else if ( option2.equalsIgnoreCase( "X" ) )
 		{
-			// Here the user is done, so we set the Done flag and halt
-			// the environmental control system. The monitor provides a method
-			// to do this. Its important to have processes release their queues
-			// with the message manager. If these queues are not released these
-			// become dead queues and they collect messages and will eventually
-			// cause problems for the message manager.
+			
 
 			thread1.interrupt();
 			iMonitor.Halt();
-			//fMonitor.Halt();
+		
 			Done = true;
 			System.out.println( "\nConsole Stopped... Exit monitor mindow to return to command prompt." );
 			iMonitor.Halt();
-			//fMonitor.Halt();
+		
 
 		} // if
 		else{
-			System.out.println( "Wrong input! Select again!" );
+			System.out.println( "\nWrong input! Select again!" );
 			normalOption();
 		}
 	}
@@ -393,8 +259,11 @@ public class SecurityConsole
 		
 		if (waiting){
 			waiting=false;
+			System.out.println( "\nNo selection in 10 seconds! Auto turn on sprinkler!" );
+				
 			sprinklerOn();
-			
+			sprinklerON=true;
+			normalOption();
 		}
 	}
 
