@@ -39,6 +39,10 @@ class ECSMonitor extends Thread
 	Indicator ti;								// Temperature indicator
 	Indicator hi;								// Humidity indicator
 
+	private int ComponentId = 67;				// An id used to identify this as a console to the service maintenance console
+	private String ServeMaintName = "ECS";		// A name to display in the Service Maintenance Console
+	private String ServeMaintDesc = "Used to monitor and control the temp. and humitiy."; // Description
+
 	public ECSMonitor()
 	{
 		// message manager is on the local system
@@ -108,6 +112,9 @@ class ECSMonitor extends Thread
 			ti = new Indicator ("TEMP UNK", mw.GetX()+ mw.Width(), 0);
 			hi = new Indicator ("HUMI UNK", mw.GetX()+ mw.Width(), (int)(mw.Height()/2), 2 );
 
+			// Attempts initial connection/registration to the system
+			em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 			mw.WriteMessage( "Registered with the message manager." );
 
 	    	try
@@ -129,6 +136,9 @@ class ECSMonitor extends Thread
 
 			while ( !Done )
 			{
+				// Here we send a heartbeat to let the system know that it's working
+				em.SendHeartBeat(ComponentId);
+
 				// Here we get our message queue from the message manager
 
 				try
@@ -387,6 +397,8 @@ class ECSMonitor extends Thread
 
 		try
 		{
+			// Sends disconnect message when device is intentially stopped
+			em.SendDisconnect(ComponentId);
 			em.SendMessage( msg );
 
 		} // try

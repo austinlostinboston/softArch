@@ -399,4 +399,147 @@ public class MessageManagerInterface
 
 	} // UnRegister
 
+
+	/*=================================================================================
+
+				Team IAP Additions to the MessageManagerInterface
+
+=================================================================================*/
+
+
+
+    /***************************************************************************
+	* CONCRETE METHOD:: SendConnect
+	* Purpose: This method posts a registration message that will signal the
+	*		   		the service maintenance console that this item is connected to 
+	*		   		the system as well as send the the monitor device information
+	*				like name and description.
+	*
+	* Arguments: int msgID - a two digit integer value uniquely indentifying 
+	* 				the sensor/controller/console. It is important to note the
+	*				"frequencies" that are used to broadcast connecting, heart
+	*				beats, and disconnecting on the system. 
+	*
+	*				-- Two Digit Id's --
+	*				01-33: reserved for Sensors
+	*				34-66: reserved for controllers
+	*				67-99: reserved for consoles
+	*				
+	*				-- MessageId's (Frequencies) --
+	*				1XX: connecting to the network
+	*				2XX: heart beats on the network
+	*				300: disconnecting from the network
+	*
+	*			 String text - a short message containing the device name and
+	*							description.
+							Format: deviceName - deviceDescription
+	*
+	* Returns: none
+	*
+	* Exceptions: Posting to message manager exception
+	*
+	***************************************************************************/
+	public void SendConnect(int componentId, String name, String description) {
+        // Here we create a registration message
+        int connectId = 100 + componentId;
+
+        Message msg = new Message(connectId,name+"-"+description);
+
+        // Attempts to send initial connection message
+        try {
+            this.SendMessage( msg );
+
+        } catch (Exception e) {
+            System.out.println("Error connecting to the system  " + e);
+
+        } // catch
+    } // SendConnect
+
+
+    /***************************************************************************
+	* CONCRETE METHOD:: SendHeartBeat
+	* Purpose: This method posts a heartbeat to the service maintenance monitor
+	*				letting it know that it is operating properly.
+	*
+	* Arguments: int msgID - a two digit integer value uniquely indentifying 
+	* 				the sensor/controller/console. It is important to note the
+	*				"frequencies" that are used to broadcast connecting, heart
+	*				beats, and disconnecting on the system. 
+	*
+	*				-- Two Digit Id's --
+	*				01-33: reserved for Sensors
+	*				34-66: reserved for controllers
+	*				67-99: reserved for consoles
+	*				
+	*				-- MessageId's (Frequencies) --
+	*				1XX: connecting to the network
+	*				2XX: heart beats on the network
+	*				300: disconnecting from the network
+	*
+	*
+	* Returns: none
+	*
+	* Exceptions: Posting to message manager exception
+	*
+	***************************************************************************/
+    public void SendHeartBeat(int componentId) {
+        // Here we create a registration message
+        int heartBeatId = 200 + componentId;
+
+        Message msg = new Message(heartBeatId);
+
+        // Attempts to send initial connection message
+        try {
+            this.SendMessage( msg );
+
+        } catch (Exception e) {
+            System.out.println("Error sending heartbeat to the system  " + e);
+
+        } // catch
+    } // SendHeartBeat
+
+
+    /***************************************************************************
+	* CONCRETE METHOD:: SendDisconnect
+	* Purpose: This method posts a disconnect message that will signal the
+	*		   the service maintenance console that it is being taken offline and
+	*		   not to stay up late waiting up for it.
+	*		   the system
+	*
+	* Arguments: int msgID - a two digit integer value uniquely indentifying 
+	* 				the sensor/controller/console. It is important to note the
+	*				"frequencies" that are used to broadcast connecting, heart
+	*				beats, and disconnecting on the system. 
+	*
+	*				-- Two Digit Id's --
+	*				01-33: reserved for Sensors
+	*				34-66: reserved for controllers
+	*				67-99: reserved for consoles
+	*				
+	*				-- MessageId's (Frequencies) --
+	*				1XX: connecting to the network
+	*				2XX: heart beats on the network
+	*				300: disconnecting from the network
+	*
+	*
+	* Returns: none
+	*
+	* Exceptions: Posting to message manager exception
+	*
+	***************************************************************************/
+    public void SendDisconnect(int componentId) {
+        // Here we create a unregister message
+        int disconnectId = 300 + componentId;
+
+        Message msg = new Message(disconnectId);
+
+        // Attempts to send message telling the system that it's being unregistered
+        try {
+            this.SendMessage( msg );
+        } catch (Exception e) {
+            System.out.println("Error disconnecting from the system  " + e);
+
+        } // catch
+    } // SendDisconnect
+
 } // MessageManagerInterface
