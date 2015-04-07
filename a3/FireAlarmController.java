@@ -36,6 +36,11 @@ public class FireAlarmController
 		boolean Done = false;				// Loop termination flag
 
 		boolean fAlarm=false;
+
+		int ComponentId = 34;				// An id used to identify this as a console to the service maintenance console
+		String ServeMaintName = "Fire Alarm";		// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Triggers fire alarm when fire detected."; // Description
+
 		
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -114,6 +119,9 @@ public class FireAlarmController
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -133,6 +141,8 @@ public class FireAlarmController
 			{
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -173,6 +183,9 @@ public class FireAlarmController
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+
 							em.UnRegister();
 
 				    	} // try

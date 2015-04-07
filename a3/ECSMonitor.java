@@ -21,6 +21,7 @@
 *	static private void Humidifier(MessageManagerInterface ei, boolean ON )
 *	static private void Dehumidifier(MessageManagerInterface ei, boolean ON )
 *
+* 01,02 34,
 ******************************************************************************************************************/
 import InstrumentationPackage.*;
 import MessagePackage.*;
@@ -211,6 +212,9 @@ class ECSMonitor extends Thread
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+
 							em.UnRegister();
 
 				    	} // try
@@ -397,8 +401,6 @@ class ECSMonitor extends Thread
 
 		try
 		{
-			// Sends disconnect message when device is intentially stopped
-			em.SendDisconnect(ComponentId);
 			em.SendMessage( msg );
 
 		} // try

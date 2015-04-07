@@ -146,7 +146,7 @@ class ServMaintMonitor extends Thread
                     //mw.WriteMessage("Msg: " + MsgId);
 
                     // Handle new component registering to the system
-                    if ( MsgId >= 100 && MsgId <= 199  ) {
+                    if ( MsgId >= 300 && MsgId <= 399  ) {
                         int componentId = MsgId % 100;
                         String nameDescription = Msg.GetMessage();
                         String componentName = nameDescription.split("-")[0];
@@ -172,7 +172,7 @@ class ServMaintMonitor extends Thread
                     }
 
                     // Handle heartbeat of component connected to the system
-                    if ( MsgId >= 200 && MsgId <= 299  ) {
+                    if ( MsgId >= 400 && MsgId <= 499  ) {
                         int componentId = MsgId % 100;
                         int index = RegisteredIds.indexOf(componentId);
                         String componentName = RegisteredNames.get(index);
@@ -189,7 +189,7 @@ class ServMaintMonitor extends Thread
 
 
                     // Handle disconnections of components from the system
-                    if ( MsgId >= 300 && MsgId <= 399  ) {
+                    if ( MsgId >= 500 && MsgId <= 599  ) {
                         int componentId = MsgId % 100;
                         int index = RegisteredIds.indexOf(componentId);
                         String componentName = RegisteredNames.get(index);

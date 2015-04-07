@@ -41,6 +41,10 @@ public class FireMonitor extends Thread
 
 	private boolean fireON=true;
 	private boolean intrusionON=true;
+
+	private int ComponentId = 01;				// An id used to identify this as a console to the service maintenance console
+	private String ServeMaintName = "Fire";		// A name to display in the Service Maintenance Console
+	private String ServeMaintDesc = "Displays fire detector, alarm, and sprinkler data"; // Description
 	
 	SecurityConsole sc;
 	public FireMonitor(SecurityConsole securityConsole)
@@ -116,6 +120,9 @@ public class FireMonitor extends Thread
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -137,6 +144,8 @@ public class FireMonitor extends Thread
 
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -192,6 +201,9 @@ public class FireMonitor extends Thread
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+
 							em.UnRegister();
 
 				    	} // try

@@ -441,7 +441,7 @@ public class MessageManagerInterface
 	***************************************************************************/
 	public void SendConnect(int componentId, String name, String description) {
         // Here we create a registration message
-        int connectId = 100 + componentId;
+        int connectId = 300 + componentId;
 
         Message msg = new Message(connectId,name+"-"+description);
 
@@ -472,10 +472,10 @@ public class MessageManagerInterface
 	*				67-99: reserved for consoles
 	*				
 	*				-- MessageId's (Frequencies) --
-	*				1XX: connecting to the network
-	*				2XX: heart beats on the network
-	*				300: disconnecting from the network
-	*
+	*				3XX: connecting to the network
+	*				4XX: heart beats on the network
+	*				5XX: disconnecting from the network
+	*				XX = device ID
 	*
 	* Returns: none
 	*
@@ -484,7 +484,7 @@ public class MessageManagerInterface
 	***************************************************************************/
     public void SendHeartBeat(int componentId) {
         // Here we create a registration message
-        int heartBeatId = 200 + componentId;
+        int heartBeatId = 400 + componentId;
 
         Message msg = new Message(heartBeatId);
 
@@ -529,7 +529,7 @@ public class MessageManagerInterface
 	***************************************************************************/
     public void SendDisconnect(int componentId) {
         // Here we create a unregister message
-        int disconnectId = 300 + componentId;
+        int disconnectId = 500 + componentId;
 
         Message msg = new Message(disconnectId);
 

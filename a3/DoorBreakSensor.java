@@ -42,6 +42,11 @@ public class DoorBreakSensor
 		int	Delay = 2500;				// The loop delay (2.5 seconds)
 		boolean Done = false;			// Loop termination flag
 
+		int ComponentId = 01;						// An id used to identify this as a console to the service maintenance console
+		String ServeMaintName = "Door Break";		// A name to display in the Service Maintenance Console
+		String ServeMaintDesc = "Detects unauthorized door openings"; // Description
+
+
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
 		/////////////////////////////////////////////////////////////////////////////////
@@ -104,6 +109,7 @@ public class DoorBreakSensor
 								 	//of a percentage of the screen height
 			float WinPosY = 0.3f; 	//This is the Y position of the message window in terms
 								 	//of a percentage of the screen height
+
 			//TODO
 			MessageWindow mw = new MessageWindow("Door Break Sensor", WinPosX, WinPosY );
 
@@ -111,6 +117,9 @@ public class DoorBreakSensor
 
 	    	try
 	    	{
+	    		// Attempts initial connection/registration to the system
+				em.SendConnect(ComponentId,ServeMaintName,ServeMaintDesc);
+
 				mw.WriteMessage("   Participant id: " + em.GetMyId() );
 				mw.WriteMessage("   Registration Time: " + em.GetRegistrationTime() );
 
@@ -140,9 +149,10 @@ public class DoorBreakSensor
 
 			while ( !Done )
 			{
-				
 				try
 				{
+					// Here we send a heartbeat to let the system know that it's working
+					em.SendHeartBeat(ComponentId);
 					eq = em.GetMessageQueue();
 
 				} // try
@@ -183,6 +193,9 @@ public class DoorBreakSensor
 
 						try
 						{
+							// Sends disconnect message when device is intentially stopped
+							em.SendDisconnect(ComponentId);
+
 							em.UnRegister();
 
 				    	} // try
