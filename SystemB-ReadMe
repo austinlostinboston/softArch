@@ -1,0 +1,19 @@
+Steps To run system B:
+1. Start the message manager, this is the common steps for system A B and C. 
+   (so you can leave these two console running for System A and C, please note that repeat these command will cause RMI port binding exception).
+   
+2. Open a console, and type command:
+	> rmiregistry
+3. Open another console and type command:
+	> cd a3b
+	> java MessageManager
+	
+4. Start the components in console (on mac os):
+	> cd a3b
+	> ./startSystemB.sh 
+
+5. Operate the system
+	5.1. After step 4, four java consoles() will pop up, and show the message sending and recieving between sensor/console/controller.
+	5.2. Use the security console(the console you run the ./startSystemB.sh ) to control the system.
+	5.3. If a Fire is detected then this console will show the option of conforming Sprinkler On - Cofirm by pressing 1 and enter
+	5.4. If Sprinkler is On then you should press 5 and enter to Turn Off the Sprinkler.
