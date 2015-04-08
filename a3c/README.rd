@@ -21,6 +21,10 @@ Disconnect Messages - 5XX
 
 XX = the devices ID
 
+Additonal Playing around:
+I made a set of scripts to run each System. Feel free to run all of these and see how the console works. Also, kill the running java devices to see how the warning sign appears.
+
+
 
 
 
