@@ -2,8 +2,7 @@ In order to operate System C. Follow these steps.
 
 It is important to note that the the service maintenance console only works on a mac machine.
 
-Steps (must be done in this exact order):
-Compile the java files                     - javac *.java
+Steps (must be done in this exact order - java files have already been compiled):
 Create the Message MAnager stubs           - rmic MessageManager.java
 Start the rmiregistry and message manager  - ./startMsgMgr.sh
 Start the service maintenance console      - ./startServMaintConsole.sh
@@ -23,8 +22,3 @@ XX = the devices ID
 
 Additonal Playing around:
 I made a set of scripts to run each System. Feel free to run all of these and see how the console works. Also, kill the running java devices to see how the warning sign appears.
-
-
-
-
-
