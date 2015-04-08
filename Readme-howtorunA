@@ -1,0 +1,19 @@
+To run system A, please do the following:
+
+0. Start the message manager, this is the common steps for system A B and C. 
+   so you can leave these two console running for System B and C, please note that repeat these command will cause RMI port binding exception.
+
+open a console, and type commands:
+> rmiregistry
+Open another console and type command:
+> cd a3a
+> java MessageManager
+
+1. Start components
+Start the components in console (on mac os):
+> cd a3a
+> ./startSystemA.sh 
+
+2. Operate the system
+After step 0 and 1, three java consoles() will pop up, and show the message sending and recieving between sensor/console/controller.
+Use the security console(the console you run the ./startSystemA.sh ) to arm/disarm (type 1 and enter in the console) the intrusion detection system. You will see alarm message show or stop in console.
