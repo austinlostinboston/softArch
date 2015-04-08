@@ -12,7 +12,7 @@ Steps To run system B:
 	> cd a3b
 	> ./startSystemB.sh 
 
-	Alternatively you can start the System B for Windows OS by executing the EFStart.bat (Batch File).
+	Alternatively you can start the System B for Windows OS by executing the EMStart.bat followed by EFStart.bat (Batch Files).
 	
 5. Operate the system
 	5.1. After step 4, four java consoles() will pop up, and show the message sending and recieving between sensor/console/controller.
