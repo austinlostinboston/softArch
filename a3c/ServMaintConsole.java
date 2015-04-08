@@ -74,9 +74,9 @@ public class ServMaintConsole
 
                 //////////// option 1 ////////////
                 // if ( Option.equals( "1" ) ) {
-                    System.out.println( "To go back to the previous menu, press R at any time.\n" );
                     System.out.println( "Service Maintenance Console Device Manager");
                     System.out.println( "Below is a list of all devices connected to your ECS.\n");
+                    System.out.println( "Please ensure that the header and dotted line below only take up a single line in your console.\n");
                     System.out.println( "     Device                     Device                                    Last                     ");
                     System.out.println( "ID   Name                       Description                               Response (sec)     Status");
                     System.out.println( "---------------------------------------------------------------------------------------------------");
