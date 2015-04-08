@@ -3,10 +3,11 @@ In order to operate System C. Follow these steps.
 It is important to note that the the service maintenance console only works on a mac machine.
 
 Steps (must be done in this exact order - java files have already been compiled):
-Create the Message MAnager stubs           - rmic MessageManager.java
-Start the rmiregistry and message manager  - ./startMsgMgr.sh
-Start the service maintenance console      - ./startServMaintConsole.sh
-Start the ECS System                       - ./startESC.sh
+1. Create the Message MAnager stubs           - rmic MessageManager.java
+2. Start the rmiregistry and message manager  - ./startMsgMgr.sh
+3. Start the service maintenance console      - ./startServMaintConsole.sh
+4. Please drag the width of your terminal so that the dotted line only takes up one line (or it won't display/operate properly)
+5. Start the ECS System                       - ./startESC.sh
 
 How it works:
 The service maintenace console listens for connection, heartbeat, and disconnection messages coming from all devices connected to the system. Connection messages register the device and let the console know that the device is connected. Heartbeat messages let the console know that the device is functioning properly from a message sending standpoint. If more than 5 seconds passes without a heartbeat response, the console displays a warning sign letting the user know something is wrong with that device. When a disconnect message is received, the console know's to remove that device from the list.
